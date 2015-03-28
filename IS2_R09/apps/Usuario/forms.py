@@ -66,6 +66,16 @@ class usuario_form(ModelForm):
                 'required': ("Este campo es obligatorio."),
             },
         }
+        def controlar_username(self,request):
+            usernam = self.cleaned_data['username']
+            try:
+                if usernam == request.user.username:
+                    return usernam
+                else:
+                    u = User.objects.get(username=usernam)
+            except User.DoesNotExist:
+                return usernam
+            raise forms.ValidationError('Nombre de usuario ya existe')
     
     
 '''

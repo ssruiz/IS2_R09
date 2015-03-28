@@ -47,12 +47,13 @@ def mod_datos_view(request):
     if request.method == 'POST':
         # formulario enviado
         user_form = usuario_form(request.POST,instance=request.user)
-        perfil_form = extension_usuario_form(request.POST,request.user.usuario)
+        perfil_form = extension_usuario_form(request.POST,request.FILES,request.user.usuario)
         #print user_form.username
         if user_form.is_valid() and perfil_form.is_valid():
             # formulario validado correctamente
             actual = request.user.usuario
             actual.telefono = request.POST['telefono']
+            actual.foto = request.FILES['foto']
             #actual.foto = request.POST['telefono']
             actual.save()
             i=user_form.save()

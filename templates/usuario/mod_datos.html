@@ -10,7 +10,7 @@
 			{% csrf_token %}
 			<div>
 				{{ user_form.as_p }}
-				{{ exten_form }}
+				{{ exten_form }} <img src = "/media/{{user.usuario.foto}}" width="100px" heigh="100px"></img>
 			</div>
 			
 			<div id="formu">

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %} Modificar Datos{% endblock %}
+{% block content %}
+	{% load staticfiles %}
+	{% block css %}
+		<link rel="stylesheet" href= "{% static "css/formularios.css" %}"></link>
+		<link rel="stylesheet" href= "{% static "css/base.css" %}"></link>
+	{% endblock %}
+		<form id= "form" method = 'POST' action = "" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div>
+				{{ user_form.as_p }}
+				{{ exten_form }}
+			</div>
+			
+			<div id="formu">
+				<input type="submit" value="Guardar Cambios"/>
+				<input type="reset" value="Reset"/>
+			</div>
+		</form>
+			
+			
+			<div>
+				<a align="left" href="/menu">Cancelar y Volver a Menu </a>
+			</div>
+		
+{% endblock %}

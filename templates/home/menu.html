@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %} Menu {% endblock %}
+{% block content %}
+		
+		{% if user.is_authenticated %}
+			Bienvenido: {{usuario}}.
+			<ul>
+            	<li><a  href = "{% url 'vista_adm_sesion' %}">Adm. Sesion</a></li>
+				{% if user.is_staff %}
+				<li><a href="{% url 'vista_adm_usuario' %}">Admin.Usuario</a></li>
+				{% endif %}
+			</ul>
+		{% endif %}		
+{% endblock %}

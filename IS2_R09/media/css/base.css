@@ -1,0 +1,14 @@
+body {
+	font-size: 14px;
+    font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+    color: black;
+	background-image: url("http://127.0.0.1:8000/static/images/back1.jpg");
+	
+}
+
+#box1 {
+		position:absolute;
+		top: 0px;
+		left: 1200px;
+		color: red;
+	}

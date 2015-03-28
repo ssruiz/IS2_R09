@@ -1,0 +1,18 @@
+ul {
+list-style: none;
+}
+a {
+float: left;
+width: 6em;
+text-decoration: none;
+color: white;
+background-color: navy;
+padding: 0.2em 0.6em;
+border-right: 1px solid white;
+text-align: center;
+}
+
+a:hover {
+background-color: #ff3300;
+text-decoration: underline;
+}

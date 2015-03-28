@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %} Administrar usuario {% endblock %}
+{% block content %}
+	<ul>
+		<li><a  href = "{% url 'vista_crear_usuario' %}"> Crear Usuario</a></li>
+		<li><a  href = ""> Modificar Usuario</a></li>
+		<li><a  href = ""> Eliminar Usuario</a></li>
+		<li><a  href = ""> Consultar Usuario</a></li>
+	</ul>
+{% endblock %}

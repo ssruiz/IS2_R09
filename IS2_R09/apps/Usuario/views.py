@@ -46,20 +46,29 @@ def mod_datos_view(request):
     exten_form=extension_usuario_form(prefix="usuario",instance=request.user.usuario)
     if request.method == 'POST':
         # formulario enviado
-        user_form = usuario_form(request.POST,instance=request.user)
-        perfil_form = extension_usuario_form(request.POST,request.FILES,request.user.usuario)
+        if request.FILES:
+            user_form = usuario_form(request.POST,instance=request.user)
+            perfil_form = extension_usuario_form(request.POST,request.FILES,request.user.usuario)
         #print user_form.username
-        if user_form.is_valid() and perfil_form.is_valid():
+            if user_form.is_valid() and perfil_form.is_valid():
             # formulario validado correctamente
-            actual = request.user.usuario
-            actual.telefono = request.POST['telefono']
-            actual.foto = request.FILES['foto']
-            #actual.foto = request.POST['telefono']
-            actual.save()
-            i=user_form.save()
-            return HttpResponseRedirect('/')
+                actual = request.user.usuario
+                actual.telefono = request.POST['telefono']
+                actual.foto = request.FILES['foto']
+                actual.save()
+                i=user_form.save()
+                return HttpResponseRedirect('/')
+        else:
+            user_form = usuario_form(request.POST,instance=request.user)
+            if user_form.is_valid():
+            # formulario validado correctamente
+                actual = request.user.usuario
+                actual.telefono = request.POST['telefono']
+               # actual.foto = request.FILES['foto']
+                actual.save()
+                i=user_form.save()
+                return HttpResponseRedirect('/')
     else:
-        print "llegue"
         user_form = usuario_form (instance=request.user)
         exten_form = extension_usuario_form(instance=request.user.usuario)
         return render_to_response('usuario/mod_datos.html', { 'user_form': user_form,  'exten_form': exten_form }, context_instance=RequestContext(request))

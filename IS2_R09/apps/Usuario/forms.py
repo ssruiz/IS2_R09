@@ -46,7 +46,7 @@ class usuario_form(ModelForm):
     
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('username','first_name', 'last_name', 'email')
         
         labels = {
             'first_name': ('Nombre'),
@@ -56,7 +56,6 @@ class usuario_form(ModelForm):
             'username': (''),
         }
         widgets = {
-            'username' : forms.TextInput(),
             'first_name' : forms.TextInput(),
             'last_name' : forms.TextInput(),
          
@@ -66,17 +65,7 @@ class usuario_form(ModelForm):
                 'required': ("Este campo es obligatorio."),
             },
         }
-        def controlar_username(self,request):
-            usernam = self.cleaned_data['username']
-            try:
-                if usernam == request.user.username:
-                    return usernam
-                else:
-                    u = User.objects.get(username=usernam)
-            except User.DoesNotExist:
-                return usernam
-            raise forms.ValidationError('Nombre de usuario ya existe')
-    
+       
     
 '''
     # funcion que comprueba que las contrasenhas ingresadas coincidan

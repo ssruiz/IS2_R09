@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %} Login {% endblock %}
 {% block content %}
-	<form action = "." method = "POST">
+	<form align="center" action = "." method = "POST">
 		{% csrf_token %}
 		{{ mensaje }}
 		{{ form.as_p }}
@@ -12,5 +12,6 @@
 		{% endif %}
 		
 		<button class = "btn btn-primary" type= "submit">Ingresar</button>
+		<a href="{% url 'vista_rp' %}">Recuperar Contraseña</a>
 	</form>
 {% endblock %}

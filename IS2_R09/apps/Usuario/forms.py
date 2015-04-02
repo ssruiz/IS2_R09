@@ -88,3 +88,16 @@ class extension_usuario_form(ModelForm):
         widgets = {
             'foto': forms.ImageField(),
         }
+class manage_usuario_form(ModelForm):
+    class Meta:
+        model = User
+        fields = ('username','first_name', 'last_name', 'email')
+        
+    help_texts = {
+            'username': (''),
+        }
+    widgets = {
+            'first_name' : forms.CharField(),
+            'last_name' : forms.CharField(),
+         
+        }

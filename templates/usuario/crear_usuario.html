@@ -3,8 +3,7 @@
 {% block content %}
 	{% load staticfiles %}
 	{% block css %}
-		<link rel="stylesheet" href= "{% static "css/formularios.css" %}"></link>
-		<link rel="stylesheet" href= "{% static "css/base.css" %}"></link>
+		
 	{% endblock %}
 	<form id="form" action = "." method = "POST">
 		{% csrf_token %}
@@ -17,7 +16,7 @@
 	</form>	
 			
 		<div id="main">
-				<a align="left" href="/menu">Cancelar y Volver a Menu </a>
+				<a align="left" href="/adm_usuario">Cancelar y Volver a Menu </a>
 		</div>
 	
 {% endblock %}

@@ -2,11 +2,15 @@
 {% block title %} Modificar Datos{% endblock %}
 {% block content %}
 	{% load staticfiles %}
+	{% block css %}
+		<link rel="stylesheet" href= "{% static "css/formularios.css" %}"></link>
+		<link rel="stylesheet" href= "{% static "css/base.css" %}"></link>
+	{% endblock %}
 		<form id= "form" method = 'POST' action = "" enctype="multipart/form-data">
 			{% csrf_token %}
 			<div>
 				{{ user_form.as_p }}
-				{{ exten_form }} <img src = "/media/{{user.usuario.foto}}" width="100px" heigh="100px"></img>
+				{{ exten_form }} <img src = "/media/{{foto}}" width="100px" heigh="100px"></img>
 			</div>
 			
 			<div id="formu">
@@ -18,7 +22,7 @@
 			
 			
 			<div>
-				<a align="left" href="/menu">Cancelar y Volver a Menu </a>
+				<a align="left" href="/adm_usuario/">Cancelar y Volver a Menu </a>
 			</div>
 		
 {% endblock %}

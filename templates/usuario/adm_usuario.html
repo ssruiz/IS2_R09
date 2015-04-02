@@ -1,10 +1,36 @@
 {% extends "base.html" %}
 {% block title %} Administrar usuario {% endblock %}
 {% block content %}
+	{% load staticfiles %}
+	{{mensaje}}
 	<ul>
 		<li><a  href = "{% url 'vista_crear_usuario' %}"> Crear Usuario</a></li>
-		<li><a  href = ""> Modificar Usuario</a></li>
 		<li><a  href = ""> Eliminar Usuario</a></li>
-		<li><a  href = ""> Consultar Usuario</a></li>
 	</ul>
+	<table>
+		<thead>
+			<tr>
+				<th>UserName</th>
+				<th>Nombre</th>
+				<th>Apellido</th>
+				<th>Telefono</th>
+				<th>Editar</th>
+				<th>Eliminar</th>
+			</tr>
+		</thead>
+		{% for u in users %}
+		<tbody>
+			<tr>
+				<td>{{u.username}}</td>
+				<td>{{u.first_name}}</td>
+				<td>{{u.last_name}}</td>
+				<td>{{u.usuario.telefono}}</td>				
+				<td><a href= "/modificar/usuario/{{u.id}}/"><button><img src="{% static "images/iconos/icon_changelink.gif" %}"></button></a></td>
+				<td><a href= "/eliminar/usuario/{{u.id}}/"><button><img src="{% static "images/iconos/icon_deletelink.gif" %}"></button></a></td>
+			</tr>
+		</tbody>
+		
+		{% endfor %}
+	</table>
+	<a align="left" href="/menu/"> Volver a Menu </a>
 {% endblock %}

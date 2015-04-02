@@ -106,3 +106,10 @@ STATICFILES_DIRS = (
 URL_LOGIN = '/login'
 MEDIA_ROOT = '/home/samuel/workspace/IS2_R09/IS2_R09/media'
 MEDIA_URL = '/media/'
+
+# Configuracion de mail
+EMAIL_USE_TLS = True 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'is2.pagiles@gmail.com'
+EMAIL_HOST_PASSWORD = 'is_2_r09'
+EMAIL_PORT = 587

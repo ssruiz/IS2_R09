@@ -25,7 +25,7 @@ class test_content(TestCase):
     # usuario(exentension del modelo) correspondiente, que es 6 como se definio en setUp
     def test_user_usuario2(self):
         usuario = User.objects.get(username = "kios")
-        self.assertEqual(usuario.usuario.user_id, 7)   
+        self.assertEqual(usuario.usuario.user_id, 7)
     
     # test que recupera todos los user con apellido Lee
     # se controla que recupere 2 como se habian definifo en setUp

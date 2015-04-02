@@ -1,10 +1,11 @@
 table {     
 	font-family: Lucida Sans Unicode, Lucida Grande, Sans-Serif;
     font-size: 12px;    
-    margin: 80px;     
+    margin: auto;     
     width: 990px; 
-    text-align: left;    
+    text-align: center;    
     border-collapse: collapse;
+    
     }
 
 th {     
@@ -18,7 +19,7 @@ th {
 }
 
 td {    
-	padding: 8px;     
+	padding: 4px;     
 	background: #e8edff;     
 	border-bottom: 1px solid #ffffff;
     color: #666699;    

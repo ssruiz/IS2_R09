@@ -7,5 +7,7 @@ urlpatterns = patterns('IS2_R09.apps.Usuario.views',
     url(r'^mod_datos/$','mod_datos_view', name= 'vista_modificar_datos'),
     url(r'^adm_usuario/$','adm_usuario_view', name= 'vista_adm_usuario'),
     url(r'^modificar/usuario/(?P<id_usuario>.*)/$','modificar_usuario_view', name= 'vista_mod_usuario'),
-    url(r'^eliminar/usuario/(?P<id_usuario>.*)/$','eliminar_usuario_view', name= 'vista_mod_usuario'),
+    url(r'^eliminar/usuario/(?P<id_usuario>.*)/$','eliminar_usuario_view', name= 'vista_eliminar_usuario'),
+    url(r'^buscar_usuario/$','buscar_usuario_view', name= 'vista_buscar_usuario'),
+    url(r'^consultar/usuario/(?P<id_usuario>.*)/$','consultar_usuario_view', name= 'vista_consultar_usuario'),
 )

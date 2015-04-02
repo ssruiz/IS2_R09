@@ -45,7 +45,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/login/')
 
 def recuperar_pass_view(request):
     ''' view que maneja la recuperacion de contrasenha de un usuario.'''

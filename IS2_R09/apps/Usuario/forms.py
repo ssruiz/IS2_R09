@@ -88,16 +88,30 @@ class extension_usuario_form(ModelForm):
         widgets = {
             'foto': forms.ImageField(),
         }
-class manage_usuario_form(ModelForm):
+#------------------------------------------------------------------------------------
+class consultar_usuario_form(ModelForm):
+    id = forms.CharField(label='ID',widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    first_name = forms.CharField(label='Nombre',widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    last_name = forms.CharField(label='Apellido',widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    email = forms.CharField(label='Email',widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    telefono = forms.CharField(label='Telefono',widget=forms.TextInput(attrs={'readonly':'readonly'}))
     class Meta:
         model = User
-        fields = ('username','first_name', 'last_name', 'email')
+        fields = ('id','username','first_name', 'last_name', 'email')
         
     help_texts = {
             'username': (''),
         }
-    widgets = {
-            'first_name' : forms.CharField(),
-            'last_name' : forms.CharField(),
-         
-        }
+        
+
+#------------------------------------------------------------------------------------
+class buscar_usuario_form(forms.Form):
+    BUSCAR_POR = {
+                  ('username','Username'),
+                  ('nombre','Nombre'),
+                  ('apellido','Apellido')
+                  }
+    opciones = forms.ChoiceField(label='Buscar Por',required=True,widget=forms.Select(),choices=BUSCAR_POR)
+    
+    busqueda = forms.CharField(widget=forms.TextInput())

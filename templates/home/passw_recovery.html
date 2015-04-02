@@ -1,10 +1,18 @@
 {% extends "base.html" %}
 {% block title %} Recuperar Password {% endblock %}
 {% block content %}
-	<form align="center" action = "." method = "POST">
+<div id="box1">
+<p align= "center">Recuperar Password</p>
+	<form action = "." method = "POST">
 		{% csrf_token %}
 		{{ mensaje }}
-		{{ form.as_p }}
-		<button class = "btn btn-primary" type= "submit">Recuperar</button>
+		<div align="center">
+			{{ form.as_p }}
+		</div>
+		<div align="center">
+			<button class = "btn btn-primary" type= "submit">Recuperar</button>
+			<input type="button" name="Cancelar" value="Cancelar" onClick="location.href='/login/'">
+		</div>
 	</form>
+</div>
 {% endblock %}

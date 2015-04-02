@@ -124,5 +124,11 @@ def modificar_usuario_view(request,id_usuario):
 #-----------------------------------------------------------------------------------------
 def eliminar_usuario_view(request,id_usuario):
     user = User.objects.get(pk=id_usuario)
+    if request.method == 'POST':
+        user = User.objects.get(pk=id_usuario)
+        user.delete()
+        users = User.objects.all()
+        ctx = {'mensaje': 'Usuario eliminado','users':users}
+        return render_to_response('usuario/adm_usuario.html', ctx, context_instance=RequestContext(request))
     ctx = {'usuario': user}
     return render_to_response('usuario/eliminar_usuario.html', ctx, context_instance=RequestContext(request))

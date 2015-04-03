@@ -4,9 +4,14 @@
 <p>Esta a punto de eliminar del sistema al siguiente usuario: {{usuario}}</p>
 <p>Por favor confirme la accion</p>
 
-<form method = 'POST' action = "" >
-	{% csrf_token %}
-	<input type="submit" value="Aceptar"></input>
-	<a href= "/adm_usuario/"><button>Cancelar</button></a></td>
-</form>
+<div>
+	<form method = 'POST' action = "" >
+		{% csrf_token %}
+		<input type="submit" value="Aceptar"></input>
+		<input type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_usuario/'">
+	</form>
+</div>
+<div>
+	
+</div>
 {% endblock %}

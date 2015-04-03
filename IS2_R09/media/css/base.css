@@ -2,13 +2,30 @@ body {
 	font-size: 14px;
     font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
     color: black;
-	background-image: url("http://127.0.0.1:8000/static/images/back1.jpg");
+	background-image: url("http://127.0.0.1:8000/static/images/back1.jpg");	
 	
 }
 
 #box1 {
-		position:absolute;
-		top: 0px;
-		left: 1200px;
-		color: red;
+		position: absolute;
+		top:50%; 
+		left:50%; /*determinamos una anchura*/ 
+		width:400px; 
+		/*indicamos que el margen izquierdo, es la mitad de la anchura*/ 
+		margin-left: -200px; /*determinamos una altura*/ 
+		height:auto; /*indicamos que el margen superior, es la mitad de la altura*/ 
+		margin-top:-150px; 
+		border:1px solid #808080; 
+		padding:7px;
 	}
+
+h2 {
+	font-size: 20px;
+    font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+    color: black;
+	top:50%; 
+	left:50%;
+	margin-top:90px;
+		 
+	
+}

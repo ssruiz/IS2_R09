@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block title %} Login {% endblock %}
 {% block content %}
-	<form align="center" action = "." method = "POST">
+<h2 align="center" >Iniciar Sesión</h2>
+<div id="box1">
+	<form action = "." method = "POST">
 		{% csrf_token %}
 		{{ mensaje }}
 		{{ form.as_p }}
@@ -10,8 +12,10 @@
 		{% else %}
 			<input type="hidden" value= "/" name="next">
 		{% endif %}
-		
-		<button class = "btn btn-primary" type= "submit">Ingresar</button>
-		<a href="{% url 'vista_rp' %}">Recuperar Contraseña</a>
+		<p align="center"><button class = "btn btn-primary" type= "submit">Ingresar</button></p>
 	</form>
+	<div position="relative" left="50%">
+		<p align="center"><a href="{% url 'vista_rp' %}">Recuperar Contraseña</a><p>
+	</div>
+</div>
 {% endblock %}

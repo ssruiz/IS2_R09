@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %} Consultar Rol{% endblock %}
+{% block content %}
+
+<div>
+	
+	<div id="box1">
+		<div float="right">
+			<p align="center">Datos del Rol</p>
+		</div>
+			{{form.as_p}}
+		<p align="center"><input type="button" name="volver" value="Volver" onClick="location.href='/adm_rol/'"></p>
+	</div>	
+</div>
+{% endblock %}

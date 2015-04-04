@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %} Modificar Rol{% endblock %}
+{% block content %}
+	{% load staticfiles %}
+		<form id= "form" method = 'POST' action = "">
+			{% csrf_token %}
+			<div>
+				{{ rol_form.as_p }}
+			</div>
+			
+			<div id="formu">
+				<input type="submit" value="Guardar Cambios"/>
+				<input type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_rol/'">
+				<input type="reset" value="Reset"/>	
+			</div>
+			
+		</form>		
+{% endblock %}

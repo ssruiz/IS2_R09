@@ -5,18 +5,31 @@
 		  	<link rel="stylesheet" href= "/media/css/base.css"></link>
 		  	<link rel="stylesheet" href= "/media/css/formularios.css"></link>		  	  	
 		  	<link rel="stylesheet" href= "/media/css/tablas.css"></link>
+		  	<link rel="stylesheet" href= "/media/css/menu.css"></link>
 	</head>	
 	<body>
-		
-		<div>
-			{% if user.is_authenticated%} 
-				<p align="right">Usuario {{user}} - <button type="button" name="logout" onClick="location.href='/logout/'"><img src="/media/images/iconos/logout.png" width="15px" heigh="15px"></button></p>		
-			{% endif %}
-		</div>		
-		<header>
-			<h1> IS2- R09</h1>	
-		</header>
+			<div id="navega"> 
+				<div id="menu"> 
+					<div id="fijo" float="left" >
+						<h1 align="left"> IS2- R09</h1>					
+						{% if user.is_authenticated %}
+						     <a href="{% url 'vista_adm_sesion' %}">Adm.Sesion</a>
+						     |
+						     {% if user.is_staff%}
+						     	<a href="{% url 'vista_adm_usuario' %}">Admin.Usuario</a>
+						     	|
+						     	<a href="{% url 'vista_adm_rol' %}">Admin.Roles</a>
+						     {% endif %}
+						     	|
+						     	<a href="">Admin. Proyecto</a>
+						     <p align="right">Usuario {{user}} - <button type="button" name="logout" onClick="location.href='/logout/'"><img src="/media/images/iconos/logout.png" width="15px" heigh="15px"></button></p>
+						{% endif %} 
+					</div>  
+				</div>  
+			</div>		
 			<div id = "content">
+				<br/>
+				<br/>
 				{% block content %}{% endblock %}
 			</div>
 	</body>

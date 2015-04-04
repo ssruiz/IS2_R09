@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 {% block title %} Administrar usuario {% endblock %}
 {% block content %}
+	<br/>
+	<br/>
+	<br/>		
 	{% load staticfiles %}
-	{{mensaje}} 
+	<h2>{{mensaje}}<h2> 
 	{% if icono %}
 		<img float="left" src="/media/images/iconos/{{icono}}" width="20px" heigh="20px">
 	{% endif%}
@@ -47,5 +50,5 @@
 		
 		{% endfor %}
 	</table>
-	<p align="center"><input type="button" name="volver_menu" value="Volver a Menu" onClick="location.href='/menu/'"></p>
+	<p align="center"><input type="button" name="volver_menu" value="Volver a Menú" onClick="location.href='/menu/'"></p>
 {% endblock %}

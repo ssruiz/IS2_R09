@@ -32,7 +32,7 @@ def crear_usuario_view(request):
             password_two = form.cleaned_data['password_two']
             u = User.objects.create_user(username=usuario, email=email,password= password_one,first_name=nombre,last_name=apellido)
             u.save()
-            return render_to_response('usuario/adm_usuario.html', {'mensaje': 'Usuario Creado.','users':User.objects.all(),'icono':'icon-yes.gif'},context_instance=RequestContext(request))
+            return render_to_response('usuario/adm_usuario.html', {'mensaje': 'Usuario Creado.','users':User.objects.all(),'icono':'icon-yes.gif','form': buscar_usuario_form()},context_instance=RequestContext(request))
         else:
             ctx = {'form':form}
             return render_to_response('usuario/crear_usuario.html',ctx,context_instance=RequestContext(request))
@@ -96,7 +96,7 @@ def modificar_usuario_view(request,id_usuario):
                 actual.foto = request.FILES['foto']
                 actual.save()
                 i=user_form.save()
-                return render_to_response('usuario/adm_usuario.html', {'mensaje': 'Usuario modificado.','users':User.objects.all(),'icono':'icon-yes.gif'},context_instance=RequestContext(request))
+                return render_to_response('usuario/adm_usuario.html', {'mensaje': 'Usuario modificado.','users':User.objects.all(),'icono':'icon-yes.gif','form': buscar_usuario_form()},context_instance=RequestContext(request))
         else:
             user_form = usuario_form(request.POST,instance=u)
             if user_form.is_valid():
@@ -106,7 +106,7 @@ def modificar_usuario_view(request,id_usuario):
                # actual.foto = request.FILES['foto']
                 actual.save()
                 i=user_form.save()
-                return render_to_response('usuario/adm_usuario.html', {'mensaje': 'Usuario modificado.','users':User.objects.filter(is_active=True),'icono':'icon-yes.gif'},context_instance=RequestContext(request))
+                return render_to_response('usuario/adm_usuario.html', {'mensaje': 'Usuario modificado.','users':User.objects.filter(is_active=True),'icono':'icon-yes.gif','form': buscar_usuario_form()},context_instance=RequestContext(request))
     if request.method == 'GET':
         user_form= usuario_form(initial={
                                          'username':u.username,
@@ -123,6 +123,7 @@ def modificar_usuario_view(request,id_usuario):
     return render_to_response('usuario/modificar_usuario.html', { 'user_form': user_form,  'exten_form': exten_form }, context_instance=RequestContext(request))
 
 #-----------------------------------------------------------------------------------------
+@login_required(login_url= URL_LOGIN)
 def eliminar_usuario_view(request,id_usuario):
     '''vista que controla la eliminacion de usuarios del sistema'''
     user = User.objects.get(pk=id_usuario)
@@ -130,13 +131,13 @@ def eliminar_usuario_view(request,id_usuario):
         user = User.objects.get(pk=id_usuario)
         user.delete()
         users = User.objects.all()
-        ctx = {'mensaje': 'Usuario eliminado','users':users}
+        ctx = {'mensaje': 'Usuario eliminado','users':users,'form': buscar_usuario_form()}
         return render_to_response('usuario/adm_usuario.html', ctx, context_instance=RequestContext(request))
     ctx = {'usuario': user}
     return render_to_response('usuario/eliminar_usuario.html', ctx, context_instance=RequestContext(request))
 
 #----------------------------------------------------------------------------------------------
-
+@login_required(login_url= URL_LOGIN)
 def buscar_usuario_view(request):
     form = buscar_usuario_form()
     if(request.method=='POST'):
@@ -161,6 +162,8 @@ def buscar_usuario_view(request):
     ctx = {'form': form}
     return render_to_response('usuario/buscar_usuario.html', ctx, context_instance=RequestContext(request))
 
+#------------------------------------------------------------------------------------------------
+@login_required(login_url= URL_LOGIN)
 def consultar_usuario_view(request,id_usuario):
     form= consultar_usuario_form()
     if request.method == 'GET':
@@ -174,6 +177,6 @@ def consultar_usuario_view(request,id_usuario):
                                          'telefono':u.usuario.telefono,
                                          })
         ctx = {'form':form,'foto':u.usuario.foto}
-    return render_to_response('usuario/consultar_usuario.html', ctx, context_instance=RequestContext(request))
+        return render_to_response('usuario/consultar_usuario.html', ctx, context_instance=RequestContext(request))
     ctx = {'form':form}
     return render_to_response('usuario/consultar_usuario.html', ctx, context_instance=RequestContext(request))

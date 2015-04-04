@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %} Eliminar Datos{% endblock %}
+{% block content %}
+<p>Esta a punto de eliminar del sistema al siguiente rol: {{rol}}</p>
+<p>Por favor confirme la accion</p>
+
+<div>
+	<form method = 'POST' action = "" >
+		{% csrf_token %}
+		<input type="submit" value="Aceptar"></input>
+		<input type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_rol/'">
+	</form>
+</div>
+<div>
+	
+</div>
+{% endblock %}

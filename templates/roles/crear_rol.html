@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %} Crear Rol {% endblock %}
+{% block content %}
+	{% load staticfiles %}
+	<form id="form" action = "." method = "POST">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<div>
+				<button class = "btn btn-primary" type= "submit">Guardar</button>
+				<input type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_r/'">
+				<input type="reset" value="Reset"/>
+		</div>
+		
+	</form>	
+{% endblock %}

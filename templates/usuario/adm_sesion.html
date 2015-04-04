@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %} Administrar Sesion {% endblock %}
 {% block content %}
-	<a  href = "{% url 'vista_modificar_datos' %}"> Modificar Datos</a>
+{% load staticfiles %}
+	<p><a  href = "{% url 'vista_modificar_datos' %}"> Modificar Datos</a></p>
 {% endblock %}

@@ -1,10 +1,8 @@
 body {
-	font-size: 14px;
-    font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
-    color: black;
-	background-image: url("http://127.0.0.1:8000/static/images/back1.jpg");	
+	background-image: url("http://127.0.0.1:8000/static/images/back4.jpg");	
 	
 }
+body, input, textarea { font: 12px/20px Arial, sans-serif; color: #333333; }
 
 #box1 {
 		position: absolute;
@@ -19,13 +17,21 @@ body {
 		padding:7px;
 	}
 
-h2 {
-	font-size: 20px;
-    font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
-    color: black;
+#h2login {
+	font: 20px Arial, sans-serif; color: #333333; 
 	top:50%; 
 	left:50%;
 	margin-top:90px;
-		 
-	
+}
+
+h2{
+	font: 14px Arial, sans-serif; color: #333333; 
+}
+
+h1
+{
+	font: 25px Arial, sans-serif; color: #333333;
+	float : left;
+	top: 0px;
+	margin-top:0px;
 }

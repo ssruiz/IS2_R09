@@ -10,7 +10,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from django.conf.global_settings import MEDIA_ROOT, MEDIA_URL
+from django.conf.global_settings import MEDIA_ROOT, MEDIA_URL,\
+    DATE_INPUT_FORMATS
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -39,7 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'IS2_R09.apps.Usuario'
+    'IS2_R09.apps.Usuario',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -60,7 +61,7 @@ WSGI_APPLICATION = 'IS2_R09.wsgi.application'
 
 #identificar, extender o definir perfil para usuarios 
 AUTH_PROFILE_MODULE = 'Usuario.usuario'
-
+DJANGO_GROUP_MODEL = 'Roles.roles'
 
 TEMPLATE_DIRS = {
               "/home/samuel/workspace/IS2_R09/templates",
@@ -113,3 +114,11 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'is2.pagiles@gmail.com'
 EMAIL_HOST_PASSWORD = 'is_2_r09'
 EMAIL_PORT = 587
+ # Formato para fechas
+DATE_INPUT_FORMATS = (
+    '%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', # '2006-10-25', '10/25/2006', '10/25/06'
+    '%b %d %Y', '%b %d, %Y',            # 'Oct 25 2006', 'Oct 25, 2006'
+    '%d %b %Y', '%d %b, %Y',            # '25 Oct 2006', '25 Oct, 2006'
+    '%B %d %Y', '%B %d, %Y',            # 'October 25 2006', 'October 25, 2006'
+    '%d %B %Y', '%d %B, %Y',            # '25 October 2006', '25 October, 2006'
+)

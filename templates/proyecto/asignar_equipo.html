@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %} Proyecto | Asignar Equipo {% endblock %}
+{% block content %}
+	{% load staticfiles %}
+	{% if aux %}
+	<form action= "/cantidad_equipo/proyecto/{{p}}/" method="POST">
+		{% csrf_token %}
+		<p>Inserte el numero de integrantes a insertar:</p>
+		{{aux.as_p}}
+		<input class="boton" type="submit" value="Aceptar"></input>
+	</form>
+	{% endif %}
+	<br />
+	{% if form %}
+	<form action="/asignar_equipo/proyecto/{{p}}/" method="POST">
+	{% csrf_token %}
+	{{ form.management_form }}
+	<table>
+	<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Usuario</th>
+				<th>Rol</th>
+			</tr>
+	</thead>
+	{% for f in form %}
+		<tbody>
+			<tr>
+				<td>{{f.proyect}}</td>
+				<td>{{f.miembro}}</td>
+				<td>{{f.rol}}</td>				
+			</tr>
+		</tbody>
+	{% endfor %}
+	</table>
+	<input class="boton" type="submit" value="Guardar"></input>
+	</form>
+	{% endif %}
+{% endblock %}

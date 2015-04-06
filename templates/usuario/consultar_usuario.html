@@ -1,24 +1,31 @@
 {% extends "base.html" %}
 {% block title %} Consultar Usuario{% endblock %}
 {% block content %}
-
-<div>
-	
-	<div id="box1">
-		<div float="right">
-			<p align="center">Datos del Usuario</p>
+<div id="box1">
+		<div>
+			<h3 align="center">Datos del Usuario</h3>
 			{% if foto%}
 				<p align="center"><img src= "/media/{{foto}}" width="100px" heigh="100px"></p>
 			{% else %}
 				<p align="center"><img src= "/media/images/iconos/no_disponible.png" width="100px" heigh="100px"></p>
 			{% endif %}
 		</div>
-		{{form.as_p}}
+		<div align="center">
+				<p>ID:<br />
+				{{form.id}}</p>
+				<p>User Name:<br />
+				{{form.username}}</p>
+				<p>Nombre:<br />
+				{{form.first_name}}</p>
+				<p>Apellido:<br />
+				{{form.last_name}}</p>
+				<p>Email:<br />
+				{{form.email}}</p>
+				<p>Telefono:<br />
+				{{form.telefono}}</p>
+		</div>
 		
 		<p align="center"><input type="button" name="volver" value="Volver" onClick="location.href='/adm_usuario/'"></p>
-	</div>
-	
-	
-	
+	</div>	
 </div>
 {% endblock %}

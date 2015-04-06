@@ -10,5 +10,6 @@ urlpatterns = patterns('',
     url(r'^',include('IS2_R09.apps.home.urls')),
     url(r'^',include('IS2_R09.apps.Usuario.urls')),
     url(r'^',include('IS2_R09.apps.Roles.urls')),
+    url(r'^',include('IS2_R09.apps.Proyecto.urls')),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', { 'document_root': settings.MEDIA_ROOT}),
 )

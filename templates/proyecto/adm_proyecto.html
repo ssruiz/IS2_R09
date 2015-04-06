@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %} Crear Proyecto {% endblock %}
+{% block content %}
+	{% load staticfiles %}
+<div>
+	<br />
+	<br />
+	<br />
+	<button type="button" name="agregar" onClick="location.href='/crear_proyecto/'"><img src="/media/images/iconos/icon_addlink.gif" width="16px" heigh="16px">Nuevo</button>
+</div>
+<div>
+	<table align="center">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Cliente</th>
+				<th>Fecha Creación</th>
+				<th>Fecha Inicio</th>
+				<th>Fecha Fin</th>
+				<th>Editar</th>
+				<th>Eliminar</th>
+				
+				<th>Asignar Equipo</th>
+			</tr>
+		</thead>
+		{% for p in proyectos %}
+		<tbody>
+			<tr>
+				<td>{{p.nombre}}</td>
+				<td>{{p.cliente}}</td>
+				<td>{{p.fecha_creacion}}</td>				
+				<td>{{p.fecha_inicio}}</td>
+				<td>{{p.fecha_fin}}</td>
+				<td></td>
+				<td></td>
+				
+				<td><a href= "/asignar_equipo/proyecto/{{p.id}}/"><button>E</button></a></td>
+			</tr>
+		</tbody>
+		
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}

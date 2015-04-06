@@ -2,22 +2,39 @@
 {% block title %} Modificar Datos{% endblock %}
 {% block content %}
 	{% load staticfiles %}
-	{% block css %}
-		<link rel="stylesheet" href= "{% static "css/formularios.css" %}"></link>
-		<link rel="stylesheet" href= "{% static "css/base.css" %}"></link>
-	{% endblock %}
-		<form id= "form" method = 'POST' action = "" enctype="multipart/form-data">
+	<div>
+	<br />
+	<br />
+		<form method = 'POST' action = "" enctype="multipart/form-data">
 			{% csrf_token %}
-			<div>
-				{{ user_form.as_p }}
-				{{ exten_form }} <img src = "/media/{{foto}}" width="100px" heigh="100px"></img>
+			
+			<div id="formul">
+				<div>
+				{% if foto %}
+					<p>Foto Actual</p><img src = "/media/{{foto}}" width="100px" heigh="100px"></img>
+				{% endif %}
+					<p>Cambiar Foto <br/>
+					{{exten_form.foto}}
+					</p>
+				</div>
+				<p>User Name:<br />
+				{{user_form.username}}</p>
+				<p>Nombre:<br />
+				{{user_form.first_name}}</p>
+				<p>Apellido:<br />
+				{{user_form.last_name}}</p>
+				<p>Email:<br />
+				{{user_form.email}}</p>
+				<p>Telefono:<br />
+				{{exten_form.telefono}}</p>
 			</div>
 			
-			<div id="formu">
-				<input type="submit" value="Guardar Cambios"/>
-				<input type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_usuario/'">
-				<input type="reset" value="Reset"/>	
+			<div id="divbtn">
+				<input class="boton" type="submit" value="Guardar Cambios"/>
+				<input class="boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_usuario/'">
+				<input class="boton" type="reset" value="Reset"/>	
 			</div>
 			
-		</form>		
+		</form>
+	</div>		
 {% endblock %}

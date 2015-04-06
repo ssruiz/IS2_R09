@@ -1,0 +1,57 @@
+
+#formul { 
+    padding: 20px 0px 0px 30%;   /* margen con valores: arriba - derecha - abajo - izquierda */
+    font-family:verdana,arial;
+    font-size:9pt;
+    border: 2px;
+    border-style: ridge;
+    border-left-width: thick;
+    border-bottom-width: thick;
+    border-width: auto;
+} 
+#divbtn { 
+    padding: 20px 0px 0px 35%;   /* margen con valores: arriba - derecha - abajo - izquierda */
+    font-family:verdana,arial;
+    font-size:9pt;
+}
+#divbtn2 { 
+    padding: 20px 0px 0px 7%;   /* margen con valores: arriba - derecha - abajo - izquierda */
+    font-family:verdana,arial;
+    font-size:9pt;
+}
+.campos { 
+    font-family:verdana,arial;     /* tipo de letra */ 
+    width: 500px;                 /* anchura de campos de formulario */ 
+    font-size:8pt;                /* tamaño de la letra*/  
+    color:#2e3436;                 /* color del texto */  
+    border: 1px radio black;        /* color del borde puede ser solid ó dotted */  
+    background-color:#f3f3f3;    /* color del fondo */  
+} 
+.textarea {
+	 font-family:verdana,arial;     /* tipo de letra */ 
+    width: 500px;                 /* anchura de campos de formulario */ 
+    font-size:8pt;                /* tamaño de la letra*/  
+    color:#008000;                 /* color del texto */  
+    border: 1px dotted black;        /* color del borde puede ser solid ó dotted */  
+    background-color:#f3f3f3;    /* color del fondo */
+	height: 150px;
+}
+.boton{
+    font-size:12px;
+    font-family:Verdana,Helvetica;
+    font-weight:bold;
+    color:#d3d7cf;
+    background:#3465a4;
+    border:0px;
+    width:120px;
+    height:25px;
+}
+
+#breset {
+	float:rigth;
+    margin: 0px 0px 0px 0px;    /* margen con valores: arriba - derecha - abajo - izquierda */ 
+} 
+
+#bsubmit { 
+    margin: 0px 0px 0px 70px;    /* margen con valores: arriba - derecha - abajo - izquierda */ 
+} 

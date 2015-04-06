@@ -4,12 +4,12 @@ from IS2_R09.apps.Usuario.models import usuario
 from django.forms.models import ModelForm
 
 class crear_usuario_form(forms.Form):
-    nombre = forms.CharField(label="Nombre",widget=forms.TextInput())
-    apellido = forms.CharField(label="Apellido",widget=forms.TextInput())
-    username = forms.CharField(label="User name",widget=forms.TextInput())
-    email = forms.EmailField(label= "Email", widget= forms.TextInput())
-    password_one = forms.CharField(label="PassWord", widget = forms.PasswordInput(render_value=False))
-    password_two = forms.CharField(label="Confirmar Password", widget= forms.PasswordInput(render_value=False))
+    nombre = forms.CharField(label="Nombre",widget=forms.TextInput({'class': 'campos'}))
+    apellido = forms.CharField(label="Apellido",widget=forms.TextInput({'class': 'campos'}))
+    username = forms.CharField(label="User name",widget=forms.TextInput({'class': 'campos'}))
+    email = forms.EmailField(label= "Email", widget= forms.TextInput({'class': 'campos'}))
+    password_one = forms.CharField(label="PassWord", widget = forms.PasswordInput({'class': 'campos'},render_value=False))
+    password_two = forms.CharField(label="Confirmar Password", widget= forms.PasswordInput({'class': 'campos'},render_value=False))
     def clean_username(self):
         usernam = self.cleaned_data['username']
         try:
@@ -43,7 +43,10 @@ class crear_usuario_form(forms.Form):
     # funcion que comprube que el username del usuario a crear ya no este utilizado
     
 class usuario_form(ModelForm):
-    
+    first_name = forms.CharField(label="Nombre",widget=forms.TextInput({'class': 'campos'}))
+    last_name = forms.CharField(label="Apellido",widget=forms.TextInput({'class': 'campos'}))
+    username = forms.CharField(label="User name",widget=forms.TextInput({'class': 'campos'}))
+    email = forms.EmailField(label= "Email", widget= forms.TextInput({'class': 'campos'}))
     class Meta:
         model = User
         fields = ('username','first_name', 'last_name', 'email')
@@ -54,11 +57,6 @@ class usuario_form(ModelForm):
         }
         help_texts = {
             'username': (''),
-        }
-        widgets = {
-            'first_name' : forms.TextInput(),
-            'last_name' : forms.TextInput(),
-         
         }
         error_messages = {
             'username': {
@@ -80,13 +78,13 @@ class usuario_form(ModelForm):
 '''
 
 class extension_usuario_form(ModelForm):
-    telefono = forms.CharField(max_length=30, required=False)
-    foto = forms.ImageField()
+    telefono = forms.CharField(widget=forms.TextInput({'class': 'campos'}),max_length=30, required=False)
+    foto = forms.ImageField(widget= forms.FileInput)
     class Meta:
         model = usuario
         fields = ('telefono','foto')
-        widgets = {
-            'foto': forms.ImageField(),
+        help_texts = {
+            'foto': (''),
         }
 #------------------------------------------------------------------------------------
 class consultar_usuario_form(ModelForm):

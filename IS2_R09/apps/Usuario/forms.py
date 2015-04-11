@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from django import forms
 from django.contrib.auth.models import User
 from IS2_R09.apps.Usuario.models import usuario
@@ -78,7 +79,7 @@ class usuario_form(ModelForm):
 '''
 
 class extension_usuario_form(ModelForm):
-    telefono = forms.CharField(widget=forms.TextInput({'class': 'campos'}),max_length=30, required=False)
+    telefono = forms.CharField(label='Teléfono',widget=forms.TextInput({'class': 'campos'}),max_length=30, required=False)
     foto = forms.ImageField(widget= forms.FileInput)
     class Meta:
         model = usuario

@@ -17,3 +17,8 @@ def user_post_save(sender, instance, created, **kwargs):
             usuari.user = instance
             usuari.save()
 post_save.connect(user_post_save, sender=User)
+
+def user_unicode_patch(self):
+    return '%s %s' % (self.first_name, self.last_name)
+
+User.__unicode__ = user_unicode_patch

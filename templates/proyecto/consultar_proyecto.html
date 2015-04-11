@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %} Consultar Proyecto{% endblock %}
+{% block content %}
+<br />
+<br />
+	
+<div id="formuequipo">
+			<h3>Equipo</h3>
+			{%for miembro in form.miembro%}
+				<ul>
+					<li>{{miembro}}</li>
+				</ul>
+			{% endfor %}
+		</div>
+<div id="formuconsulta">
+		<div>
+			<h3>Datos del Proyecto</h3>
+			
+		</div>
+		
+			
+		<div>
+				<p>Nombre<br />
+				{{form.nombre}}
+				</p>
+				<p>Cliente<br />
+					{{form.cliente}}
+				</p>
+				<p>Descripción<br />
+					{{form.descripcion}}
+				</p>
+				<p>Fecha_creación<br />
+					{{form.fecha_creacion}}
+				</p>
+				<p>Fecha de Inicio<br />
+					{{form.fecha_inicio}}
+				</p>
+				<p>Fecha de Finalización<br />
+					{{form.fecha_fin}}
+				</p>
+		</div>
+		
+		<p align="center"><input class="boton" type="button" name="volver" value="Volver" onClick="location.href='/adm_proyecto/'"></p>
+	</div>
+	
+</div>
+{% endblock %}

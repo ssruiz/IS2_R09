@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %} Modificar Proyecto {% endblock %}
+{% block content%}
+	<br/>
+	<br />
+	<h3 align="center">Modificar Proyecto</h3>
+	<div id="formul">
+		<form method="POST">
+			{% csrf_token %}
+			<p>Nombre<br />
+				{{form.nombre}}
+			</p>
+			<p>Cliente<br />
+				{{form.cliente}}
+			</p>
+			<p>Descripción<br />
+				{{form.descripcion}}
+			</p>
+			<p>Fecha_creación<br />
+				{{form.fecha_creacion}}
+			</p>
+			<p>Fecha de Inicio<br />
+				{{form.fecha_inicio}}
+			</p>
+			<p>Fecha de Finalización<br />
+				{{form.fecha_fin}}
+			</p>			
+			<div id="bsubmit">
+				<input class = "boton" type= "submit" value="Guardar"></input>
+				<input class = "boton" type="reset" value="Reset"/>
+				<input class="boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_proyecto/'">
+			</div>	
+		</form>
+		
+	</div>
+{% endblock %}

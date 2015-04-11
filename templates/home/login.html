@@ -3,10 +3,16 @@
 {% block content %}
 <h2 id= "h2login" align="center" >Iniciar Sesión</h2>
 <div id="box1">
+	<p align="center">{{ mensaje }}</p>
 	<form action = "." method = "POST">
+		
 		{% csrf_token %}
-		{{ mensaje }}
-		{{ form.as_p }}
+		<p align = "center">User Name <br />
+			{{ form.username }} 
+		</p>
+		<p align = "center">Password <br />
+			{{ form.password }} 
+		</p>
 		{% if next %}
 			<input type="hidden" value= "{{next}}" name="next">
 		{% else %}
@@ -16,6 +22,9 @@
 	</form>
 	<div position="relative" left="50%">
 		<p align="center"><a href="{% url 'vista_rp' %}">Recuperar Contraseña</a><p>
+		{% if  mensaje %}
+			
+		{% endif %}
 	</div>
 </div>
 {% endblock %}

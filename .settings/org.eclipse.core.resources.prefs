@@ -1,2 +1,7 @@
 eclipse.preferences.version=1
+encoding//IS2_R09/apps/Proyecto/forms.py=utf-8
 encoding//IS2_R09/apps/Proyecto/migrations/0001_initial.py=utf-8
+encoding//IS2_R09/apps/Proyecto/views.py=utf-8
+encoding//IS2_R09/apps/Usuario/forms.py=utf-8
+encoding//IS2_R09/apps/Usuario/views.py=utf-8
+encoding//IS2_R09/apps/home/forms.py=utf-8

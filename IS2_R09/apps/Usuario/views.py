@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from IS2_R09.apps.Usuario.forms import crear_usuario_form,usuario_form,extension_usuario_form,\

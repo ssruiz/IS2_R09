@@ -6,7 +6,24 @@
 	<br />
 	<br />
 	<br />
-	<button type="button" name="agregar" onClick="location.href='/crear_proyecto/'"><img src="/media/images/iconos/icon_addlink.gif" width="16px" heigh="16px">Nuevo</button>
+	<h2>{{mensaje}}<h2> 
+	{% if icono %}
+		<img float="left" src="/media/images/iconos/{{icono}}" width="20px" heigh="20px">
+	{% endif%}
+	<form action="{% url 'vista_buscar_proyecto' %}" method='POST'>
+		{% csrf_token %}
+		<div float="left" align="center">
+			<button type="button" name="agregar" onClick="location.href='/crear_proyecto/'"><img src="/media/images/iconos/icon_addlink.gif" width="16px" heigh="16px">Nuevo</button>
+			|
+			{{form}}
+			<!--  <input type="submit" value="Buscar" ></input> -->
+			
+			<button type= "submit"><img src="/media/images/iconos/selector-search.gif">Buscar</button>
+			|
+			<button type="button" name="todos" onClick="location.href='/adm_proyecto/'"><img src="/media/images/iconos/inline-restore.png">Todos</button>
+		</div>
+	</form>
+	
 </div>
 <div>
 	<table align="center">
@@ -19,7 +36,7 @@
 				<th>Fecha Fin</th>
 				<th>Editar</th>
 				<th>Eliminar</th>
-				
+				<th>Consultar</th>
 				<th>Asignar Equipo</th>
 			</tr>
 		</thead>
@@ -31,8 +48,10 @@
 				<td>{{p.fecha_creacion}}</td>				
 				<td>{{p.fecha_inicio}}</td>
 				<td>{{p.fecha_fin}}</td>
-				<td></td>
-				<td></td>
+				<td><a href= "/modificar/proyecto/{{p.id}}/"><button><img src="/media/images/iconos/icon_changelink.gif"></button></a></td>
+				<td><a href= "/eliminar/proyecto/{{p.id}}/"><button><img src="/media/images/iconos/icon_deletelink.gif"></button></a></td>
+				<td><a href= "/consultar/proyecto/{{p.id}}/"><button><img src="/media/images/iconos/consultar.png" width="11px" heigh="11px"></button></a></td>
+			
 				
 				<td><a href= "/asignar_equipo/proyecto/{{p.id}}/"><button>E</button></a></td>
 			</tr>
@@ -40,5 +59,6 @@
 		
 		{% endfor %}
 	</table>
+	<p align="center"><input class="boton" type="button" name="volver_menu" value="Volver a Menú" onClick="location.href='/menu/'"></p>
 </div>
 {% endblock %}

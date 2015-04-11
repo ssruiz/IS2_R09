@@ -1,6 +1,6 @@
+# -*- encoding: utf-8 -*-
 from django import forms
 from django.contrib.auth.models import User
-from pango import ALIGN_CENTER
 
 class login_form(forms.Form):
     ''' Formulario para la la pagina de login del sistema.'''
@@ -8,7 +8,7 @@ class login_form(forms.Form):
     password= forms.CharField(widget=forms.PasswordInput(render_value=False))
     
 class recuperar_contra(forms.Form):
-    '''Formulario para la recuperacion de contrasenhas.'''
+    '''Formulario para la recuperacion de contraseñas.'''
     email = forms.EmailField(label= "Email", widget= forms.TextInput())
     def clean_email(self):
         mail = self.cleaned_data['email']

@@ -40,7 +40,7 @@ def login_view(request):
                     mensaje = "Usuario y/o password incorrectos"
         next = request.REQUEST.get('next')
         form = login_form()
-        ctx= {'form':form,'next':next}
+        ctx= {'form':form,'next':next,'mensaje':mensaje}
         return render_to_response('home/login.html',ctx,context_instance=RequestContext(request))
 
 def logout_view(request):
@@ -53,17 +53,14 @@ def recuperar_pass_view(request):
     if request.method == "POST":
         form = recuperar_contra(request.POST)
         if form.is_valid():
-            print "llegue"
             mail =form.cleaned_data['email']
-            passw="ffds"
-            print "llegue2"
+            passw= User.objects.make_random_password()
             user = User.objects.get(email = mail)
-            print user
             user.set_password(passw)
-            user.save()
+            user.save() 
             send_mail('Recuperacion de contrasenha', 'Usuario su nuevo password es %s.' %(passw), 'is2.pagiles@gmail.co',
-    ['samuel.sebastian.ruiz@gmail.com'], fail_silently=False)
-            return HttpResponseRedirect('/')
+    [mail], fail_silently=False)
+            return HttpResponseRedirect('/login/')
         else:
             ctx = {'form':form}
             return render_to_response('home/passw_recovery.html',ctx,context_instance= RequestContext(request)) 

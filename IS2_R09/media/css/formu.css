@@ -8,7 +8,32 @@
     border-left-width: thick;
     border-bottom-width: thick;
     border-width: auto;
-} 
+}
+#formuequipo
+{
+	float: left;
+	padding: 20px 2% 0px 2%;   /* margen con valores: arriba - derecha - abajo - izquierda */
+	font-family:verdana,arial;
+    font-size:9pt;
+    border: 2px;
+    border-style: ridge;
+    border-left-width: thick;
+    border-bottom-width: thick;
+    border-width: auto;
+    width: auto;
+}
+#formuconsulta {
+	float : left;
+    padding: 20px 2% 0px 2%;   /* margen con valores: arriba - derecha - abajo - izquierda */
+    font-family:verdana,arial;
+    font-size:9pt;
+    border: 2px;
+    border-style: ridge;
+    border-left-width: thick;
+    border-bottom-width: thick;
+    border-width: auto;
+}
+ 
 #divbtn { 
     padding: 20px 0px 0px 35%;   /* margen con valores: arriba - derecha - abajo - izquierda */
     font-family:verdana,arial;
@@ -31,7 +56,7 @@
 	 font-family:verdana,arial;     /* tipo de letra */ 
     width: 500px;                 /* anchura de campos de formulario */ 
     font-size:8pt;                /* tamaño de la letra*/  
-    color:#008000;                 /* color del texto */  
+    color:#2e3436;                 /* color del texto */  
     border: 1px dotted black;        /* color del borde puede ser solid ó dotted */  
     background-color:#f3f3f3;    /* color del fondo */
 	height: 150px;

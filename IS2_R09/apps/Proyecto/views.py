@@ -1,15 +1,17 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
+from IS2_R09.apps.Proyecto.forms import proyecto_form, equipo_form,cantidad_form,modificar_form,consultar_form,buscar_proyecto_form
 from django.shortcuts import render_to_response
-from IS2_R09.apps.Proyecto.forms import proyecto_form, equipo_form,\
-    cantidad_form,modificar_form,consultar_form,buscar_proyecto_form
 from IS2_R09.apps.Proyecto.models import proyecto,Equipo
 from django.template.context import RequestContext
 from django.forms.models import modelformset_factory
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from IS2_R09.settings import URL_LOGIN
+import datetime
 
 # Create your views here.
-
+@login_required(login_url= URL_LOGIN)
 def adm_proyecto_view(request):
     ''''Vista que controla la interfaz de administracion de proyectos'''
     proyectos= proyecto()
@@ -24,7 +26,7 @@ def adm_proyecto_view(request):
     return render_to_response('proyecto/adm_proyecto.html',ctx,context_instance=RequestContext(request))
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
-
+@login_required(login_url= URL_LOGIN)
 def crear_proyecto_view(request):
     '''Vista que controla creacion de Proyectos'''
     form= proyecto_form()
@@ -40,10 +42,12 @@ def crear_proyecto_view(request):
                 proyectos = proyecto.objects.filter(miembro=request.user)
                 ctx={'proyectos':proyectos,'mensaje':'Proyecto creado','form':buscar_proyecto_form()}
                 return render_to_response('proyecto/adm_proyecto.html',ctx,context_instance=RequestContext(request))
+    form.fields['fecha_creacion'].initial = datetime.date.today()        
     ctx = {'form':form}
     return render_to_response('proyecto/crear_proyecto.html',ctx,context_instance=RequestContext(request))
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
+@login_required(login_url= URL_LOGIN)
 def asignar_equipo_view(request,id_proyecto):
     '''Vista que controla la asignacion de usuario al equipo de un proyecto'''
     p = proyecto.objects.get(pk=id_proyecto)
@@ -65,6 +69,7 @@ def asignar_equipo_view(request,id_proyecto):
     ctx = {'aux':c,'p':p.id}
     return render_to_response('proyecto/asignar_equipo.html',ctx,context_instance=RequestContext(request))
 #------------------------------------------------------------------------------------------------------------------------------------------------------------
+@login_required(login_url= URL_LOGIN)
 def cantidad_equipo_view(request,id_proyecto):
     '''Esta vista esta pensada para poder agregar mas de un usuario a un equipo de un proyecto
         Simplemente adapta la pagina de creacion mediante el modelformset de Django, permitiendo
@@ -92,6 +97,7 @@ def cantidad_equipo_view(request,id_proyecto):
     ctx = {'aux':c,'p':p.id}
     return render_to_response('proyecto/asignar_equipo.html',ctx,context_instance=RequestContext(request))
 
+@login_required(login_url= URL_LOGIN)
 def modificar_proyecto_view(request,id_proyecto):
     if request.method == 'POST':
         proyect = proyecto.objects.get(id=id_proyecto)
@@ -118,6 +124,7 @@ def modificar_proyecto_view(request,id_proyecto):
     return render_to_response('proyecto/modificar_proyecto.html',ctx,context_instance=RequestContext(request))
 
 #---------------------------------------------------------------------------------------------------------------
+@login_required(login_url= URL_LOGIN)
 def eliminar_proyecto_view(request,id_proyecto):
     '''vista que controla la eliminacion de usuarios del sistema'''
     proyect = proyecto.objects.get(pk=id_proyecto)
@@ -136,6 +143,7 @@ def eliminar_proyecto_view(request,id_proyecto):
     return render_to_response('proyecto/eliminar_proyecto.html', ctx, context_instance=RequestContext(request))
 
 #---------------------------------------------------------------------------------------------------------------
+@login_required(login_url= URL_LOGIN)
 def consultar_proyecto_view(request,id_proyecto):
     if request.method=='GET':
         proyect = proyecto.objects.get(id=id_proyecto)
@@ -143,10 +151,12 @@ def consultar_proyecto_view(request,id_proyecto):
         print equipo
         form = consultar_form(instance= proyect)
         form.fields['miembro'].queryset=proyect.miembro.all()
+        form.fields['flujos'].queryset=proyect.flujos.all()
         ctx = {'form':form}
         return render_to_response('proyecto/consultar_proyecto.html',ctx,context_instance=RequestContext(request))
 
 #---------------------------------------------------------------------------------------------------------------
+@login_required(login_url= URL_LOGIN)
 def buscar_proyecto_view(request):
     form = buscar_proyecto_form()
     if(request.method=='POST'):

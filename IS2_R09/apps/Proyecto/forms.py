@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
-
+'''
+        Formulario que usado en la creacion de proyectos
+'''
 from django.forms.models import ModelForm
 from IS2_R09.apps.Proyecto.models import proyecto,Equipo
 from django import forms
@@ -14,6 +16,7 @@ class proyecto_form(ModelForm):
     fecha_inicio =forms.DateField(required=False,widget=forms.TextInput(attrs={'class': 'campos'}))
     fecha_fin =forms.DateField(required=False,widget=forms.TextInput(attrs={'class': 'campos'}))
     descripcion = forms.CharField(required=False,widget=forms.Textarea(attrs={'class': 'textarea'}))
+    #estado = forms.CharField(widget=forms.TextInput(attrs={'class': 'campos','readonly':'readonly'}))
     class Meta:
         model = proyecto
         exclude = ['miembro',]
@@ -24,6 +27,10 @@ class proyecto_form(ModelForm):
             'fecha_inicio':('Fecha Inicio'),
             'fecha_fin':('Fecha Finalizacion'),
         }
+        widgets = {
+                   'estado': forms.TextInput(attrs={'readonly': 'readonly'}),
+                   #'flujos' : forms.CheckboxSelectMultiple(), 
+                   }
         help_texts = {
             'miembro': ('Selecciona mas de uno presionando ctrl'),
             }
@@ -71,6 +78,8 @@ class consultar_form(ModelForm):
                    'fecha_fin' : forms.TextInput(attrs={'readonly':'readonly','class': 'campos'}),
                    'descripcion' : forms.Textarea(attrs={'readonly':'readonly','class': 'textarea'}),
                    'miembro': forms.SelectMultiple(attrs={'readonly':'readonly'}),
+                   'estado': forms.TextInput(attrs={'readonly': 'readonly'}),
+                   'flujos': forms.SelectMultiple(attrs={'readonly':'readonly'}),
                    }
 class consulta_equipo_form(ModelForm):
     class Meta:

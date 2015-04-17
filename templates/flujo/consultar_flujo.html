@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %} Consultar Flujo {% endblock %}
+{% block content %}
+	{% load staticfiles %}
+	<br />
+	<br />
+	<br />
+	<div id="formul">
+	<form action = "." method = "POST">
+		{% csrf_token %}
+		
+			{{ form.non_field_errors }}
+			<div> 
+				{{form.nombre.errors}}
+				<p>Nombre<br/>
+				{{ form.nombre }}
+				</p>
+				<p>Actividades<br/>
+				{{ form.actividades }}
+				
+			</div>
+			<div >
+				<p align="auto"><input class="boton" type="button" name="Cancelar" value="Volver" onClick="location.href='/adm_flujo/'"></p>
+			</div>
+		</form>
+	</div>
+{% endblock %}

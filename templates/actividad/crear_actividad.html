@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %} Crear Actividad {% endblock %}
+{% block content %}
+	{% load staticfiles %}
+	<br />
+	<br />
+	<br />
+	<div id="formul">
+	<form action = "." method = "POST">
+		{% csrf_token %}
+		
+			{{ form.non_field_errors }}
+			<div> 
+				{{form.nombre.errors}}
+				<p>Nombre<br/>
+				{{ form.nombre }}
+			</div>
+			<div id="bsubmit">
+				<input class = "boton" type= "submit" value="Guardar"></input>
+				<input class = "boton" type="reset" value="Reset"/>
+				<input class="boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/crear_flujo/'">
+			</div>
+		</form>
+	</div>
+{% endblock %}

@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 """
 Django settings for IS2_R09 project.
 
@@ -13,7 +14,6 @@ import os
 from django.conf.global_settings import MEDIA_ROOT, MEDIA_URL,\
     DATE_INPUT_FORMATS
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
 
 
 # Quick-start development settings - unsuitable for production
@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'IS2_R09.apps.Usuario',
     'IS2_R09.apps.Proyecto',
+    'IS2_R09.apps.Flujo',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -85,7 +86,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-paraguay'
 
 TIME_ZONE = 'UTC'
 
@@ -95,7 +96,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+client_encoding= 'UTF8'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 #STATIC_ROOT = ' '
@@ -115,6 +116,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'is2.pagiles@gmail.com'
 EMAIL_HOST_PASSWORD = 'is_2_r09'
 EMAIL_PORT = 587
+
 # Formato para fechas
 DATE_INPUT_FORMATS = (
     '%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', # '2006-10-25', '10/25/2006', '10/25/06'
@@ -123,3 +125,5 @@ DATE_INPUT_FORMATS = (
     '%B %d %Y', '%B %d, %Y',            # 'October 25 2006', 'October 25, 2006'
     '%d %B %Y', '%d %B, %Y',            # '25 October 2006', '25 October, 2006'
 )
+
+PATH = '/home/samuel/workspace/IS2_R09'

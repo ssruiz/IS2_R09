@@ -11,6 +11,7 @@ from django.core.mail import send_mail
 
 
 # vista inicial del sistema
+@login_required(login_url= URL_LOGIN)
 def index_view(request):
     return render_to_response('home/index.html',{'usuario':request.user},context_instance= RequestContext(request))
 

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title%}Eliminar Flujo{% endblock %}
+{% block content %}
+
+	<p>Esta a punto de eliminar del sistema al siguiente flujo: {{flujo}}</p>
+	<p>Por favor confirme la accion</p>
+	
+	<div>
+		<form method = 'POST' action = "" >
+			{% csrf_token %}
+			<input class="boton" type="submit" value="Aceptar"></input>
+			<input class="boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_flujo/'">
+		</form>
+	</div>
+	<div>	
+{% endblock %}

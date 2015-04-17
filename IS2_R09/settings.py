@@ -43,6 +43,8 @@ INSTALLED_APPS = (
     'IS2_R09.apps.Usuario',
     'IS2_R09.apps.Proyecto',
     'IS2_R09.apps.Flujo',
+    'IS2_R09.apps.US',
+    
 )
 
 MIDDLEWARE_CLASSES = (
@@ -66,7 +68,7 @@ AUTH_PROFILE_MODULE = 'Usuario.usuario'
 #DJANGO_GROUP_MODEL = 'Roles.roles'
 
 TEMPLATE_DIRS = {
-              "/home/samuel/workspace/IS2_R09/templates",
+              "/home/rafael/workspace/IS2_R09/templates",
               }
 
 #Base de datos postgresql
@@ -75,10 +77,10 @@ DATABASES = {
 'default': {
 'ENGINE': 'django.db.backends.postgresql_psycopg2',
 'NAME': 'IS2_R09',
-'USER': 'samuel',
-'PASSWORD': 'passwd',
+'USER': 'rafa',
+'PASSWORD': '.rafael.',
 'HOST': 'localhost',
-'PORT': '5432',
+'PORT': '5433',
 
 }
 }
@@ -103,11 +105,11 @@ client_encoding= 'UTF8'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    "/home/samuel/workspace/IS2_R09/IS2_R09/media",
+    "/home/rafael/workspace/IS2_R09/IS2_R09/media",
 )
 
 URL_LOGIN = '/login'
-MEDIA_ROOT = '/home/samuel/workspace/IS2_R09/IS2_R09/media'
+MEDIA_ROOT = '/home/rafael/workspace/IS2_R09/IS2_R09/media'
 MEDIA_URL = '/media/'
 
 # Configuracion de mail
@@ -126,4 +128,4 @@ DATE_INPUT_FORMATS = (
     '%d %B %Y', '%d %B, %Y',            # '25 October 2006', '25 October, 2006'
 )
 
-PATH = '/home/samuel/workspace/IS2_R09'
+PATH = '/home/rafael/workspace/IS2_R09'

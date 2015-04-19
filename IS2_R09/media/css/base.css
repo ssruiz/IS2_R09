@@ -1,5 +1,5 @@
 body {
-	background-image: url("http://127.0.0.1:8000/static/images/back4.jpg");	
+	background-image: url("/media/images/back4.jpg");	
 	
 }
 body, input, textarea { font: 12px/20px Arial, sans-serif; color: #333333; }

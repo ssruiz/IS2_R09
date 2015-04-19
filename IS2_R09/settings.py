@@ -43,6 +43,8 @@ INSTALLED_APPS = (
     'IS2_R09.apps.Usuario',
     'IS2_R09.apps.Proyecto',
     'IS2_R09.apps.Flujo',
+    'IS2_R09.apps.US',
+    
 )
 
 MIDDLEWARE_CLASSES = (
@@ -103,7 +105,7 @@ client_encoding= 'UTF8'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    "/home/samuel/workspace/IS2_R09/IS2_R09/media",
+    "/home/rafael/workspace/IS2_R09/IS2_R09/media",
 )
 
 URL_LOGIN = '/login'

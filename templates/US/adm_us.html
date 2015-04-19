@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %} Administrar US {% endblock %}
+{% block content %}
+	{% load staticfiles %}
+<div>
+	<br />
+	<br />
+	<br />
+	<h2>{{mensaje}}<h2> 
+	{% if icono %}
+		<img float="left" src="/media/images/iconos/{{icono}}" width="20px" heigh="20px">
+	{% endif%}
+	<form action="" method='POST'>
+		{% csrf_token %}
+		<div float="left" align="center">
+			<button type="button" name="agregar" onClick="location.href='/crear_US/'"><img src="/media/images/iconos/icon_addlink.gif" width="16px" heigh="16px">Nuevo</button>
+			|
+			{{form}}
+			<!--  <input type="submit" value="Buscar" ></input> -->
+			
+			<button type= "submit"><img src="/media/images/iconos/selector-search.gif">Buscar</button>
+			|
+			<button type="button" name="todos" onClick="location.href='/adm_proyecto/'"><img src="/media/images/iconos/inline-restore.png">Todos</button>
+		</div>
+	</form>
+	
+</div>
+<div>
+	<table align="center">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Proyecto asociado</th>
+				<th>Tiempo estimado</th>
+				<th>Tiempo trabajado</th>
+				<th>Prioridad</th>
+				<th>Editar</th>
+				<th>Eliminar</th>
+				<th>Consultar</th>
+				<th>Asignar flujo</th>
+			</tr>
+		</thead>
+		{% for u in uss %}
+		<tbody>
+			<tr>
+				<td>{{u.nombre}}</td>
+				<td>{{u.proyecto_asociado}}</td>
+				<td>{{u.tiempo_estimado}}</td>
+				<td>{{u.tiempo_trabajado}}</td>				
+				<td>{{u.prioridad}}</td>
+				<td><a href= "/modificar/US/{{u.id}}/"><button><img src="/media/images/iconos/icon_changelink.gif"></button></a></td>
+				<td><a href= "/eliminar/US/{{u.id}}/"><button><img src="/media/images/iconos/icon_deletelink.gif"></button></a></td>
+				<td><a href= "/consultar/US/{{u.id}}/"><button><img src="/media/images/iconos/consultar.png" width="11px" heigh="11px"></button></a></td>
+			
+				
+				<td><a href= "/asignar_flujo/US/{{u.id}}/"><button>F</button></a></td>
+			</tr>
+		</tbody>
+		
+		{% endfor %}
+	</table>
+	<p align="center"><input class="boton" type="button" name="volver_menu" value="Volver a Menú" onClick="location.href='/menu/'"></p>
+</div>
+{% endblock %}

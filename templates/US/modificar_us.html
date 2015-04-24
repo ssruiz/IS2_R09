@@ -40,41 +40,10 @@
 				<p>Descripción <br/>
 				{{ form.descripcion }}</p>
 			</div>
-=======
-{% block content%}
-	<br/>
-	<br />
-	<h3 align="center">Modificar US</h3>
-	<div id="formul">
-		<form method="POST">
-			{% csrf_token %}
-			<p>Nombre<br />
-				{{form.nombre}}
-			</p>
-			<p>Descripción<br />
-				{{form.descripcion}}
-			</p>
-			<p>Tiempo estimado<br />
-				{{form.tiempo_estimado}}
-			</p>
-			<p>Tiempo trabajado<br />
-				{{form.tiempo_trabajado}}
-			</p>
-			<p>Prioridad<br />
-				{{form.prioridad}}
-			</p>			
->>>>>>> eaff5a3070e4d0f1887637170574a543ac303ea0
 			<div id="bsubmit">
 				<input class = "boton" type= "submit" value="Guardar"></input>
 				<input class = "boton" type="reset" value="Reset"/>
 				<input class="boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_US/'">
-<<<<<<< HEAD
 			</div>
-		</form>
-=======
-			</div>	
-		</form>
-		
->>>>>>> eaff5a3070e4d0f1887637170574a543ac303ea0
 	</div>
 {% endblock %}

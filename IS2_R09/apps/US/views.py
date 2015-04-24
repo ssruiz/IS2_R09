@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # -*- encoding: utf-8 -*-
 
 """
@@ -6,14 +5,11 @@
     @author: Samuel Ruiz,Melissa Bogado,Rafael Ricardo
 """
 __docformat__ = "Epytext"  
-from django.shortcuts import render, render_to_response
-from IS2_R09.apps.US.models import us
-from IS2_R09.apps.US.forms import us_form,buscar_us_form,mod_us_form
-=======
+
 from django.shortcuts import render_to_response
 from IS2_R09.apps.US.models import us
 from IS2_R09.apps.US.forms import us_form,buscar_us_form, modificar_form,consultar_form
->>>>>>> eaff5a3070e4d0f1887637170574a543ac303ea0
+
 from django.template.context import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -76,7 +72,6 @@ def crear_us_view(request):
 
 #------------------------------------
 @login_required(login_url= URL_LOGIN)
-<<<<<<< HEAD
 def modificar_us_view(request,id_us):
     """
         modificar_us_view(request,id_us)
@@ -88,7 +83,7 @@ def modificar_us_view(request,id_us):
     """
     if request.method == 'POST':
         user_story = us.objects.get(id=id_us)
-        form = mod_us_form(request.POST,instance=user_story)
+        form = us_form(request.POST,instance=user_story)
         if form.is_valid():
             form.save()
             if request.user.is_staff:
@@ -104,7 +99,7 @@ def modificar_us_view(request,id_us):
     if request.method=='GET':
         user_story = us.objects.get(id=id_us)
         p= proyecto.objects.get(id=user_story.proyecto_asociado.id)
-        form =mod_us_form(instance= user_story)
+        form =us_form(instance= user_story)
         form.fields['usuario_asignado'].queryset= p.miembro.all()
         form.fields['flujo_asignado'].queryset= p.flujos.all()
         ctx = {'form':form}
@@ -152,31 +147,14 @@ def consultar_us_view(request,id_us):
     if request.method=='GET':
         user_story = us.objects.get(id=id_us)
         p= proyecto.objects.get(id=user_story.proyecto_asociado.id)
-        form =mod_us_form(instance= user_story)
+        form =consultar_form(instance= user_story)
         form.fields['usuario_asignado'].queryset= user_story.usuario_asignado.all()
         form.fields['flujo_asignado'].queryset= p.flujos.all()
         form.fields['proyecto_asociado'].queryset= proyecto.objects.filter(id=user_story.proyecto_asociado.id)
         ctx = {'form':form}
         return render_to_response('US/consultar_us.html',ctx,context_instance=RequestContext(request))
 
-=======
-def eliminar_us_view(request,id_us):
-    '''vista que controla la eliminacion de usuarios del sistema'''
-    ust = us.objects.get(pk=id_us)
-    if request.method == 'POST':
-        ust.delete()
-        if request.user.is_staff:
-                usst = us.objects.all()
-                ctx={'us':usst,'mensaje':'us Eliminado','form':buscar_us_form()}
-                return render_to_response('US/adm_us.html',ctx,context_instance=RequestContext(request))
-        else:
-            usst = us.objects.filter(miembro=request.user)
-            ctx={'us':usst,'mensaje':'us Eliminado','form':buscar_us_form()}
-            return render_to_response('US/adm_us.html',ctx,context_instance=RequestContext(request))
-    
-    ctx = {'US': ust}
-    return render_to_response('US/eliminar_us.html', ctx, context_instance=RequestContext(request))
-#---------------------------------------------------------------------------------------------------------------
+
 @login_required(login_url= URL_LOGIN)
 def buscar_us_view(request):
     form = buscar_us_form()
@@ -188,7 +166,7 @@ def buscar_us_view(request):
             parametro = form.cleaned_data['busqueda']
             if busqueda== 'nombre':
                 p = us.objects.filter(nombre=parametro)
-                ctx = {'mensaje': 'uss con nombre %s' %(parametro),'ussk':p,'form':form2}
+                ctx = {'mensaje': 'uss con nombre %s' %(parametro),'uss':p,'form':form2}
                 return render_to_response('US/adm_us.html', ctx, context_instance=RequestContext(request))
             elif busqueda== 'cliente':
                 try:
@@ -208,43 +186,3 @@ def buscar_us_view(request):
                     
     ctx = {'form': form}
     return render_to_response('US/adm_us.html', ctx, context_instance=RequestContext(request))
-
-
-@login_required(login_url= URL_LOGIN)
-def modificar_us_view(request,id_us):
-    if request.method == 'POST':
-        ust = us.objects.get(id=id_us)
-        form = modificar_form(request.POST,instance=ust)
-        if form.is_valid():
-            form.save()
-            if request.user.is_staff:
-                ussk = ust.objects.all()
-                ctx={'uss':ussk,'mensaje':'us modificado','form':buscar_us_form()}
-                return render_to_response('US/adm_us.html',ctx,context_instance=RequestContext(request))
-            else:
-                ussk = us.objects.filter(miembro=request.user)
-                ctx={'uss':ussk,'mensaje':'us Modificado','form':buscar_us_form()}
-                return render_to_response('US/adm_us.html',ctx,context_instance=RequestContext(request))
-    
-    if request.method=='GET':
-        ust = us.objects.get(id=id_us)
-        form = modificar_form(instance= ust)
-        ctx = {'form':form}
-        return render_to_response('US/modificar_us.html',ctx,context_instance=RequestContext(request))
-    proyect = us.objects.get(id=id_us)
-    form = modificar_form(instance= proyect)
-    ctx = {'form':form}
-    return render_to_response('US/modificar_us.html',ctx,context_instance=RequestContext(request))
-
-#---------------------------------------------------------------------------------------------------------------
-@login_required(login_url= URL_LOGIN)
-def consultar_us_view(request,id_us):
-    if request.method=='GET':
-        ust = us.objects.get(id=id_us)
-        form = consultar_form(instance= ust)
-        form.fields['flujos'].queryset=ust.flujos.all()
-        ctx = {'form':form}
-        return render_to_response('US/consultar_us.html',ctx,context_instance=RequestContext(request))
-
-3
->>>>>>> eaff5a3070e4d0f1887637170574a543ac303ea0

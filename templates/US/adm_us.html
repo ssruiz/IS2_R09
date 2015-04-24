@@ -10,7 +10,7 @@
 	{% if icono %}
 		<img float="left" src="/media/images/iconos/{{icono}}" width="20px" heigh="20px">
 	{% endif%}
-	<form action="" method='POST'>
+	<form action="{% url 'vista_buscar_us' %}" method='POST'>
 		{% csrf_token %}
 		<div float="left" align="center">
 			<button type="button" name="agregar" onClick="location.href='/crear_US/'"><img src="/media/images/iconos/icon_addlink.gif" width="16px" heigh="16px">Nuevo</button>
@@ -37,7 +37,6 @@
 				<th>Editar</th>
 				<th>Eliminar</th>
 				<th>Consultar</th>
-				<th>Asignar flujo</th>
 			</tr>
 		</thead>
 		{% for u in uss %}
@@ -53,7 +52,7 @@
 				<td><a href= "/consultar/US/{{u.id}}/"><button><img src="/media/images/iconos/consultar.png" width="11px" heigh="11px"></button></a></td>
 			
 				
-				<td><a href= "/asignar_flujo/US/{{u.id}}/"><button>F</button></a></td>
+				
 			</tr>
 		</tbody>
 		

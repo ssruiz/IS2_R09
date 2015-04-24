@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+<<<<<<< HEAD
 {% block title %} Consultar US {% endblock %}
 {% block content %}
 	{% load staticfiles %}
@@ -45,3 +46,40 @@
 		</form>
 	</div>
 {% endblock %}
+=======
+{% block title %} Consultar US{% endblock %}
+{% block content %}
+<br />
+<br />
+		
+<div id="formuconsulta">
+		<div>
+			<h3>Datos del US</h3>
+			
+		</div>
+		
+			
+		<div>
+				<p>Nombre<br />
+				{{form.nombre}
+				</p>
+				<p>Descripción<br />
+					{{form.descripcion}}
+				</p>
+				<p>Tiempo estimado<br />
+				{{form.tiempo_estimado}}
+				</p>
+				<p>Tiempo trabajado<br />
+				{{form.tiempo_trabajado}}
+				</p>
+				<p>Prioridad<br />
+				{{form.prioridad}}
+			</p>			
+		</div>
+		
+		<p align="center"><input class="boton" type="button" name="volver" value="Volver" onClick="location.href='/adm_US/'"></p>
+	</div>
+	
+</div>
+{% endblock %}
+>>>>>>> eaff5a3070e4d0f1887637170574a543ac303ea0

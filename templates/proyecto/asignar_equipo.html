@@ -3,12 +3,17 @@
 {% block content %}
 	{% load staticfiles %}
 	{% if aux %}
+	<br />
+	<br />
+	<div id= "formuequipo2" align="center" >
 	<form action= "/cantidad_equipo/proyecto/{{p}}/" method="POST">
 		{% csrf_token %}
-		<p>Inserte el numero de integrantes a insertar:</p>
+		<p>Inserte el número de integrantes a insertar:</p>
 		{{aux.as_p}}
-		<input class="boton" type="submit" value="Aceptar"></input>
+		<p><input class="boton" type="submit" value="Aceptar"></input>
+		<input class="boton" type="button" name="volver" value="Cancelar" onClick="location.href='/adm_proyecto/'"></p>
 	</form>
+	</div>
 	{% endif %}
 	<br />
 	{% if form %}
@@ -18,7 +23,6 @@
 	<table>
 	<thead>
 			<tr>
-				<th>Nombre</th>
 				<th>Usuario</th>
 				<th>Rol</th>
 			</tr>
@@ -26,14 +30,16 @@
 	{% for f in form %}
 		<tbody>
 			<tr>
-				<td>{{f.proyect}}</td>
 				<td>{{f.miembro}}</td>
 				<td>{{f.rol}}</td>				
 			</tr>
 		</tbody>
 	{% endfor %}
 	</table>
-	<input class="boton" type="submit" value="Guardar"></input>
+	<div>
+	<p align="center"><input class="boton" type="submit" value="Guardar"></input>
+	<input class="boton" type="button" name="volver" value="Cancelar" onClick="location.href='/adm_proyecto/'"></p>
+	</div>
 	</form>
 	{% endif %}
 {% endblock %}

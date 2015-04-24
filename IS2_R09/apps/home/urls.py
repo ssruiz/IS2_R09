@@ -1,3 +1,11 @@
+# -*- encoding: utf-8 -*-
+"""
+    URLS
+    ====
+    
+    Módulo que controla las urls de las L{Vistas<IS2_R09.apps.home.views>} utilizadas en
+    L{Home<IS2_R09.apps.home>}.
+"""
 from django.conf.urls import patterns,url
 
 

@@ -42,7 +42,7 @@ class equipo_form(ModelForm):
                    }
         
 class cantidad_form(forms.Form):
-    cantidad = forms.CharField(widget=forms.TextInput(),help_text='Este campo es obligatorio',error_messages={'required':'Debe ingresar un numero',})
+    cantidad = forms.CharField(widget=forms.TextInput(),error_messages={'required':'Debe ingresar un número',})
 
     def clean_cantidad(self):
         cant = self.cleaned_data['cantidad']

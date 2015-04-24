@@ -1,13 +1,39 @@
+# -*- encoding: utf-8 -*-
+
+"""
+    Modulo que define los formularios usados en las L{views<IS2_R09.apps.US.views>} de los B{User Stories}.  
+    @author: Samuel Ruiz,Melissa Bogado, Rafael Ricardo
+"""
+__docformat__ = "Epytext" 
 from django.forms.models import ModelForm
 from IS2_R09.apps.US.models import us
 from django import forms
 
 
 class us_form(ModelForm):
+    """
+        Formulario creado a partir del modelo de un User Story y utilizado en 
+        creación de User Story
+    """
     class Meta:
         model = us
+
+class mod_us_form(ModelForm):
+    """
+        Formulario creado a partir del modelo de un User Story y utilizado en la 
+        modificación de User Story
+    """
+    class Meta:
+        model = us
+        widgets = {
+                   'proyecto_asociado' : forms.Select(attrs={'readonly':'readonly','disable':'disable'}),
+                   }
+        localized_fields = ('proyecto_asociado',)
         
 class buscar_us_form(forms.Form):
+    """
+        Formulario creado para búsqueda de User Story por nombre
+    """
     BUSCAR_POR = {
                   ('nombre','Nombre'),
                   }

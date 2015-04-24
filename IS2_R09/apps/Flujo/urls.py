@@ -1,4 +1,11 @@
 # -*- encoding: utf-8 -*-
+"""
+    URLS
+    ====
+    
+    Modulo que controla las urls de las L{Vistas<IS2_R09.apps.Flujo.views>} utilizadas en
+    L{Flujo<IS2_R09.apps.Flujo>}.
+"""
 from django.conf.urls import patterns,url
 
 

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title%}Eliminar US{% endblock %}
+{% block content %}
+
+	<p>Esta a punto de eliminar del sistema al siguiente UserStory: {{user_story}}</p>
+	<p>Por favor confirme la accion</p>
+	
+	<div>
+		<form method = 'POST' action = "" >
+			{% csrf_token %}
+			<input class="boton" type="submit" value="Aceptar"></input>
+			<input class="boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_US/'">
+		</form>
+	</div>
+	<div>	
+{% endblock %}

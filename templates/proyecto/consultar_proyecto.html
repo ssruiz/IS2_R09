@@ -5,16 +5,16 @@
 <br />
 	
 <div id="formuequipo">
-			<h3>Equipo</h3>
-			{%for miembro in form.miembro%}
-				<ul>
-					<li>{{miembro}}</li>
+			<h3 align="center">Equipo</h3>			
+			{%for miembro,r in list%}
+				<ul align="left">
+					<li id="p2">{{miembro}} - Rol: {{r.rol}}</li>
 				</ul>
 			{% endfor %}
-		</div>
+</div>
 <div id="formuconsulta">
 		<div>
-			<h3>Datos del Proyecto</h3>
+			<h3 align="center">Datos del Proyecto</h3>
 			
 		</div>
 		

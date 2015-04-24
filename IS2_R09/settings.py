@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from django.conf.global_settings import MEDIA_ROOT, MEDIA_URL,\
-    DATE_INPUT_FORMATS
+#from django.conf.global_settings import MEDIA_ROOT, MEDIA_URL,\
+ #   DATE_INPUT_FORMATS
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'IS2_R09.apps.Proyecto',
     'IS2_R09.apps.Flujo',
     'IS2_R09.apps.US',
+    'IS2_R09.apps.Sprint',
     
 )
 

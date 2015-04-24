@@ -83,9 +83,7 @@ def cantidad_equipo_view(request,id_proyecto):
         p = proyecto.objects.get(pk=id_proyecto)
         c= cantidad_form(request.POST)
         if c.is_valid():
-            print 'HERE'
             cantidad= c.cleaned_data['cantidad']
-            print c['cantidad'].value()
             equipo_formset = modelformset_factory(Equipo,form=equipo_form,extra=int(cantidad))
             formset= equipo_formset(queryset=Equipo.objects.none())
             for f in formset:
@@ -147,12 +145,14 @@ def eliminar_proyecto_view(request,id_proyecto):
 def consultar_proyecto_view(request,id_proyecto):
     if request.method=='GET':
         proyect = proyecto.objects.get(id=id_proyecto)
+        roles = Equipo.objects.filter(proyect=proyect)
+        
         equipo = proyect.miembro.all()
-        print equipo
         form = consultar_form(instance= proyect)
         form.fields['miembro'].queryset=proyect.miembro.all()
         form.fields['flujos'].queryset=proyect.flujos.all()
-        ctx = {'form':form}
+        list= zip(equipo,roles)
+        ctx = {'form':form,'list':list}
         return render_to_response('proyecto/consultar_proyecto.html',ctx,context_instance=RequestContext(request))
 
 #---------------------------------------------------------------------------------------------------------------

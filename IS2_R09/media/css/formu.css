@@ -4,22 +4,44 @@
     font-family:verdana,arial;
     font-size:9pt;
     border: 2px;
-    border-style: ridge;
+    border-style: outset;
     border-left-width: thick;
     border-bottom-width: thick;
     border-width: auto;
 }
+#p2{
+	font-family:verdana,arial;     /* tipo de letra */                  /* anchura de campos de formulario */ 
+    font-size:9pt;                /* tamaño de la letra*/
+    font: message-box;  
+    color:#2e3436;                 /* color del texto */  
+    
+}
 #formuequipo
 {
 	float: left;
-	padding: 20px 2% 0px 2%;   /* margen con valores: arriba - derecha - abajo - izquierda */
+	padding: 20px 2% 0px 0%;   /* margen con valores: arriba - derecha - abajo - izquierda */
 	font-family:verdana,arial;
     font-size:9pt;
     border: 2px;
-    border-style: ridge;
+    border-style: outset;
     border-left-width: thick;
     border-bottom-width: thick;
     border-width: auto;
+    width: auto;
+}
+#formuequipo2
+{
+	
+	   /* margen con valores: arriba - derecha - abajo - izquierda */
+	
+	font-family:verdana,arial;
+    font-size:10pt;
+    border: 1px;
+    border-style: outset;
+    border-left-width: thick;
+    border-bottom-width: thick;
+    border-width: auto;
+    height: auto;
     width: auto;
 }
 #formuconsulta {
@@ -28,7 +50,7 @@
     font-family:verdana,arial;
     font-size:9pt;
     border: 2px;
-    border-style: ridge;
+    border-style: outset;
     border-left-width: thick;
     border-bottom-width: thick;
     border-width: auto;

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %} Crear Sprint {% endblock %}
+{% block content %}
+	{% load staticfiles %}
+	<br />
+	<br />
+	<br />
+	<div id="formul" style="font-family: Verdana">
+	<h4 style="font-family: Verdana"><strong>Crear Sprint</strong></h4>
+	<form action = "." method = "POST">
+		{% csrf_token %}
+		
+			{{ form.non_field_errors }}
+			<div> 
+				{{form.nombre.errors}}
+				<p><strong>Nombre</strong><br/>
+				{{ form.nombre }}
+				</p>
+				<p><strong>Proyecto asociado</strong><br/>
+				{{ form.proyect }}
+				</p>
+				<p><strong>Fecha de inicio</strong><br/>
+				{{ form.fecha_inicio }}
+				</p>
+				<p><strong>Fecha de Culminación</strong><br/>
+				{{ form.fecha_fin }}
+				</p>
+			</div>
+			<div>
+				{{ form.descripcion.errors }}
+				<p><strong>Descripción</strong> <br/>
+				{{ form.descripcion }}</p>
+			</div>
+			<div id="bsubmit">
+				<input class = "boton" type= "submit" value="Guardar"></input>
+				<input class = "boton" type="reset" value="Reset"/>
+				<input class="boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_sprint/'">
+			</div>
+		</form>
+	</div>
+{% endblock %}

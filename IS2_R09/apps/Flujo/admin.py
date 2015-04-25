@@ -6,7 +6,8 @@
     en el Admin de Django  
 """ 
 from django.contrib import admin
-from IS2_R09.apps.Flujo.models import flujo,actividad
+from IS2_R09.apps.Flujo.models import flujo,actividad,kanban
 # Register your models here.
 admin.site.register(flujo)
 admin.site.register(actividad)
+admin.site.register(kanban)

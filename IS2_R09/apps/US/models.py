@@ -7,7 +7,7 @@
 __docformat__ = "Epytext" 
 from django.db import models
 from django.contrib.auth.models import User
-from IS2_R09.apps.Flujo.models import flujo
+#from IS2_R09.apps.Flujo.models import flujo
 from IS2_R09.apps.Proyecto.models import proyecto
 # Create your models here.
 class us(models.Model):
@@ -44,9 +44,9 @@ class us(models.Model):
     tiempo_trabajado= models.IntegerField(null=True,blank=True)
     usuario_asignado=models.ManyToManyField(User,null=True,blank=True)
     prioridad=models.CharField(max_length=1, choices=PRIORIDADES)
-    flujo_asignado=models.ForeignKey(flujo,null=True,blank=True,unique=False)
+    #flujo_asignado=models.ForeignKey(flujo,null=True,blank=True,unique=False)
     proyecto_asociado=models.ForeignKey(proyecto,null=True,blank=True,unique=False)
-    def __str__(self):
+    def __unicode__(self):
         """
             Método que permite mostrar los objectos de tipo B{User Story}
             por su nombre.

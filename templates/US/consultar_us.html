@@ -16,7 +16,7 @@
 				{{ form.nombre }}
 				</p>
 				<p>Proyecto asociado<br/>
-				{{ form.proyecto_asociado }}
+					<input type="Text" value="{{p}}" readonly></input>
 				</p>
 				<p>Tiempo estimado(Horas)<br/>
 				{{ form.tiempo_estimado }}
@@ -31,7 +31,11 @@
 				{{ form.prioridad }}
 				</p>
 				<p>Flujo asignado<br/>
-				{{ form.flujo_asignado }}
+				{% if k %}
+					<input type="Text" value="{{k}}" readonly></input>
+				{% else %}
+					<input type="Text" value="Flujo No asignado" readonly></input>
+				{% endif %}
 				</p>
 			</div>
 			<div>
@@ -39,7 +43,7 @@
 				<p>Descripción <br/>
 				{{ form.descripcion }}</p>
 			</div>
-			<div id="bsubmit">
+			<div align="center" id="bsubmit">
 				<input class="boton" type="button" name="Cancelar" value="Volver" onClick="location.href='/adm_US/'">
 			</div>
 		</form>

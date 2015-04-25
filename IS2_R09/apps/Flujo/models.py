@@ -19,7 +19,7 @@ class actividad(models.Model):
         @type nombre: Varchar
     """
     nombre = models.CharField(max_length=30,unique=True)
-    def __str__(self):
+    def __unicode__(self):
         """
             Método que permite representar los objectos de la clase L{Actividad<IS2_R09.apps.Flujo.models.actividad>}
             mediante su nombre.
@@ -41,14 +41,32 @@ class flujo(models.Model):
     """
     nombre = models.CharField(max_length=30)
     actividades = models.ManyToManyField(actividad)
-    def __str__(self):
+    user_stories = models.ManyToManyField('US.us',through='kanban',related_name='userstories',null=True,blank=True)
+    def __unicode__(self):
         """
             Método que permite representar los objectos de la clase L{Flujo<IS2_R09.apps.Flujo.models.actividad>}
             mediante su nombre.
             @return: Varchar
         """
         return self.nombre
+ 
+class kanban(models.Model):
+    """
+        Modelo de Kanban
+        ================
+        
+    """
+    ESTADOS = (
+               ('td','to do'),
+               ('dg', 'doing'),
+               ('de', 'done'),
+               )
+    fluj = models.ForeignKey(flujo,related_name='flujo',null=True,blank=True)
+    actividad = models.ForeignKey(actividad,related_name='actividad',null=True,blank=True)
+    us = models.ForeignKey('US.us',related_name='user_story',null=True,blank=True)
+    estado = models.CharField(max_length=2,choices=ESTADOS,default='td',null=True,blank=True)
 
+    
 '''
 ESTADOS = (
                ('td','to do'),

@@ -12,21 +12,17 @@ from django import forms
 """
 
 class sprint_form(ModelForm):
-#    nombre = forms.CharField (widget=forms.Textarea (attrs={'class':'textarea'}))
-    fecha_creacion = forms.DateField(widget=forms.TextInput(attrs={'class': 'campos'}))
-    fecha_inicio = forms.DateField(widget=forms.TextInput(attrs={'class': 'campos'}))
-    fecha_fin = forms.DateField(widget=forms.TextInput(attrs={'class': 'campos'}))
+    fecha_inicio = forms.DateField(required=False,widget=forms.TextInput(attrs={'class': 'campos'}))
+    fecha_fin = forms.DateField(required=False,widget=forms.TextInput(attrs={'class': 'campos'}))
     # release_asociado = forms.CharField(required=False,widget=forms.Textarea(attrs={'class': 'textarea'}))
-    flujo_asociado = forms.CharField(widget=forms.Textarea(attrs={'class': 'textarea'}))
+    #flujo_asociado = forms.CharField(widget=forms.Textarea(attrs={'class': 'textarea'}))
     class Meta:
         model = sprint
-        labels = {
-            'fecha_creacion':('Fecha de Creacion'),
-            'fecha_inicio':('Fecha de Inicio'),
-            'fecha_fin':('Fecha de Finalizacion'),
-  #          'release_asociado': ('Release Asociado'),
-            'flujo_asociado': ('Flujo Asociado'),
-        }
+        fields = '__all__'
+        widgets = {
+                   'nombre' : forms.TextInput(attrs={'class':'campos'}),
+                   'descripcion' : forms.Textarea(attrs={'class':'textarea'}),
+                   }
 
 #------------------------------------------------------------------------------------
 class consultar_sprint_form(ModelForm):
@@ -36,11 +32,14 @@ class consultar_sprint_form(ModelForm):
     fecha_inicio = forms.CharField(label='Fecha de Inicio',widget=forms.TextInput(attrs={'readonly':'readonly'}))
     fecha_fin = forms.CharField(label='Fecha de Finalizacion',widget=forms.TextInput(attrs={'readonly':'readonly'}))
     #release_asociado = forms.CharField(label='Release Asociado',widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    flujo_asociado = forms.CharField(label='Flujo Asociado',widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    #flujo_asociado = forms.CharField(label='Flujo Asociado',widget=forms.TextInput(attrs={'readonly':'readonly'}))
     class Meta:
         model = sprint
-        fields = ('id','nombre','fecha_creacion', 'fecha_inicio', 'fecha_fin','release_asociado','flujo_asociado')
-        
+        fields = '__all__'
+        widgets = {
+                   'nombre' : forms.TextInput(attrs={'class':'campos','readonly':'readonly'}),
+                   'descripcion' : forms.Textarea(attrs={'class':'textarea','readonly':'readonly'}),
+                   }
 #    help_texts = {
 #           'username': (''),
 #      }
@@ -49,10 +48,7 @@ class consultar_sprint_form(ModelForm):
 #------------------------------------------------------------------------------------
 class buscar_sprint_form(forms.Form):
     BUSCAR_POR = {
-                  ('id_sprint','ID Sprint'),
                   ('nombre','Nombre'),
-                  ('flujo_asociado','Flujo Asociado')
                   }
     opciones = forms.ChoiceField(label='Buscar Por',required=True,widget=forms.Select(),choices=BUSCAR_POR)
-    
     busqueda = forms.CharField(widget=forms.TextInput())

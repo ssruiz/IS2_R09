@@ -55,7 +55,7 @@ def crear_flujo_view(request):
             if request.user.is_staff:
                 flujos = flujo.objects.all()
                 ctx={'flujos':flujos,'mensaje':'Flujo creado','form':buscar_flujo_form()}
-                return render_to_response('flujo/adm_flujo.html',ctx,context_instance=RequestContext(request))
+                return HttpResponseRedirect('/adm_flujo/',ctx)
     ctx = {'form':form}
     return render_to_response('flujo/crear_flujo.html',ctx,context_instance=RequestContext(request))
 
@@ -101,7 +101,7 @@ def eliminar_flujo_view(request,id_flujo):
         if request.user.is_staff:
             flujos = flujo.objects.all()
             ctx={'flujos':flujos,'form':buscar_flujo_form()}
-            return render_to_response('flujo/adm_flujo.html',ctx,context_instance=RequestContext(request))
+            return HttpResponseRedirect('/adm_flujo/',ctx)
                 
     ctx = {'flujo': fluj}
     return render_to_response('flujo/eliminar_flujo.html', ctx, context_instance=RequestContext(request))
@@ -131,10 +131,35 @@ def modificar_flujo_view(request,id_flujo):
     if request.method=='GET':
         fluj = flujo.objects.get(id=id_flujo)
         form = flujo_form(instance= fluj)
-        ctx = {'form':form}
+        ctx = {'form':form,'id':id_flujo}
         return render_to_response('flujo/modificar_flujo.html',ctx,context_instance=RequestContext(request))
     
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
+@login_required(login_url= URL_LOGIN)
+def crear_actividad_from_mod_view(request,id_flujo):
+    """
+        crear_actividad_view(request,id_flujo)
+        Crear Actividad para Flujo.
+        ===========================
+        
+        Vista que controla la interfaz de creación de actividades para flujos desde la modificacion
+        @param request: Almacena información concerniente a la consulta realizada
+        como el usuario que la realiza etc.
+        @param id_flujo: Flujo que se estaba modificando
+    """
+    form = actividad_form()
+    if request.method == 'POST':
+        form = actividad_form(request.POST)
+        if form.is_valid():
+            form.save()
+            fluj = flujo.objects.get(id=id_flujo)
+            form = flujo_form(instance= fluj)
+            ctx = {'form':form}
+            return HttpResponseRedirect('/modificar/flujo/%s'%(id_flujo),ctx)
+    ctx = {'form':form}
+    return render_to_response('actividad/crear_actividad.html',ctx,context_instance=RequestContext(request))
+
+#---------------------------------------------------------------------------------------------------------------
     
 @login_required(login_url= URL_LOGIN)
 def consultar_flujo_view(request,id_flujo):

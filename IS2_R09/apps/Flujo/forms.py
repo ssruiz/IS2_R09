@@ -10,7 +10,7 @@
 
 
 from django.forms.models import ModelForm
-from IS2_R09.apps.Flujo.models import flujo,actividad
+from IS2_R09.apps.Flujo.models import flujo,actividad,kanban
 from django import forms
 
 
@@ -24,6 +24,7 @@ class flujo_form(ModelForm):
     """
     class Meta:
         model = flujo
+        exclude = ('user_stories',)
         widgets = {
                    'actividades': forms.CheckboxSelectMultiple()
                    }
@@ -72,3 +73,13 @@ class consultar_form(ModelForm):
                    'actividades': forms.CheckboxSelectMultiple(attrs={'readonly':'readonly'}),
                    'nombre' : forms.TextInput(attrs={'readonly':'readonly'}),
                    }
+class kanban_form(ModelForm):
+    """
+        Formulario kanban
+        =================
+        
+        Formulario usado en la creacion y modificación de Kanban.
+    """
+    class Meta:
+        model = kanban
+        

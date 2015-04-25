@@ -1,18 +1,13 @@
-<<<<<<< HEAD
-from django.test import TestCase
-
-# Create your tests here.
-=======
-'''
+"""
 Created on 24/4/2015
 
 @author: meliam
-'''
+"""
 from django.test import TestCase
 import unittest
 from IS2_R09.apps.Sprint.models import sprint
-#from django.contrib.auth.models import User
- 
+from django.contrib.auth.models import User
+'''
 # Create your tests here.
 class test_content(TestCase):
     def setUp(self):
@@ -30,4 +25,4 @@ class test_content(TestCase):
     def test_proyecto_cliente(self):
         proyect = proyecto.objects.get(nombre = "P1")
         print "Test 2. Imprimiendo nombre del Cliente de P1 --> %s" %(proyect.cliente)
->>>>>>> a5805a17db0ce9f5c91994702f7b4ae2c26bf5e0
+'''

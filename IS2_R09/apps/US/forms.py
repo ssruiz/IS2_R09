@@ -49,7 +49,7 @@ class consultar_form(ModelForm):
                    'tiempo_estimado' : forms.NumberInput(attrs={'readonly':'readonly','class': 'campos'}),
                    'tiempo_trabajado' : forms.NumberInput(attrs={'readonly':'readonly','class': 'campos'}), 
                    'usuario_asiganado': forms.SelectMultiple(attrs={'readonly':'readonly'}),
-                   'prioridad': forms.TextInput(attrs={'readonly':'readonly','class': 'campos'}),
+                   #'prioridad': forms.ChoiceField(attrs={'readonly':'readonly'}),
                    'flujo_asignado': forms.SelectMultiple(attrs={'readonly':'readonly'}),
                    'proyecto_asignado': forms.SelectMultiple(attrs={'readonly': 'readonly'}),
                    }

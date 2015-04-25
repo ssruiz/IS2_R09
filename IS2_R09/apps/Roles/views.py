@@ -24,8 +24,8 @@ def crear_rol_view(request):
         if form.is_valid():
             rol= form.save()
             roles = Group.objects.all()
-            ctx = {'roles': roles,'mensaje':'Rol Creado','icono':'icon-yes.gif'}
-            return render_to_response('roles/adm_roles.html',ctx,context_instance= RequestContext(request))
+            ctx = {'roles': roles,'mensaje':'Rol Creado','icono':'icon-yes.gif','form':buscar_rol_form()}
+            return HttpResponseRedirect('/adm_rol/',ctx)
     return render_to_response('roles/crear_rol.html',{'form':form},context_instance= RequestContext(request))
 
 
@@ -39,8 +39,8 @@ def modificar_rol_view(request,id_rol):
         if rol_form.is_valid():
             #formulario validado correctamente
             rol_form.save()
-            ctx = {'roles': Group.objects.all(),'mensaje':'Rol Modificado','icono':'icon-yes.gif'}
-            return render_to_response('roles/adm_roles.html',ctx,context_instance= RequestContext(request))
+            ctx = {'roles': Group.objects.all(),'mensaje':'Rol Modificado','icono':'icon-yes.gif','form':buscar_rol_form()}
+            return HttpResponseRedirect('/adm_rol/',ctx)
     if request.method == 'GET':
         rol_form= group_form(instance=rol)
         ctx = { 'rol_form': rol_form}
@@ -53,8 +53,8 @@ def eliminar_rol_view(request,id_rol):
         rol = rol.__class__.objects.get(id=id_rol)
         rol.delete()
         roles = Group.objects.all()
-        ctx = {'mensaje': 'Rol Eliminado','roles':roles,'icono':'icon-yes.gif'}
-        return render_to_response('roles/adm_roles.html', ctx, context_instance=RequestContext(request))
+        ctx = {'mensaje': 'Rol Eliminado','roles':roles,'icono':'icon-yes.gif','form':buscar_rol_form()}
+        return HttpResponseRedirect('/adm_rol/', ctx)
     ctx = {'rol': rol}
     return render_to_response('roles/eliminar_rol.html', ctx, context_instance=RequestContext(request))
 #--------------------------------------------------------------------------------------------------------

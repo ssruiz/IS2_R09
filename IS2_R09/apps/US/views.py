@@ -16,7 +16,8 @@ from django.contrib.auth.models import User
 from IS2_R09.settings import URL_LOGIN
 from IS2_R09.apps.Proyecto.models import Equipo, proyecto
 from django.contrib.auth.models import User,Group
-
+from IS2_R09.apps.Flujo.forms import kanban_form
+from IS2_R09.apps.Flujo.models import flujo,kanban
 @login_required(login_url= URL_LOGIN)
 def adm_us_view(request):
     """
@@ -81,30 +82,77 @@ def modificar_us_view(request,id_us):
         @requires: El usuario logeado debe tener rol de administrador , rol de Scrum Master dentro del Proyecto
         o tener asignado el B{User Story} que modificará.
     """
+    k= kanban_form()
     if request.method == 'POST':
         user_story = us.objects.get(id=id_us)
         form = us_form(request.POST,instance=user_story)
+        
         if form.is_valid():
-            form.save()
-            if request.user.is_staff:
-                '''Si el usuario es administrador se le listan todos los us'''
-                ust = us.objects.all().order_by('prioridad')
-                ctx={'uss':ust,'form':buscar_us_form()}
-                return render_to_response('US/adm_us.html',ctx,context_instance=RequestContext(request))
-    
-            else:
-                ust = us.objects.filter(usuario_asignado=request.user).order_by('prioridad')
-                ctx={'uss':ust,'form':buscar_us_form()}
-                return render_to_response('US/adm_us.html',ctx,context_instance=RequestContext(request))
+            try:
+                kan = kanban.objects.get(us=user_story)
+                k = kanban_form(request.POST,instance=kan)
+                if k.is_valid():
+                    form.save()
+                    kan.us=user_story
+                    kan.fluj=k.cleaned_data['fluj']
+                    kan.estado=k.cleaned_data['estado']
+                    kan.save()
+                #kan.fluj= k.cleaned_data['fluj']
+                #kan.save()
+                    if request.user.is_staff:
+                        '''Si el usuario es administrador se le listan todos los us'''
+                        ust = us.objects.all().order_by('prioridad')
+                        ctx={'uss':ust,'form':buscar_us_form()}
+                        return render_to_response('US/adm_us.html',ctx,context_instance=RequestContext(request))
+            
+                    else:
+                        ust = us.objects.filter(usuario_asignado=request.user).order_by('prioridad')
+                        ctx={'uss':ust,'form':buscar_us_form()}
+                        return render_to_response('US/adm_us.html',ctx,context_instance=RequestContext(request))
+            except:
+                k = kanban_form(request.POST)
+                if k.is_valid():
+                    kan = kanban.objects.create(us=user_story,fluj=k.cleaned_data['fluj'])
+                    form.save()
+                    #k.save()
+                #kan.fluj= k.cleaned_data['fluj']
+                #kan.save()
+                    if request.user.is_staff:
+                        '''Si el usuario es administrador se le listan todos los us'''
+                        ust = us.objects.all().order_by('prioridad')
+                        ctx={'uss':ust,'form':buscar_us_form()}
+                        return render_to_response('US/adm_us.html',ctx,context_instance=RequestContext(request))
+            
+                    else:
+                        ust = us.objects.filter(usuario_asignado=request.user).order_by('prioridad')
+                        ctx={'uss':ust,'form':buscar_us_form()}
+                        return render_to_response('US/adm_us.html',ctx,context_instance=RequestContext(request))
+                
     if request.method=='GET':
-        user_story = us.objects.get(id=id_us)
-        p= proyecto.objects.get(id=user_story.proyecto_asociado.id)
-        form =us_form(instance= user_story)
-        form.fields['usuario_asignado'].queryset= p.miembro.all()
-        form.fields['flujo_asignado'].queryset= p.flujos.all()
-        ctx = {'form':form}
-        return render_to_response('US/modificar_us.html',ctx,context_instance=RequestContext(request))
-
+        try:
+            user_story = us.objects.get(id=id_us)
+            kan = kanban.objects.get(us=user_story)
+            
+            p= proyecto.objects.get(id=user_story.proyecto_asociado.id)
+            form =us_form(instance= user_story)
+            form.fields['usuario_asignado'].queryset= p.miembro.all()
+            #k.fields['us'].queryset = us.objects.get(id=id_us)
+            
+            #form.fields['flujo_asignado'].queryset= p.flujos.all()
+            k =kanban_form(instance=kan)
+            k.fields['fluj'].queryset = kan.fluj.all()
+            ctx = {'form':form,'k':k}
+            return render_to_response('US/modificar_us.html',ctx,context_instance=RequestContext(request))
+        except:
+            user_story = us.objects.get(id=id_us)
+            p= proyecto.objects.get(id=user_story.proyecto_asociado.id)
+            form =us_form(instance= user_story)
+            form.fields['usuario_asignado'].queryset= p.miembro.all()
+            #k.fields['us'].queryset = us.objects.get(id=id_us)
+            k.fields['fluj'].queryset = p.flujos.all()
+            #form.fields['flujo_asignado'].queryset= p.flujos.all()
+            ctx = {'form':form,'k':k}
+            return render_to_response('US/modificar_us.html',ctx,context_instance=RequestContext(request))
 #---------------------------------------------------------------------------------------------------------------
 @login_required(login_url= URL_LOGIN)
 def eliminar_us_view(request,id_us):
@@ -145,14 +193,35 @@ def consultar_us_view(request,id_us):
         @requires: El usuario debe estar logeado. 
     """
     if request.method=='GET':
-        user_story = us.objects.get(id=id_us)
-        p= proyecto.objects.get(id=user_story.proyecto_asociado.id)
-        form =consultar_form(instance= user_story)
-        form.fields['usuario_asignado'].queryset= user_story.usuario_asignado.all()
-        form.fields['flujo_asignado'].queryset= p.flujos.all()
-        form.fields['proyecto_asociado'].queryset= proyecto.objects.filter(id=user_story.proyecto_asociado.id)
-        ctx = {'form':form}
-        return render_to_response('US/consultar_us.html',ctx,context_instance=RequestContext(request))
+        try:
+            user_story = us.objects.get(id=id_us)
+            kan = kanban.objects.get(us=user_story)
+            print 'aaa'
+            p= proyecto.objects.get(id=user_story.proyecto_asociado.id)
+            
+            form =consultar_form(instance= user_story)
+            form.fields['usuario_asignado'].queryset= user_story.usuario_asignado.all()
+            
+            #k.fields['us'].queryset = us.objects.get(id=id_us)
+            form.fields['proyecto_asociado'].queryset= proyecto.objects.filter(id=user_story.proyecto_asociado.id)
+            #form.fields['flujo_asignado'].queryset= p.flujos.all()
+            k =kanban_form(instance=kan)
+            fluj= kan.fluj
+            print fluj
+            #k.fields['fluj'].queryset = kan.fluj.all()
+            print 'bbb'
+            ctx = {'form':form,'k':fluj,'p':p}
+            
+            return render_to_response('US/consultar_us.html',ctx,context_instance=RequestContext(request))
+        except:
+            user_story = us.objects.get(id=id_us)
+            p= proyecto.objects.get(id=user_story.proyecto_asociado.id)
+            form =consultar_form(instance= user_story)
+            form.fields['usuario_asignado'].queryset= user_story.usuario_asignado.all()
+            #form.fields['flujo_asignado'].queryset= p.flujos.all()
+            form.fields['proyecto_asociado'].queryset= proyecto.objects.filter(id=user_story.proyecto_asociado.id)
+            ctx = {'form':form,'p':p}
+            return render_to_response('US/consultar_us.html',ctx,context_instance=RequestContext(request))
 
 
 @login_required(login_url= URL_LOGIN)

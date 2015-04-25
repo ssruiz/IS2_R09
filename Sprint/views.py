@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-from django.shortcuts import render
-
-# Create your views here.
-=======
-'''
-Created on 23/4/2015
-
-@author: meliam
-'''
 from django.shortcuts import render_to_response
 from IS2_R09.apps.Sprint.forms import sprint_form
 from IS2_R09.apps.Sprint.forms import consultar_sprint_form
@@ -66,8 +56,8 @@ def modificar_sprint_view(request, id_usuario):
                                          'fecha_creacion':s.fecha_creacion,
                                          'fecha_inicio':s.fecha_inicio,
                                          'fecha_fin':s.fecha_fin,
-                     'release_asociado':s.release_asociado,
-                     'flujo_asociado':s.flujo_asociado,
+					 'release_asociado':s.release_asociado,
+					 'flujo_asociado':s.flujo_asociado,
                                          })
         ctx = {'sp_form': sprint_form}
         return render_to_response('sprint/modificar_sprint.html', ctx, context_instance=RequestContext(request))
@@ -99,7 +89,7 @@ def consultar_sprint_view(request, id_sprint):
                                          'fecha_inicio':s.fecha_inicio,
                                          'fecha_fin':s.fecha_fin,
                                          'release_asociado':s.release_asociado,
-                     'flujo_asociado':s.flujo_asociado,
+					 'flujo_asociado':s.flujo_asociado,
                                          })
     ctx = {'form':c_form}
     return render_to_response('sprint/consultar_sprint.html', ctx, context_instance=RequestContext(request))
@@ -130,4 +120,4 @@ def buscar_sprint_view(request):
 #                return render_to_response('usuario/adm_usuario.html', ctx, context_instance=RequestContext(request))
     ctx = {'b_form': b_form}
     return render_to_response('sprint/buscar_sprint.html', ctx, context_instance=RequestContext(request))
->>>>>>> a5805a17db0ce9f5c91994702f7b4ae2c26bf5e0
+

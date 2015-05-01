@@ -128,4 +128,4 @@ DATE_INPUT_FORMATS = (
     '%d %B %Y', '%d %B, %Y',            # '25 October 2006', '25 October, 2006'
 )
 
-PATH = '/home/meliam/git/IS2_R09'
+PATH = '/home/rafael/workspace/IS2_R09'

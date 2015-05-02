@@ -45,12 +45,9 @@ INSTALLED_APPS = (
     'IS2_R09.apps.Proyecto',
     'IS2_R09.apps.Flujo',
     'IS2_R09.apps.US',
-<<<<<<< HEAD
     'IS2_R09.apps.Sprint',
-    
-=======
-    'IS2_R09.apps.Sprint',    
->>>>>>> b6a2695a0a54bf1280261fa922057a97a7708797
+    'IS2_R09.apps.Comentario',
+    'IS2_R09.apps.Adjunto',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -74,11 +71,8 @@ AUTH_PROFILE_MODULE = 'Usuario.usuario'
 #DJANGO_GROUP_MODEL = 'Roles.roles'
 
 TEMPLATE_DIRS = {
-<<<<<<< HEAD
+
               "/home/samuel/workspace/IS2_R09/templates",
-=======
-              "/home/meliam/git/IS2_R09/templates",
->>>>>>> b6a2695a0a54bf1280261fa922057a97a7708797
               }
 
 #Base de datos postgresql
@@ -87,13 +81,9 @@ DATABASES = {
 'default': {
 'ENGINE': 'django.db.backends.postgresql_psycopg2',
 'NAME': 'IS2_R09',
-<<<<<<< HEAD
+
 'USER': 'samuel',
 'PASSWORD': 'passwd',
-=======
-'USER': 'meliam',
-'PASSWORD': '26juniomeli',
->>>>>>> b6a2695a0a54bf1280261fa922057a97a7708797
 'HOST': 'localhost',
 'PORT': '5432',
 
@@ -124,11 +114,8 @@ STATICFILES_DIRS = (
 )
 
 URL_LOGIN = '/login'
-<<<<<<< HEAD
+
 MEDIA_ROOT = '/home/samuel/workspace/IS2_R09/IS2_R09/media'
-=======
-MEDIA_ROOT = '/home/meliam/git/IS2_R09/IS2_R09/media'
->>>>>>> b6a2695a0a54bf1280261fa922057a97a7708797
 MEDIA_URL = '/media/'
 
 # Configuracion de mail
@@ -147,8 +134,3 @@ DATE_INPUT_FORMATS = (
     '%d %B %Y', '%d %B, %Y',            # '25 October 2006', '25 October, 2006'
 )
 
-<<<<<<< HEAD
-PATH = '/home/samuel/workspace/IS2_R09'
-=======
-PATH = '/home/meliam/git/IS2_R09'
->>>>>>> b6a2695a0a54bf1280261fa922057a97a7708797

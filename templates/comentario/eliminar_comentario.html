@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title%}Eliminar Comentario{% endblock %}
+{% block content %}
+
+	<p>Esta a punto de eliminar del sistema el siguiente Comentario: {{comentario}}</p>
+	<p>Por favor confirme la accion</p>
+	
+	<div>
+		<form method = 'POST' action = "" >
+			{% csrf_token %}
+			<input class="boton" type="submit" value="Aceptar"></input>
+			<input class="boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_comentario/{{userid}}/'">
+		</form>
+	</div>
+	<div>	
+{% endblock %}

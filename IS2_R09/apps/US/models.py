@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from IS2_R09.apps.Proyecto.models import proyecto
 from django.db.models.fields.related import ManyToManyField
 from IS2_R09.apps.Adjunto.models import adjunto
+from IS2_R09.apps.Comentario.models import comentario
 # Create your models here.
 class us(models.Model):
     """
@@ -48,12 +49,14 @@ class us(models.Model):
     prioridad=models.CharField(max_length=1, choices=PRIORIDADES)
     #flujo_asignado=models.ForeignKey(flujo,null=True,blank=True,unique=False)
     proyecto_asociado=models.ForeignKey(proyecto,null=True,blank=True,unique=False)
-    id_adjunto = ManyToManyField(adjunto,null=True,blank=True)
+    adjuntos = ManyToManyField(adjunto,null=True,blank=True)
+    comentarios = ManyToManyField(comentario,null=True,blank=True)
     def __unicode__(self):
         """
             Método que permite mostrar los objectos de tipo B{User Story}
             por su nombre.
         """
+        return self.nombre
     
     def __str__(self):
         return self.nombre

@@ -19,17 +19,8 @@ class adjunto_form(ModelForm):
     descripcion = forms.CharField(widget=forms.Textarea(attrs={'class': 'textarea'}))
     version = forms.CharField(widget=forms.TextInput(attrs={'class': 'campos'}))
     comentario_commit = forms.CharField(widget=forms.Textarea(attrs={'class': 'textarea'}))
-    #archivo = forms.FileInput(required=False,widget=forms.FileInput(attrs={'class': 'archivo'}))
-
     class Meta:
         model = adjunto
-        labels = {
-            'nombre':('Nombre'),
-            'descripcion':('Descripcion'),
-            'version':('Version'),
-            'comentario_commit': ('Comentario Commit'),
-            #'archivo': ('Archivo'),
-        }
 
 #------------------------------------------------------------------------------------
 class consultar_adjunto_form(ModelForm):
@@ -38,30 +29,7 @@ class consultar_adjunto_form(ModelForm):
     descripcion = forms.CharField(label='Descripcion',widget=forms.Textarea(attrs={'readonly':'readonly'}))
     version = forms.CharField(label='Version',widget=forms.TextInput(attrs={'readonly':'readonly'}))
     comentario_commit = forms.CharField(label='Comentario Commit',widget=forms.Textarea(attrs={'readonly':'readonly'}))
-    #archivo = forms.FileInput(label='Archivo',widget=forms.FileInput(attrs={'readonly':'readonly'}))
+    #archivo = forms.FileField(label='Archivo',widget=forms.FileInput(attrs={'readonly':'readonly'}))
     
     class Meta:
         model = adjunto
-        fields = ('id','nombre','descripcion', 'version', 'comentario_commit')#,'archivo')
-        
-#------------------------------------------------------------------------------------
-#class eliminar_adjunto_form(forms.Form):
-
-#-------------------------------------------------------------------------------------    
-class modificar_adjunto_form(ModelForm):
-    nombre = forms.CharField(required=False,widget=forms.TextInput(attrs={'class': 'campos'}))
-    descripcion = forms.CharField(required=False,widget=forms.Textarea(attrs={'class': 'textarea'}))
-    version = forms.CharField(label='Version',widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    comentario_commit = forms.CharField(label='Comentario Commit',widget=forms.Textarea(attrs={'readonly':'readonly'}))
-   # archivo =forms.FileInput(required=False,widget=forms.FileInput(attrs={'class': 'archivo'}))
-    
-    class Meta:
-        model = adjunto
-        widgets = {
-                   'nombre' : forms.TextInput(attrs={'class': 'campos'}),
-                   'descripcion': forms.Textarea(attrs={'class': 'textarea'}),
-                   'version' : forms.TextInput(attrs={'class' : 'campos'}),
-                   'comentario_commit':forms.Textarea(attrs={'class':'textarea'}),
-                   #'archivo' : forms.FileInput(attrs={'class': 'fileinput'}),
-                   }
-    

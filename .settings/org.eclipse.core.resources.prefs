@@ -1,5 +1,8 @@
 eclipse.preferences.version=1
+encoding//IS2_R09/apps/Adjunto/urls.py=utf-8
 encoding//IS2_R09/apps/Comentario/admin.py=utf-8
+encoding//IS2_R09/apps/Comentario/urls.py=utf-8
+encoding//IS2_R09/apps/Comentario/views.py=utf-8
 encoding//IS2_R09/apps/Flujo/__init__.py=utf-8
 encoding//IS2_R09/apps/Flujo/forms.py=utf-8
 encoding//IS2_R09/apps/Flujo/migrations/0001_initial.py=utf-8

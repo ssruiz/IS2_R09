@@ -37,6 +37,8 @@
 				<th>Editar</th>
 				<th>Eliminar</th>
 				<th>Consultar</th>
+				<th>Comentarios</th>
+				<th>Adjuntos</th>
 			</tr>
 		</thead>
 		{% for u in uss %}
@@ -50,7 +52,8 @@
 				<td><a href= "/modificar/US/{{u.id}}/"><button><img src="/media/images/iconos/icon_changelink.gif"></button></a></td>
 				<td><a href= "/eliminar/US/{{u.id}}/"><button><img src="/media/images/iconos/icon_deletelink.gif"></button></a></td>
 				<td><a href= "/consultar/US/{{u.id}}/"><button><img src="/media/images/iconos/consultar.png" width="11px" heigh="11px"></button></a></td>
-			
+				<td><a href= "/adm_comentario/{{u.id}}/"><button>C</button></a></td>
+				<td><a href= "/adm_adjunto/{{u.id}}/"><button>A</button></a></td>
 				
 				
 			</tr>

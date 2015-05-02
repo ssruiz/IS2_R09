@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %} Crear Adjunto {% endblock %}
+{% block content %}
+	{% load staticfiles %}
+	<br />
+	<br />
+	<br />
+	<div id="formul">
+	<form action = "." method = "POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		
+			{{ form.non_field_errors }}
+			<div> 
+				{{form.nombre.errors}}
+				<p>Nombre<br/>
+				{{ form.nombre }}
+				</p>
+				<p>Descripción<br/>
+					{{ form.descripcion }}
+				</p>
+				<p>Versión<br/>
+				{{ form.version }}
+				</p>
+			</div>
+			<div>
+				<p>Comentario <br/>
+				{{ form.comentario_commit }}</p>
+				<p>Archivo <br/>
+				{{form.archivo}}
+				</p>
+			</div>
+			<div id="bsubmit">
+				<input class = "boton" type= "submit" value="Guardar"></input>
+				<input class = "boton" type="reset" value="Reset"/>
+				<input class="boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_adjunto/{{userid}}/'">
+			</div>
+		</form>
+	</div>
+{% endblock %}

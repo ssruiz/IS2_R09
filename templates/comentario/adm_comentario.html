@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %} Administrar Comentarios {% endblock %}
+{% block content %}
+	{% load staticfiles %}
+<div>
+	<br />
+	<br />
+	<br />
+	
+</div>
+<div>
+	<table align="center">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Nombre</th>
+				<th>Fecha Creacion</th>
+				<th>Editar</th>
+				<th>Eliminar</th>
+				<th>Consultar</th>
+			</tr>
+		</thead>
+		{% for c in comentarios %}
+		<tbody>
+			<tr>
+				<td>{{c.id}}</td>
+				<td>{{c.nombre}}</td>
+				<td>{{c.fecha_creacion}}</td>				
+				<td><a href= "/modificar/comentario/{{c.id}}/{{userid}}/"><button><img src="/media/images/iconos/icon_changelink.gif"></button></a></td>
+				<td><a href= "/eliminar/comentario/{{c.id}}/{{userid}}/"><button><img src="/media/images/iconos/icon_deletelink.gif"></button></a></td>
+				<td><a href= "/consultar/comentario/{{c.id}}/{{userid}}/"><button><img src="/media/images/iconos/consultar.png" width="11px" heigh="11px"></button></a></td>
+				
+			</tr>
+		</tbody>
+		
+		{% endfor %}
+	</table>
+	<p align="center"><input class="boton" type="button" name="volver_menu" value="Volver" onClick="location.href='/adm_US/'"></p>
+</div>
+{% endblock %}

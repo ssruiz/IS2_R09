@@ -1,0 +1,8 @@
+prueba unitaria usuario: ./manage.py test IS2_R09.apps.Usuario
+prueba unitaria proyecto: ./manage.py test IS2_R09.apps.Proyecto
+prueba unitaria proyecto: ./manage.py test IS2_R09.apps.Roles
+
+Crear app -> django-admin.py startapp
+Crear superuser -> python manage.py createsuperuser
+
+sudo service apache2 restart

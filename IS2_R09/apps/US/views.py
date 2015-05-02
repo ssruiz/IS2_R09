@@ -175,7 +175,7 @@ def eliminar_us_view(request,id_us):
         @requires: El usuario logeado debe tener rol de administrador o Scrum Master dentro del Proyecto 
         del que eliminará el B{User Story}
     """
-    user_story = us.objects.get(pk=id_us)
+    user_story = us.objects.get(id=id_us)
     if request.method == 'POST':
         ua= user_story.usuario_asignado.all()
         nombre=user_story.nombre
@@ -194,6 +194,7 @@ def eliminar_us_view(request,id_us):
             return render_to_response('US/adm_us.html',ctx,context_instance=RequestContext(request))
     
     ctx = {'user_story': user_story}
+    print user_story
     return render_to_response('US/eliminar_us.html', ctx, context_instance=RequestContext(request))
 
 #-------------------------------------------------------------------------------------------------------

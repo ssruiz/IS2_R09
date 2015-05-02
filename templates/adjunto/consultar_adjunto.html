@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %} Consultar Adjunto {% endblock %}
+{% block content %}
+	{% load staticfiles %}
+	<br />
+	<br />
+	<br />
+	<div id="formul">
+	<form action = "." method = "POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		
+			{{ form.non_field_errors }}
+			<div> 
+				{{form.nombre.errors}}
+				<p>Nombre<br/>
+				{{ form.nombre }}
+				</p>
+				<p>Descripción<br/>
+					{{ form.descripcion }}
+				</p>
+				<p>Versión<br/>
+				{{ form.version }}
+				</p>
+			</div>
+			<div>
+				<p>Comentario <br/>
+				{{ form.comentario_commit }}</p>
+				<p>Archivo Actual <br/>
+				</p>
+				<a href="/media/{{archivo}}">Actual</img></a>
+			</div>
+			<div>
+				<br />
+				<input class="boton" type="button" name="Cancelar" value="Volver" onClick="location.href='/adm_adjunto/{{userid}}/'">
+			</div>
+		</form>
+	</div>
+{% endblock %}

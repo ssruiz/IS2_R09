@@ -63,6 +63,7 @@ def consultar_rol_view(request,id_rol):
     if request.method == 'GET':
         r = Group.objects.get(pk=id_rol)
         form= consultar_rol_form(instance=r)
+        form.fields['permissions'].queryset= r.permissions.all()
         ctx = {'form':form}
         return render_to_response('roles/consultar_rol.html', ctx, context_instance=RequestContext(request))
     ctx = {'form':form}

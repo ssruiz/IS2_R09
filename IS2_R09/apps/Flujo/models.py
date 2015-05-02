@@ -18,7 +18,7 @@ class actividad(models.Model):
         @cvar nombre: Nombre de la actividad.
         @type nombre: Varchar
     """
-    nombre = models.CharField(max_length=30,unique=True)
+    nombre = models.CharField(max_length=30,unique=False)
     def __unicode__(self):
         """
             Método que permite representar los objectos de la clase L{Actividad<IS2_R09.apps.Flujo.models.actividad>}

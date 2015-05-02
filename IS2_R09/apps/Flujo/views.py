@@ -37,7 +37,7 @@ def adm_flujo_view(request):
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @login_required(login_url= URL_LOGIN)
-def crear_flujo_view(request):
+def crear_flujo_view(request,nuevo):
     """
         crear_flujo_view(request)
         Administración de Flujos.
@@ -56,13 +56,22 @@ def crear_flujo_view(request):
                 flujos = flujo.objects.all()
                 ctx={'flujos':flujos,'mensaje':'Flujo creado','form':buscar_flujo_form()}
                 return HttpResponseRedirect('/adm_flujo/',ctx)
-    ctx = {'form':form}
-    return render_to_response('flujo/crear_flujo.html',ctx,context_instance=RequestContext(request))
-
+    try:
+        if nuevo== 'n':
+            a = actividad.objects.latest('id')
+            nuevo = str(a.id)
+            form.fields['actividades'].queryset= actividad.objects.filter(id__gt=a.id)
+        form.fields['actividades'].queryset= actividad.objects.filter(id__gt=int(nuevo))
+        ctx = {'form':form,'nuevo':nuevo}
+        return render_to_response('flujo/crear_flujo.html',ctx,context_instance=RequestContext(request))
+    except:
+        nuevo = str('0')
+        ctx = {'form':form,'nuevo':nuevo}
+        return render_to_response('flujo/crear_flujo.html',ctx,context_instance=RequestContext(request))
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @login_required(login_url= URL_LOGIN)
-def crear_actividad_view(request):
+def crear_actividad_view(request,nuevo):
     """
         crear_actividad_view(request)
         Crear Actividad para Flujo.
@@ -79,8 +88,8 @@ def crear_actividad_view(request):
             form.save()
             form= flujo_form()
             ctx = {'form':form}
-            return HttpResponseRedirect('/crear_flujo/',ctx)
-    ctx = {'form':form}
+            return HttpResponseRedirect('/crear_flujo/%s'%(nuevo),ctx)
+    ctx = {'form':form,'nuevo':nuevo}
     return render_to_response('actividad/crear_actividad.html',ctx,context_instance=RequestContext(request))
 
 #---------------------------------------------------------------------------------------------------------------
@@ -127,10 +136,11 @@ def modificar_flujo_view(request,id_flujo):
             form.save()
             flujos = flujo.objects.all()
             ctx={'flujos':flujos,'form':buscar_flujo_form()}
-            return render_to_response('flujo/adm_flujo.html',ctx,context_instance=RequestContext(request))
+            return HttpResponseRedirect('/adm_flujo/',ctx)
     if request.method=='GET':
         fluj = flujo.objects.get(id=id_flujo)
         form = flujo_form(instance= fluj)
+        form.fields['actividades'].queryset= fluj.actividades.all()
         ctx = {'form':form,'id':id_flujo}
         return render_to_response('flujo/modificar_flujo.html',ctx,context_instance=RequestContext(request))
     

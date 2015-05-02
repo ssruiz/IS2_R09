@@ -38,6 +38,7 @@
 				<th>Eliminar</th>
 				<th>Consultar</th>
 				<th>Asignar Equipo</th>
+				<th>Kanban</th>
 			</tr>
 		</thead>
 		{% for p in proyectos %}
@@ -51,9 +52,10 @@
 				<td><a href= "/modificar/proyecto/{{p.id}}/"><button><img src="/media/images/iconos/icon_changelink.gif"></button></a></td>
 				<td><a href= "/eliminar/proyecto/{{p.id}}/"><button><img src="/media/images/iconos/icon_deletelink.gif"></button></a></td>
 				<td><a href= "/consultar/proyecto/{{p.id}}/"><button><img src="/media/images/iconos/consultar.png" width="11px" heigh="11px"></button></a></td>
-			
+				
 				
 				<td><a href= "/asignar_equipo/proyecto/{{p.id}}/"><button>E</button></a></td>
+				<td><a href= "/kanban/proyecto/{{p.id}}/"><button>K</button></a></td>
 			</tr>
 		</tbody>
 		

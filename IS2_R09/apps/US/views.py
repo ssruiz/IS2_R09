@@ -4,6 +4,8 @@
     Modulo que controla las operaciones sobre los B{User Stories} de los clientes.  
     @author: Samuel Ruiz,Melissa Bogado,Rafael Ricardo
 """
+from IS2_R09.apps.Notificaciones.views import notificar_asignacion_us,\
+    notificar_eli_proyecto, notificar_eli_us
 __docformat__ = "Epytext"  
 
 from django.shortcuts import render_to_response
@@ -86,7 +88,7 @@ def modificar_us_view(request,id_us):
     if request.method == 'POST':
         user_story = us.objects.get(id=id_us)
         form = us_form(request.POST,instance=user_story)
-        
+        ua= user_story.usuario_asignado.all()
         if form.is_valid():
             try:
                 kan = kanban.objects.get(us=user_story)
@@ -94,8 +96,13 @@ def modificar_us_view(request,id_us):
                 if k.is_valid():
                     form.save()
                     kan.us=user_story
-                    kan.fluj=k.cleaned_data['fluj']
-                    kan.estado=k.cleaned_data['estado']
+                    f=k.cleaned_data['fluj']
+                    fj = flujo.objects.get(id=f.id)
+                    act = fj.actividades.all()[:1].get()
+                    kan.actividad = act
+                    kan.fluj=f
+                    kan.estado= 'td'
+                    notificar_asignacion_us(ua,user_story.nombre)
                     kan.save()
                 #kan.fluj= k.cleaned_data['fluj']
                 #kan.save()
@@ -112,7 +119,11 @@ def modificar_us_view(request,id_us):
             except:
                 k = kanban_form(request.POST)
                 if k.is_valid():
-                    kan = kanban.objects.create(us=user_story,fluj=k.cleaned_data['fluj'])
+                    f = k.cleaned_data['fluj']
+                    fj = flujo.objects.get(id=f.id)
+                    act = fj.actividades.all()[:1].get()
+                    kan = kanban.objects.create(us=user_story,fluj=k.cleaned_data['fluj'],actividad=act)
+                    notificar_asignacion_us(ua,user_story.nombre)
                     form.save()
                     #k.save()
                 #kan.fluj= k.cleaned_data['fluj']
@@ -166,7 +177,11 @@ def eliminar_us_view(request,id_us):
     """
     user_story = us.objects.get(pk=id_us)
     if request.method == 'POST':
+        ua= user_story.usuario_asignado.all()
+        nombre=user_story.nombre
+        notificar_eli_us(ua,nombre)
         user_story.delete()
+        
         if request.user.is_staff:
                 '''Si el usuario es administrador se le listan todos los us'''
                 ust = us.objects.all().order_by('prioridad')

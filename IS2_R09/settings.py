@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'IS2_R09.apps.Usuario',
     'IS2_R09.apps.Proyecto',
     'IS2_R09.apps.Flujo',

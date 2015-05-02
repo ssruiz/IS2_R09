@@ -13,7 +13,7 @@
 	<form action="{% url 'vista_buscar_flujo' %}" method='POST'>
 		{% csrf_token %}
 		<div float="left" align="center">
-			<button type="button" name="agregar" onClick="location.href='/crear_flujo/'"><img src="/media/images/iconos/icon_addlink.gif" width="16px" heigh="16px">Nuevo</button>
+			<button type="button" name="agregar" onClick="location.href='/crear_flujo/n'"><img src="/media/images/iconos/icon_addlink.gif" width="16px" heigh="16px">Nuevo</button>
 			|
 			{{form}}
 			<!--  <input type="submit" value="Buscar" ></input> -->

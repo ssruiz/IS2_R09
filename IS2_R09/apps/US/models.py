@@ -32,9 +32,9 @@ class us(models.Model):
         
     """
     PRIORIDADES = (
-                   ('A', 'Alta'),
-                   ('M', 'Media'),
-                   ('B', 'Baja'),
+                   ('1', 'Alta'),
+                   ('2', 'Media'),
+                   ('3', 'Baja'),
                    )
                    
                    

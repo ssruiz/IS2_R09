@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
-from IS2_R09.apps.Proyecto.forms import proyecto_form, equipo_form,cantidad_form,modificar_form,consultar_form,buscar_proyecto_form
+from IS2_R09.apps.Proyecto.forms import proyecto_form, equipo_form,cantidad_form,modificar_form,consultar_form,buscar_proyecto_form,\
+    proyecto_kanban_form
 from django.shortcuts import render_to_response
 from IS2_R09.apps.Proyecto.models import proyecto,Equipo
 from django.template.context import RequestContext
@@ -10,7 +11,13 @@ from django.contrib.auth.decorators import login_required
 from IS2_R09.settings import URL_LOGIN
 import datetime
 from django.http.response import HttpResponseRedirect
-
+from IS2_R09.apps.US.models import us
+from django.contrib.sites import requests
+from django import forms
+from IS2_R09.apps.Flujo.models import kanban
+from IS2_R09.apps.Flujo.forms import kanban_form
+from IS2_R09.apps.Notificaciones.views import notificar_asignacion_proyecto,\
+    notificar_mod_proyecto, notificar_eli_proyecto
 # Create your views here.
 @login_required(login_url= URL_LOGIN)
 def adm_proyecto_view(request):
@@ -58,6 +65,7 @@ def asignar_equipo_view(request,id_proyecto):
         formset= equipo_formset(request.POST)
         if formset.is_valid():
             formset.save()
+            notificar_asignacion_proyecto(p.miembro.all(),p)
             if request.user.is_staff:
                 proyectos = proyecto.objects.all()
                 ctx={'proyectos':proyectos,'mensaje':'Equipo Modificado','form':buscar_proyecto_form()}
@@ -103,6 +111,7 @@ def modificar_proyecto_view(request,id_proyecto):
         form = modificar_form(request.POST,instance=proyect)
         if form.is_valid():
             form.save()
+            notificar_mod_proyecto(proyect.miembro.all(),proyect)
             if request.user.is_staff:
                 proyectos = proyecto.objects.all()
                 ctx={'proyectos':proyectos,'mensaje':'Proyecto modificado','form':buscar_proyecto_form()}
@@ -123,6 +132,9 @@ def eliminar_proyecto_view(request,id_proyecto):
     '''vista que controla la eliminacion de usuarios del sistema'''
     proyect = proyecto.objects.get(pk=id_proyecto)
     if request.method == 'POST':
+        p = proyect.nombre
+        e= proyect.miembro.all()
+        notificar_eli_proyecto(e,p)
         proyect.delete()
         if request.user.is_staff:
                 proyectos = proyecto.objects.all()
@@ -147,8 +159,10 @@ def consultar_proyecto_view(request,id_proyecto):
         form = consultar_form(instance= proyect)
         form.fields['miembro'].queryset=proyect.miembro.all()
         form.fields['flujos'].queryset=proyect.flujos.all()
+        client = proyect.cliente
         list= zip(equipo,roles)
-        ctx = {'form':form,'list':list}
+        ust = us.objects.filter(proyecto_asociado=id_proyecto).order_by('prioridad')
+        ctx = {'form':form,'list':list,'ust':ust,'cliente':client}
         return render_to_response('proyecto/consultar_proyecto.html',ctx,context_instance=RequestContext(request))
 
 #---------------------------------------------------------------------------------------------------------------
@@ -184,3 +198,21 @@ def buscar_proyecto_view(request):
     ctx = {'form': form}
     return render_to_response('proyecto/adm_proyecto.html', ctx, context_instance=RequestContext(request))
 
+def kanban_proyecto_view(request,id_proyecto):
+    proyect = proyecto.objects.get(id=id_proyecto)
+    fj = proyect.flujos.first()
+    ust= fj.user_stories.all()
+    k = kanban.objects.first()
+    g = kanban.objects.filter(us__in=ust).order_by('actividad')
+    for l in g:
+        print l.us 
+        print l.actividad
+    kan = kanban_form(instance=k)
+    if request.method == 'GET':
+        kanban_formset = modelformset_factory(kanban,form=kanban_form,extra=0)
+        print kanban.objects.filter(us__in=ust).count()
+        formset= kanban_formset(queryset=kanban.objects.filter(us__in=ust).order_by('actividad'))    
+        form = proyecto_kanban_form(instance=proyect)
+        form.fields['flujos'].queryset = proyect.flujos.all()
+        ctx = {'form':kanban_formset}
+        return render_to_response('proyecto/kanban_proyecto.html', ctx, context_instance=RequestContext(request))

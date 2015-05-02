@@ -31,6 +31,7 @@ class sprint(models.Model):
     fecha_inicio= models.DateField(null=True,blank=True)
     fecha_fin= models.DateField(null=True,blank=True)
     proyect = models.ForeignKey(proyecto,null=True,blank=True)
+    #fechacreacion?
     #usuario_asignado=models.ManyToManyField(User,null=True,blank=True)
     #prioridad=models.CharField(max_length=1, choices=PRIORIDADES)
     #flujo_asignado=models.ForeignKey(flujo,null=True,blank=True,unique=False)

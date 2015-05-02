@@ -92,3 +92,14 @@ class buscar_proyecto_form(forms.Form):
                   }
     opciones = forms.ChoiceField(label='Buscar Por',required=True,widget=forms.Select(),choices=BUSCAR_POR)
     busqueda = forms.CharField(widget=forms.TextInput())
+
+class proyecto_kanban_form(ModelForm):
+    '''
+        Formulario que usado en la creacion de proyectos
+    '''
+    class Meta:
+        model = proyecto
+        fields = ['flujos',]
+        widgets = {
+              #     'flujos': forms.ChoiceField(),
+                   }

@@ -1,4 +1,11 @@
 # -*- encoding: utf-8 -*-
+"""
+    Vistas (Views)
+    ==============
+    
+    Módulo que contiene las vistas del módulo L{Home<IS2_R09.apps.Usuario>}, encargadas de controlar las
+    distintas operaciones aplicables al mismo.
+"""
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from IS2_R09.apps.Usuario.forms import crear_usuario_form,usuario_form,extension_usuario_form,\
@@ -8,11 +15,18 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from IS2_R09.settings import URL_LOGIN
 from django.http.response import HttpResponseRedirect
-
+from IS2_R09.apps.Notificaciones.views import notificar,notificar_creacion_usuario,\
+    notificar_mod_usuario, notificar_elim_usuario
 # Create your views here.
 
 @login_required(login_url= URL_LOGIN)
 def adm_usuario_view(request):
+    """
+        Administrar Usuario.
+        ====================
+        
+        Vista que controla la interfaz de administración de usuarios.
+    """
     users = User.objects.all()
     form = buscar_usuario_form()
     ctx={'usuario':request.user,'users':users,'form':form}
@@ -33,6 +47,7 @@ def crear_usuario_view(request):
             password_two = form.cleaned_data['password_two']
             u = User.objects.create_user(username=usuario, email=email,password= password_one,first_name=nombre,last_name=apellido)
             u.save()
+            notificar_creacion_usuario(u)
             return render_to_response('usuario/adm_usuario.html', {'mensaje': 'Usuario Creado.','users':User.objects.all(),'icono':'icon-yes.gif','form': buscar_usuario_form()},context_instance=RequestContext(request))
         else:
             ctx = {'form':form}
@@ -63,6 +78,7 @@ def mod_datos_view(request):
                 actual.foto = request.FILES['foto']
                 actual.save()
                 i=user_form.save()
+                notificar_mod_usuario(request.user)
                 return HttpResponseRedirect('/')
         else:
             user_form = usuario_form(request.POST,instance=request.user)
@@ -73,6 +89,7 @@ def mod_datos_view(request):
                # actual.foto = request.FILES['foto']
                 actual.save()
                 i=user_form.save()
+                notificar_mod_usuario(request.user)
                 return HttpResponseRedirect('/')
     else:
         user_form = usuario_form (instance=request.user)
@@ -97,6 +114,7 @@ def modificar_usuario_view(request,id_usuario):
                 actual.foto = request.FILES['foto']
                 actual.save()
                 i=user_form.save()
+                notificar_mod_usuario(u)
                 return render_to_response('usuario/adm_usuario.html', {'mensaje': 'Usuario modificado.','users':User.objects.all(),'icono':'icon-yes.gif','form': buscar_usuario_form()},context_instance=RequestContext(request))
         else:
             user_form = usuario_form(request.POST,instance=u)
@@ -107,6 +125,7 @@ def modificar_usuario_view(request,id_usuario):
                # actual.foto = request.FILES['foto']
                 actual.save()
                 i=user_form.save()
+                notificar_mod_usuario(u)
                 return render_to_response('usuario/adm_usuario.html', {'mensaje': 'Usuario modificado.','users':User.objects.filter(is_active=True),'icono':'icon-yes.gif','form': buscar_usuario_form()},context_instance=RequestContext(request))
     if request.method == 'GET':
         user_form= usuario_form(initial={
@@ -130,7 +149,9 @@ def eliminar_usuario_view(request,id_usuario):
     user = User.objects.get(pk=id_usuario)
     if request.method == 'POST':
         user = User.objects.get(pk=id_usuario)
+        mail = user.email
         user.delete()
+        notificar_elim_usuario(mail)
         users = User.objects.all()
         ctx = {'mensaje': 'Usuario eliminado','users':users,'form': buscar_usuario_form()}
         return render_to_response('usuario/adm_usuario.html', ctx, context_instance=RequestContext(request))

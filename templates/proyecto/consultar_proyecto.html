@@ -4,13 +4,17 @@
 <br />
 <br />
 	
-<div id="formuequipo">
-			<h3 align="center">Equipo</h3>			
-			{%for miembro,r in list%}
-				<ul align="left">
-					<li id="p2">{{miembro}} - Rol: {{r.rol}}</li>
-				</ul>
-			{% endfor %}
+<div id="formuequipo" align="center">
+			<h3 align="center">Equipo</h3>
+			{% if list %}			
+				{%for miembro,r in list%}
+					<ul align="left">
+						<li id="p2">{{miembro}} - Rol: {{r.rol}}</li>
+					</ul>
+				{% endfor %}
+			{% else %}
+				<p  id="p2">Proyecto sin Equipo</p>
+			{% endif %}
 </div>
 <div id="formuconsulta">
 		<div>
@@ -24,7 +28,7 @@
 				{{form.nombre}}
 				</p>
 				<p>Cliente<br />
-					{{form.cliente}}
+					<input type="Text" value="{{cliente}}" readonly></input>
 				</p>
 				<p>Estado<br />
 					{{form.estado}}
@@ -48,6 +52,20 @@
 		
 		<p align="center"><input class="boton" type="button" name="volver" value="Volver" onClick="location.href='/adm_proyecto/'"></p>
 	</div>
+
+<div id="formuequipo">
+			<h3 align="center">User Stories</h3>
+			{% if ust %}		
+				{%for u in ust %}
+					<ul align="left">
+						<li id="p2">{{u}} <a href= "/consultar/US/{{u.id}}/"><button><img src="/media/images/iconos/consultar.png" width="11px" heigh="11px"></button></a></li>
+						
+					</ul>
+				{% endfor %}
+			{% else%}
+				<p id="p2">No existen User stories asignados a proyecto </p>
+			{% endif%}
+</div>
 	
 </div>
 {% endblock %}

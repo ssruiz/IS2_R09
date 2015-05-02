@@ -28,6 +28,11 @@ class flujo_form(ModelForm):
         widgets = {
                    'actividades': forms.CheckboxSelectMultiple()
                    }
+        error_messages = {
+            'actividades': {
+                'required': ("El flujo debe tener al menos una actividad."),
+                },
+        }
 class actividad_form(ModelForm):
     """
         Formulario Actividad

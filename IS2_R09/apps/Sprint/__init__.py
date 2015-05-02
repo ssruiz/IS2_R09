@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 """
-    Aplicación B{Sprint.  
+    Aplicación B{Sprint}.  
     @author: Samuel Ruiz,Melissa Bogado, Rafael Ricardo
     @version: 1.0
 """

@@ -6,54 +6,65 @@
 	<br />
 	<br />
 	<br />
-	<h2>{{mensaje}}<h2> 
-	{% if icono %}
-		<img float="left" src="/media/images/iconos/{{icono}}" width="20px" heigh="20px">
-	{% endif%}
-	<form action="{% url 'vista_buscar_us' %}" method='POST'>
-		{% csrf_token %}
-		<div float="left" align="center">
-			<button type="button" name="agregar" onClick="location.href='/crear_US/'"><img src="/media/images/iconos/icon_addlink.gif" width="16px" heigh="16px">Nuevo</button>
-			|
-			{{form}}
-			<!--  <input type="submit" value="Buscar" ></input> -->
-			
-			<button type= "submit"><img src="/media/images/iconos/selector-search.gif">Buscar</button>
-			|
-			<button type="button" name="todos" onClick="location.href='/adm_US/'"><img src="/media/images/iconos/inline-restore.png">Todos</button>
+		<h4 align="center"><strong>Administración de User Stories</strong></h4>
+	<br />
+	<div class="row">
+	<div class="large-9 large-centered columns"  data-equalizer-watch>
+			<form action="{% url 'vista_buscar_us' %}" method='POST'>
+				{% csrf_token %}
+			 	<dl class="sub-nav" >
+  					
+					<dd >
+						<button title="Nuevo" type="button" class=" radius small success button" name="agregar" onClick="location.href='/crear_US/'"><i class="fi-plus"></i></button>
+					</dd>
+					<dd>
+						<p>Buscar por:</p>
+					</dd>
+					<dd>
+					{{form.opciones}}
+					</dd>
+					<dd >
+					{{form.busqueda}}
+					</dd>
+					<dd >
+						<button title="Buscar/Filtrar" class="small radius info button" type= "submit"><i class="fi-magnifying-glass"></i></button>
+					</dd>
+					<dd >
+						<button title="Mostrar Todos" type="button" class="small radius info button" name="todos" onClick="location.href='/adm_US/'"><i class="fi-torsos-all"></i></button>
+					</dd>
+				</dl>
+			</form>
 		</div>
-	</form>
-	
-</div>
+		</div>
 <div>
-	<table align="center">
-		<thead>
+	<table class="tabless" align="center">
+		<thead class="th2">
 			<tr>
 				<th>Nombre</th>
 				<th>Proyecto asociado</th>
 				<th>Tiempo estimado</th>
 				<th>Tiempo trabajado</th>
 				<th>Prioridad</th>
-				<th>Editar</th>
-				<th>Eliminar</th>
-				<th>Consultar</th>
-				<th>Comentarios</th>
-				<th>Adjuntos</th>
+				<th width="40">Editar</th>
+				<th width="40">Eliminar</th>
+				<th width="40">Consultar</th>
+				<th width="40">Comentarios</th>
+				<th width="40">Adjuntos</th>
 			</tr>
 		</thead>
 		{% for u in uss %}
-		<tbody>
+		<tbody class="td2">
 			<tr>
 				<td>{{u.nombre}}</td>
 				<td>{{u.proyecto_asociado}}</td>
 				<td>{{u.tiempo_estimado}}</td>
 				<td>{{u.tiempo_trabajado}}</td>				
 				<td>{{u.get_prioridad_display}}</td>
-				<td><a href= "/modificar/US/{{u.id}}/"><button><img src="/media/images/iconos/icon_changelink.gif"></button></a></td>
-				<td><a href= "/eliminar/US/{{u.id}}/"><button><img src="/media/images/iconos/icon_deletelink.gif"></button></a></td>
-				<td><a href= "/consultar/US/{{u.id}}/"><button><img src="/media/images/iconos/consultar.png" width="11px" heigh="11px"></button></a></td>
-				<td><a href= "/adm_comentario/{{u.id}}/"><button>C</button></a></td>
-				<td><a href= "/adm_adjunto/{{u.id}}/"><button>A</button></a></td>
+				<td><a href= "/modificar/US/{{u.id}}/"><button class="tiny radius success button"><i class="fi-pencil styletrash"></i></button></a></td>
+				<td><a href= "/eliminar/US/{{u.id}}/"><button class="tiny radius alert button"><i class="fi-trash styletrash"></i></button></a></td>
+				<td><a href= "/consultar/US/{{u.id}}/"><button class="tiny radius info button"><i class="fi-eye styletrash"></i></button></a></td>
+				<td><a href= "/adm_comentario/{{u.id}}/"><button class="tiny radius button">C</button></a></td>
+				<td><a href= "/adm_adjunto/{{u.id}}/"><button class="tiny radius button">A</button></a></td>
 				
 				
 			</tr>
@@ -61,6 +72,6 @@
 		
 		{% endfor %}
 	</table>
-	<p align="center"><input class="boton" type="button" name="volver_menu" value="Volver a Menú" onClick="location.href='/menu/'"></p>
+	<p align="center"><input class="tiny radius button" type="button" name="volver_menu" value="Volver a Menú" onClick="location.href='/menu/'"></p>
 </div>
 {% endblock %}

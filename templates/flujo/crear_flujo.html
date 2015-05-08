@@ -5,12 +5,13 @@
 	<br />
 	<br />
 	<br />
-	<div id="formul">
+	<h4 align="center"><strong>Crear flujo</strong></h4>
+	<div class="panel row">
 	<form action = "." method = "POST">
 		{% csrf_token %}
 		
 			{{ form.non_field_errors }}
-			<div> 
+			<div class="medium-6 medium-centered columns"> 
 				{{form.nombre.errors}}
 				<p>Nombre<br/>
 				{{ form.nombre }}
@@ -18,13 +19,14 @@
 				<p>Actividades<br/>
 				{{ form.actividades }}
 				</p>
-				<button type="button" name="agregar" onClick="location.href='/crear_actividad/{{nuevo}}'">Agregar Actividad<img src="/media/images/iconos/icon_addlink.gif" width="16px" heigh="16px"></button>
+				<label for="agregar">Agregar Actividad</label>
+				<button class="tiny radius success" type="button" name="agregar" onClick="location.href='/crear_actividad/{{nuevo}}'"><i class="fi-plus"></i></button>
 				
 			</div>
-			<div id="bsubmit">
-				<input class = "boton" type= "submit" value="Guardar"></input>
-				<input class = "boton" type="reset" value="Reset"/>
-				<input class="boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_flujo/'">
+			<div class="small-6 right">
+				<input class = "small radius button" type= "submit" value="Guardar"></input>
+				<input class = "small radius button" type="reset" value="Reset"/>
+				<input class="small radius alert button" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_flujo/'">
 			</div>
 		</form>
 	</div>

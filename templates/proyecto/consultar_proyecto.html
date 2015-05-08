@@ -3,9 +3,11 @@
 {% block content %}
 <br />
 <br />
-	
-<div id="formuequipo" align="center">
-			<h3 align="center">Equipo</h3>
+			<h4 align="center"><strong>Consultar Proyecto</strong></h4>
+<div class="panel row">	
+	<div class=" panel large-4 columns left">
+			<div class="panel"><h5 align="center"><strong>Equipo</strong></h5></div>
+			<div>
 			{% if list %}			
 				{%for miembro,r in list%}
 					<ul align="left">
@@ -15,46 +17,49 @@
 			{% else %}
 				<p  id="p2">Proyecto sin Equipo</p>
 			{% endif %}
-</div>
-<div id="formuconsulta">
-		<div>
-			<h3 align="center">Datos del Proyecto</h3>
+			</div>
+	</div>
+	<div class="panel large-4 columns left">
+		<div class="panel">
+			<h5 align="center"><strong>Datos del Proyecto</strong></h5>
 			
 		</div>
 		
 			
 		<div>
-				<p>Nombre<br />
+				<label>Nombre
 				{{form.nombre}}
-				</p>
-				<p>Cliente<br />
+				</label>
+				<label>Cliente
 					<input type="Text" value="{{cliente}}" readonly></input>
-				</p>
-				<p>Estado<br />
+				</label>
+				<label>Estado
 					{{form.estado}}
-				</p>
-				<p>Flujos del Proyecto<br />
+				</label>
+				<label>Flujos del Proyecto
 					{{form.flujos}}
-				</p>
-				<p>Descripción<br />
+				</label>
+				<label>Descripción
 					{{form.descripcion}}
-				</p>
-				<p>Fecha_creación<br />
+				</label>
+				<label>Fecha_creación
 					{{form.fecha_creacion}}
-				</p>
-				<p>Fecha de Inicio<br />
+				</label>
+				<label>Fecha de Inicio
 					{{form.fecha_inicio}}
-				</p>
-				<p>Fecha de Finalización<br />
+				</label>
+				<label>Fecha de Finalización
 					{{form.fecha_fin}}
-				</p>
+				</label>
 		</div>
 		
-		<p align="center"><input class="boton" type="button" name="volver" value="Volver" onClick="location.href='/adm_proyecto/'"></p>
+		
 	</div>
 
-<div id="formuequipo">
-			<h3 align="center">User Stories</h3>
+	<div class="panel large-4 columns left">
+			<div class="panel">
+				<h5 align="center"><strong>User Stories</strong></h5>
+			</div>
 			{% if ust %}		
 				{%for u in ust %}
 					<ul align="left">
@@ -65,7 +70,8 @@
 			{% else%}
 				<p id="p2">No existen User stories asignados a proyecto </p>
 			{% endif%}
-</div>
+	</div>
 	
 </div>
+<p align="center"><input class="small radius button" type="button" name="volver" value="Volver" onClick="location.href='/adm_proyecto/'"></p>
 {% endblock %}

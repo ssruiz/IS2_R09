@@ -1,17 +1,21 @@
 {% extends "base.html" %}
 {% block title %} Modificar Datos{% endblock %}
 {% block content %}
-<p>Esta a punto de eliminar del sistema al siguiente usuario: {{usuario}}</p>
-<p>Por favor confirme la accion</p>
-
-<div>
+<br />
+<br />
+<h4 align="center"><strong>Eliminar Usuario</strong></h4>
+<div class= "panel large-5 large-centered columns">
+<p>Esta a punto de eliminar del sistema al siguiente usuario: <strong>{{usuario}}</strong></p>
+<p>Por favor confirme la acción</p>
+</div>
+<div class="large-5 large-centered columns ">
 	<form method = 'POST' action = "" >
 		{% csrf_token %}
-		<input type="submit" value="Aceptar"></input>
-		<input type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_usuario/'">
+		<div class="small-6 small-centered columns">
+			<input class="small radius button" type="submit" value="Aceptar"></input>
+			<input class="small radius button" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_usuario/'">
+		</div>
 	</form>
 </div>
-<div>
-	
-</div>
+
 {% endblock %}

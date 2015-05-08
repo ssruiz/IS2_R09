@@ -124,7 +124,7 @@ def modificar_proyecto_view(request,id_proyecto):
     if request.method=='GET':
         proyect = proyecto.objects.get(id=id_proyecto)
         form = modificar_form(instance= proyect)
-        ctx = {'form':form}
+        ctx = {'form':form,'cliente':proyect.cliente}
         return render_to_response('proyecto/modificar_proyecto.html',ctx,context_instance=RequestContext(request))
 #---------------------------------------------------------------------------------------------------------------
 @login_required(login_url= URL_LOGIN)
@@ -214,5 +214,6 @@ def kanban_proyecto_view(request,id_proyecto):
         formset= kanban_formset(queryset=kanban.objects.filter(us__in=ust).order_by('actividad'))    
         form = proyecto_kanban_form(instance=proyect)
         form.fields['flujos'].queryset = proyect.flujos.all()
+        
         ctx = {'form':kanban_formset}
         return render_to_response('proyecto/kanban_proyecto.html', ctx, context_instance=RequestContext(request))

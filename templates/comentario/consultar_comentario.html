@@ -4,13 +4,11 @@
 	{% load staticfiles %}
 	<br />
 	<br />
+	<h4 align="center"><strong>Consultar Comentario</strong></h4>
 	<br />
-	<div id="formul">
-	<form action = "." method = "POST">
-		{% csrf_token %}
-		
+	<div class="panel row">
 			{{ form.non_field_errors }}
-			<div> 
+			<div class="small-6 small-centered columns"> 
 				{{form.nombre.errors}}
 				<p>Nombre<br/>
 				{{ form.nombre }}
@@ -21,14 +19,12 @@
 				<p >Fecha última modificación<br/>
 				{{ form.fecha_ultima_mod }}
 				</p>
-			</div>
-			<div>
+			
 				<p>Comentario <br/>
 				{{ form.comentario }}</p>
 			</div>
-			<div>
-				<input class="boton" type="button" name="Cancelar" value="Volver" onClick="location.href='/adm_comentario/{{userid}}/'">
+			<div class="small-5 right columns">
+				<input class="small radius button" type="button" name="Cancelar" value="Volver" onClick="location.href='/adm_comentario/{{userid}}/'">
 			</div>
-		</form>
 	</div>
 {% endblock %}

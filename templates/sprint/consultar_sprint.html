@@ -4,36 +4,37 @@
 	{% load staticfiles %}
 	<br />
 	<br />
+	<h4 align="center"><strong>Modificar Sprint</strong></h4>
 	<br />
-	<div id="formul" style="font-family: Verdana">
-	<h4 style="font-family: Verdana"><strong>Consulta de Sprint</strong></h4>
-	<form action = "." method = "POST">
-		{% csrf_token %}
-		
+	<div class="panel row">
+	
 			{{ form.non_field_errors }}
-			<div> 
+			<div class="small-6 small-centered columns"> 
 				{{form.nombre.errors}}
 				<p><strong>Nombre</strong><br/>
 				{{ form.nombre }}
 				</p>
-				<p><strong>Proyecto asociado</strong><br/>
-				{{ form.proyect }}
-				</p>
+				<label><strong>Proyecto asociado</strong>
+					<input type="text" value="{{ p }}" readonly></input>
+				</label>
 				<p><strong>Fecha de inicio</strong><br/>
 				{{ form.fecha_inicio }}
 				</p>
 				<p><strong>Fecha de Culminación</strong><br/>
 				{{ form.fecha_fin }}
 				</p>
-			</div>
-			<div>
+			
 				{{ form.descripcion.errors }}
 				<p><strong>Descripción</strong> <br/>
 				{{ form.descripcion }}</p>
+			
+				
+				<label><strong>US asignados</strong>
+				{{ form.ust }}</label>
 			</div>
-			<div align="center" id="bsubmit">
-				<input class="boton" type="button" name="Cancelar" value="Volver" onClick="location.href='/adm_sprint/'">
+			
+			<div class="small-4 right">
+				<input class="small radius button" type="button" name="Cancelar" value="volver" onClick="location.href='/adm_sprint/'">
 			</div>
-		</form>
 	</div>
 {% endblock %}

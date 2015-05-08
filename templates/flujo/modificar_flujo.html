@@ -1,29 +1,43 @@
 {% extends "base.html" %}
+{% block extra_head %}
+
+{% endblock extra_head %}
 {% block title %} Modificar Flujo {% endblock %}
 {% block content %}
 	{% load staticfiles %}
 	<br />
 	<br />
+	<h4 align="center"><strong>Modificar Flujo</strong></h4>
 	<br />
-	<div id="formul">
+	<div class="panel row">
 	<form action = "." method = "POST">
 		{% csrf_token %}
 		
 			{{ form.non_field_errors }}
-			<div> 
+			<div class="small-6 small-centered columns"> 
 				{{form.nombre.errors}}
-				<p>Nombre<br/>
+				<label>Nombre
 				{{ form.nombre }}
-				</p>
-				<p>Actividades<br/>
-				{{ form.actividades }}
-				<button type="button" name="agregar" onClick="location.href='/crear_actividad/flujo/{{id}}'"><img src="/media/images/iconos/icon_addlink.gif" width="16px" heigh="16px"></button>
+				</label>
+				
+				<label>Actividades. Puede cambiar el orden arrastrandolas</label>
+				
+				<ul id="id_actividades">
+    			{% for a,ac in list %}
+      				<li id="act_{{ac.id}}">
+        				{{ a }}
+        			</li>
+      			
+    		{% endfor %}
+				</ul>
+				<label for="agregar">Agregar actividad</label>
+				<button class="tiny sucess radius button" type="button" name="agregar" onClick="location.href='/crear_actividad/flujo/{{id}}'"><i class="fi-plus"></i></button>
 				
 			</div>
-			<div id="bsubmit">
-				<input class = "boton" type= "submit" value="Guardar"></input>
-				<input class = "boton" type="reset" value="Reset"/>
-				<input class="boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_flujo/'">
+			<div class="small-6 right">
+				<input class = "small radius button" type= "submit" value="Guardar"></input>
+				<input class = "small radius button" type="reset" value="Reset"/>
+				<input class="small radius alert button" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_flujo/'">
 			</div>
 		</form>
 	</div>

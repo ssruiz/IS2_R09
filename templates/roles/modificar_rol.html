@@ -1,18 +1,31 @@
 {% extends "base.html" %}
 {% block title %} Modificar Rol{% endblock %}
 {% block content %}
-	{% load staticfiles %}
-		<form id= "form" method = 'POST' action = "">
-			{% csrf_token %}
-			<div>
-				{{ rol_form.as_p }}
-			</div>
-			
-			<div id="formu">
-				<input type="submit" value="Guardar Cambios"/>
-				<input type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_rol/'">
-				<input type="reset" value="Reset"/>	
-			</div>
-			
-		</form>		
+	<br />
+	<br />
+	<h4 align="center"><strong>Modificar Rol</strong></h4>
+	<form id="form" action = "." method = "POST">
+	<div class= "panel row">
+		{% csrf_token %}
+		<div class="small 2 columns">
+		<label><strong>Nombre</strong>
+		{{ rol_form.name }}</label>
+		</div>
+		<div class="large 12 columns">
+		<label><strong>Permisos</strong></label>
+		 
+		{{ rol_form.permissions }}
+		
+		</div>
+		
+	</div>	
+		<div class="small-6 columns right">
+				<input class = "small radius button" type="submit" value="Guardar"/>
+				
+				<input class = "small radius button" type="reset" value="Reset"/>
+				<input class = "small radius alert button" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_rol/'">
+		</div>
+		
+	</form>
+	
 {% endblock %}

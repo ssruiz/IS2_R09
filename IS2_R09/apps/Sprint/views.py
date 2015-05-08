@@ -11,6 +11,8 @@ from IS2_R09.apps.Sprint.forms import buscar_sprint_form
 from IS2_R09.apps.Sprint.models import sprint
 from django.template.context import RequestContext
 from django.http.response import HttpResponseRedirect
+from IS2_R09.apps.Proyecto.models import proyecto
+from IS2_R09.apps.US.models import us
 
 # Create your views here.
 
@@ -48,7 +50,9 @@ def modificar_sprint_view(request, id_sprint):
             sp_form.save()
             return HttpResponseRedirect('/adm_sprint/', {'mensaje': 'Sprint Modificado.', 'sprints':sprint.objects.all(), 'icono':'icon-yes.gif'})
     if request.method == 'GET':
+        p = proyecto.objects.get(id=s.proyect.id)
         sp_form = sprint_form(instance=s)
+        sp_form.fields['ust'].queryset= us.objects.filter(proyecto_asociado=p.id)
         ctx = {'form': sp_form}
         return render_to_response('sprint/modificar_sprint.html', ctx, context_instance=RequestContext(request))
 
@@ -72,7 +76,8 @@ def consultar_sprint_view(request, id_sprint):
     if request.method == 'GET':
         s = sprint.objects.get(pk=id_sprint)
         c_form = consultar_sprint_form(instance=s)
-        ctx = {'form':c_form}
+        c_form.fields['ust'].queryset= s.ust.all()
+        ctx = {'form':c_form,'p':s.proyect}
         return render_to_response('sprint/consultar_sprint.html', ctx, context_instance=RequestContext(request))
     ctx = {'form':c_form}
     return render_to_response('sprint/consultar_sprint.html', ctx, context_instance=RequestContext(request))

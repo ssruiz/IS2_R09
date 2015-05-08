@@ -4,39 +4,41 @@
 	{% load staticfiles %}
 	<br />
 	<br />
+	<h4 align="center"><strong>Crear User Story</strong></h4>
 	<br />
-	<div id="formul">
+	<div class="panel row">
 	<form action = "." method = "POST">
 		{% csrf_token %}
 		
 			{{ form.non_field_errors }}
-			<div> 
+			<div class="small-6 small-centered columns"> 
 				{{form.nombre.errors}}
-				<p>Nombre<br/>
+				<label>Nombre
 				{{ form.nombre }}
-				</p>
-				<p>Proyecto asociado<br/>
+				</label>
+				<label>Proyecto asociado
 				{{ form.proyecto_asociado }}
-				</p>
-				<p>Tiempo estimado(Horas)<br/>
+				</label>
+				<label>Tiempo estimado(Horas)
 				{{ form.tiempo_estimado }}
-				</p>
-				<p>Tiempo Trabajado(Horas)<br/>
+				</label>
+				<label>Tiempo Trabajado(Horas)
 				{{ form.tiempo_trabajado }}
-				</p>
-				<p>Prioridad<br/>
+				</label>
+				<label>Prioridad
 				{{ form.prioridad }}
-				</p>
-			</div>
-			<div>
+				</label>
+			
+			
 				{{ form.descripcion.errors }}
-				<p>Descripción <br/>
-				{{ form.descripcion }}</p>
+				<label>Descripción 
+				{{ form.descripcion }}</label>
 			</div>
-			<div id="bsubmit">
-				<input class = "boton" type= "submit" value="Guardar"></input>
-				<input class = "boton" type="reset" value="Reset"/>
-				<input class="boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_US/'">
+			
+			<div class="small-6 right">
+				<input class = "small radius button" type= "submit" value="Guardar"></input>
+				<input class = "small radius button" type="reset" value="Reset"/>
+				<input class="small radius alert button" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_US/'">
 			</div>
 		</form>
 	</div>

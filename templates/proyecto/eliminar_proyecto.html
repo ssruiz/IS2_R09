@@ -1,16 +1,21 @@
 {% extends "base.html" %}
-{% block title%}Eliminar Proyecto{% endblock %}
+{% block title %} Eliminar Datos{% endblock %}
 {% block content %}
+<br />
+<br />
+<h4 align="center"><strong>Eliminar Proyecto</strong></h4>
+<div class= "panel large-5 large-centered columns">
+<p>Esta a punto de eliminar del sistema al siguiente proyecto: <strong>{{proyecto}}</strong></p>
+<p>Por favor confirme la acción</p>
+</div>
+<div class="large-5 large-centered columns ">
+	<form method = 'POST' action = "" >
+		{% csrf_token %}
+		<div class="small-6 small-centered columns">
+			<input class="small radius button" type="submit" value="Aceptar"></input>
+			<input class="small radius button" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_proyecto/'">
+		</div>
+	</form>
+</div>
 
-	<p>Esta a punto de eliminar del sistema al siguiente proyecto: {{proyecto}}</p>
-	<p>Por favor confirme la accion</p>
-	
-	<div>
-		<form method = 'POST' action = "" >
-			{% csrf_token %}
-			<input class="boton" type="submit" value="Aceptar"></input>
-			<input class="boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_proyecto/'">
-		</form>
-	</div>
-	<div>	
 {% endblock %}

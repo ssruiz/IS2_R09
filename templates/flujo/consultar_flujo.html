@@ -4,23 +4,24 @@
 	{% load staticfiles %}
 	<br />
 	<br />
-	<br />
-	<div id="formul">
+	
+	<h4 align="center"><strong>Consulta de Flujo</strong></h4>
+	<div class="panel row ">
 	<form action = "." method = "POST">
 		{% csrf_token %}
 		
 			{{ form.non_field_errors }}
-			<div> 
+			<div class="large-6 large-centered columns"> 
 				{{form.nombre.errors}}
-				<p>Nombre<br/>
+				<label>Nombre
 				{{ form.nombre }}
-				</p>
-				<p>Actividades<br/>
-				{{ form.actividades }}
+				</label>
+				<label>Actividades
+				{{ form.actividades }}</label>
 				
 			</div>
-			<div >
-				<p align="auto"><input class="boton" type="button" name="Cancelar" value="Volver" onClick="location.href='/adm_flujo/'"></p>
+			<div class="large-2 right columns">
+				<p align="auto"><input class="small radius button" type="button" name="Cancelar" value="Volver" onClick="location.href='/adm_flujo/'"></p>
 			</div>
 		</form>
 	</div>

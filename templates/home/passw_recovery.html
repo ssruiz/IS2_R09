@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 {% block title %} Recuperar Password {% endblock %}
 {% block content %}
-<div id="box1">
-<p align= "center">Recuperar Password</p>
+<br />
+<br />
+<h3 align= "center">Recuperar Password</h3>
+<div class="large-4 large-centered columns ">
+
 	<form action = "." method = "POST">
 		{% csrf_token %}
 		{{ mensaje }}
@@ -10,8 +13,8 @@
 			{{ form.as_p }}
 		</div>
 		<div align="center">
-			<input value="Recuperar" type= "submit"></input>
-			<input type="button" name="Cancelar" value="Cancelar" onClick="location.href='/login/'">
+			<input class=" tiny button" value="Recuperar" type= "submit"></input>
+			<input class="tiny button" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/login/'">
 		</div>
 	</form>
 </div>

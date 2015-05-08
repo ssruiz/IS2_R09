@@ -64,7 +64,7 @@ def eliminar_comentario_view(request, id_comentario,id_us):
         comentarios = userst.comentarios.all()
         ctx = {'comentarios':comentarios,'userid':id_us}
         return HttpResponseRedirect('/adm_comentario/%s'%(id_us),ctx)
-    ctx = {'comentario': comentario,'userid':id_us}
+    ctx = {'comentario': c,'userid':id_us}
     return render_to_response('comentario/eliminar_comentario.html', ctx, context_instance=RequestContext(request))
 
 
@@ -72,7 +72,7 @@ def eliminar_comentario_view(request, id_comentario,id_us):
 def consultar_comentario_view(request, id_comentario,id_us):
     if request.method == 'GET':
         c= comentario.objects.get(id=id_comentario)
-        form = consultar_adjunto_form(instance=c)
+        form = comentario_consulta_form(instance=c)
         ctx = {'form': form,'userid':id_us}
         return render_to_response('comentario/consultar_comentario.html', ctx, context_instance=RequestContext(request))
     

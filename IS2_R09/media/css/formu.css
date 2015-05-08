@@ -16,6 +16,12 @@
     color:#2e3436;                 /* color del texto */  
     
 }
+.cl2{
+	font-family: verdana;
+	font-size: 12pt;
+	color: #d3d7cf
+	
+}
 #formuequipo
 {
 	float: left;
@@ -92,6 +98,17 @@
     border:0px;
     width:120px;
     height:25px;
+}
+
+.botonover{
+    font-size:12px;
+    font-family:Verdana,Helvetica;
+    font-weight:bold;
+    color:#ffffff;
+    background:#3465a4;
+    border:3px;
+    width:122px;
+    height:26px;
 }
 
 #breset {

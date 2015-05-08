@@ -19,6 +19,10 @@ class actividad(models.Model):
         @type nombre: Varchar
     """
     nombre = models.CharField(max_length=30,unique=False)
+    order = models.PositiveIntegerField()
+    
+    class Meta:
+        ordering = ['order']
     def __unicode__(self):
         """
             Método que permite representar los objectos de la clase L{Actividad<IS2_R09.apps.Flujo.models.actividad>}

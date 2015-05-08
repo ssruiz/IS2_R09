@@ -80,13 +80,11 @@ class usuario_form(ModelForm):
 
 class extension_usuario_form(ModelForm):
     telefono = forms.CharField(label='Teléfono',widget=forms.TextInput({'class': 'campos'}),max_length=30, required=False)
-    foto = forms.ImageField(widget= forms.FileInput)
+    
     class Meta:
         model = usuario
-        fields = ('telefono','foto')
-        help_texts = {
-            'foto': (''),
-        }
+        fields = ('telefono',)
+        
 #------------------------------------------------------------------------------------
 class consultar_usuario_form(ModelForm):
     id = forms.CharField(label='ID',widget=forms.TextInput(attrs={'readonly':'readonly'}))
@@ -111,6 +109,14 @@ class buscar_usuario_form(forms.Form):
                   ('nombre','Nombre'),
                   ('apellido','Apellido')
                   }
-    opciones = forms.ChoiceField(label='Buscar Por',required=True,widget=forms.Select(),choices=BUSCAR_POR)
+    opciones = forms.ChoiceField(label='Buscar Por',required=True,widget=forms.Select(),choices=BUSCAR_POR,)
     
-    busqueda = forms.CharField(widget=forms.TextInput())
+    busqueda = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Ingrese parámetro','title':'Parámetro de Búsqueda'}),error_messages={'invalid':'Debe ingresar '})
+    
+    def clean_busqueda(self):
+        pass_one = self.cleaned_data['busqueda']
+        if pass_one == '':
+            raise forms.ValidationError('Ingrese un parámetro')
+        else:
+            print 'pase' 
+            

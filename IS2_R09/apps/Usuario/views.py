@@ -63,8 +63,8 @@ def adm_sesion_view(request):
 # vista que controla la modificacion de datos del usuario que inicio sesion
 @login_required(login_url=URL_LOGIN)
 def mod_datos_view(request):
-    user_form= usuario_form(prefix="user",instance=request.user)
-    exten_form=extension_usuario_form(prefix="usuario",instance=request.user.usuario)
+    user_form= usuario_form()
+    exten_form=extension_usuario_form()
     if request.method == 'POST':
         # formulario enviado
         if request.FILES:
@@ -78,7 +78,7 @@ def mod_datos_view(request):
                 actual.foto = request.FILES['foto']
                 actual.save()
                 i=user_form.save()
-                notificar_mod_usuario(request.user)
+                #notificar_mod_usuario(request.user)
                 return HttpResponseRedirect('/')
         else:
             user_form = usuario_form(request.POST,instance=request.user)
@@ -89,7 +89,7 @@ def mod_datos_view(request):
                # actual.foto = request.FILES['foto']
                 actual.save()
                 i=user_form.save()
-                notificar_mod_usuario(request.user)
+                #notificar_mod_usuario(request.user)
                 return HttpResponseRedirect('/')
     else:
         user_form = usuario_form (instance=request.user)
@@ -163,12 +163,11 @@ def eliminar_usuario_view(request,id_usuario):
 def buscar_usuario_view(request):
     form = buscar_usuario_form()
     if(request.method=='POST'):
-        form = buscar_usuario_form(request.POST)
+        form = buscar_usuario_form(request.POST,request.FILES)
         form2 = buscar_usuario_form()
         if form.is_valid():
             busqueda= form.cleaned_data['opciones']
             parametro = form.cleaned_data['busqueda']
-            print busqueda
             if busqueda== 'nombre':
                 u = User.objects.filter(first_name=parametro)
                 ctx = {'mensaje': 'Usuarios con nombre %s' %(parametro),'users':u,'form':form2}

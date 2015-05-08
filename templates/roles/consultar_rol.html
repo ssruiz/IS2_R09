@@ -1,15 +1,28 @@
 {% extends "base.html" %}
 {% block title %} Consultar Rol{% endblock %}
 {% block content %}
-
-<div>
-	
-	<div id="box1">
-		<div float="right">
-			<p align="center">Datos del Rol</p>
+<br />
+	<br />
+	<h4 align="center"><strong>Consulta Rol</strong></h4>
+	<form id="form" action = "." method = "POST">
+	<div class= "panel row">
+		{% csrf_token %}
+		<div class="small 2 columns">
+		<label><strong>Nombre</strong>
+		{{ form.name }}</label>
 		</div>
-			{{form.as_p}}
-		<p align="center"><input type="button" name="volver" value="Volver" onClick="location.href='/adm_rol/'"></p>
+		<div class="large 12 columns">
+		<label><strong>Permisos</strong></label>
+		 
+		{{ form.permissions }}
+		
+		</div>
+		
 	</div>	
-</div>
+		<div class="small-4 columns right">
+				<input class = "small radius alert button" type="button" name="Cancelar" value="Volver" onClick="location.href='/adm_rol/'">
+		</div>
+		
+	</form>
+	
 {% endblock %}

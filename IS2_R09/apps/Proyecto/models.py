@@ -8,7 +8,7 @@ class proyecto(models.Model):
     miembro = models.ManyToManyField(User,through='Equipo',related_name='equipo',null=True,blank=True)
     nombre = models.CharField(max_length=30)
     descripcion = models.TextField(max_length=200)
-    cliente = models.OneToOneField(User,related_name='cliente',null=True,blank=True)
+    cliente = models.ForeignKey(User,related_name='cliente',null=True,blank=True,unique=False)
     fecha_creacion = models.DateField(blank=True)
     fecha_inicio = models.DateField(null=True,blank=True)
     fecha_fin = models.DateField(null=True,blank=True)

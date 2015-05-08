@@ -5,48 +5,72 @@
 	<br />
 	<br />
 	<br />
-	<div id="formul">
+	<h4 align= "center"><strong>Crear Proyecto</strong></h4>
 	<form action = "." method = "POST">
 		{% csrf_token %}
+<div class="panel large-9 large-centered columns">
 		
 			{{ form.non_field_errors }}
-			<div> 
+			<div class="large-9 large-centered columns"> 
 				{{form.nombre.errors}}
-				<p>Nombre<br/>
-				{{ form.nombre }}
-				</p>
-				<p>Cliente<br/>
-				{{ form.cliente }}
-				</p>
-				<p>Estado<br/>
-				{{ form.estado }}
-				</p>
-				<p>Flujo<br/>
-				{{ form.flujos }}
-				</p>
-				{{ form.fecha_creacion.errors }}
-				<p>Fecha Creación (AAAA-MM-DD):<br/>
-				{{ form.fecha_creacion }}</p>
-				{{ form.fecha_inicio.errors }}
-				<p>Fecha Inicio (AAAA-MM-DD):<br/>
-				{{ form.fecha_inicio }}
-				<p>
+				<label>Nombre
+				{{ form.nombre }}</label>
 				
+				<label>Cliente
+				{{ form.cliente }}</label>
+				
+				<label>Estado
+				{{ form.estado }}</label>
+				
+				<label>Flujo
+				{{ form.flujos }}</label>
+				<div class="panel">
+					{{ form.fecha_creacion.errors }}
+					<div class="row">
+									<div class="small-10 columns">
+										<label>Fecha Creación (AAAA-MM-DD):
+										{{ form.fecha_creacion }}</label>
+									</div>
+									 
+						     		<div><input type="hidden" id="datepicker"></div>
+					</div>
+				</div>
+				
+				{{ form.fecha_inicio.errors }}
+				<div class="panel">
+				{{ form.fecha_creacion.errors }}
+					<div class="row">
+								<div class="small-10 columns">
+									<label>Fecha de Inicio (AAAA-MM-DD):
+									{{ form.fecha_inicio }}</label>
+								</div>
+								 
+					     		<div><input type="hidden" id="datepicker2"></div>
+					</div>
+				</div>
 				{{ form.fecha_fin.errors }}
-				<p>Fecha Fin (AAAA-MM-DD):<br/>
-				{{ form.fecha_fin }}
-				</p>
-			</div>
-			<div>
+				<div class="panel">
+				{{ form.fecha_creacion.errors }}
+					<div class="row">
+								<div class="small-10 columns">
+									<label>Fecha finalización (AAAA-MM-DD):
+									{{ form.fecha_fin }}</label>
+								</div>
+								 
+					     		<div><input type="hidden" id="datepicker3"></div>
+					</div>
+				</div>
+			
 				{{ form.descripcion.errors }}
-				<p>Descripción <br/>
-				{{ form.descripcion }}</p>
+				
+				<p><label>Descripción
+				{{ form.descripcion }}</label>
 			</div>
-			<div id="bsubmit">
-				<input class = "boton" type= "submit" value="Guardar"></input>
-				<input class = "boton" type="reset" value="Reset"/>
-				<input class="boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_proyecto/'">
+			<div class="small-6 columns right">
+				<input class = " small radius button" type= "submit" value="Guardar"></input>
+				<input class = "small radius button" type="reset" value="Reset"/>
+				<input class="small radius alert button" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_proyecto/'">
 			</div>
 		</form>
-	</div>
+</div>	
 {% endblock %}

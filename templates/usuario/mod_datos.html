@@ -4,35 +4,46 @@
 	{% load staticfiles %}
 <br />
 <br />
-<div>
-		<form method = 'POST' action = "" enctype="multipart/form-data">
-			{% csrf_token %}
-			<div id="formul">
-				<div>
-				{% if user.usuario.foto %}
-					<p>Foto Actual</p><img src = "/media/{{user.usuario.foto}}" width="100px" heigh="100px"></img>
-				{% endif %}
-					<p>Cambiar Foto <br/>
-					{{exten_form.foto}}
-					</p>
+
+<h4 align="center">Perfil de {{user}}</h4>
+<br />
+<div class="panel row" data-equalizer>
+	
+	
+			<form method = 'POST' action = "" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="small-3 columns" data-equalizer-watch>
+				<label>Foto</label>
+					{% if user.usuario.foto %}
+						<a class="th" href="/media/{{user.usuario.foto}}">
+							<img id="perfil" src = "/media/{{user.usuario.foto}}" width="100px" heigh="500px" >
+						</a>
+					{% endif %}
+					
+						<input id="id_foto" type="file" name='foto' ></input>
+					
+					
 				</div>
-				<p>User Name:<br />
-				{{user_form.username}}</p>
-				<p>Nombre:<br />
-				{{user_form.first_name}}</p>
-				<p>Apellido:<br />
-				{{user_form.last_name}}</p>
-				<p>Email:<br />
-				{{user_form.email}}</p>
-				<p>Telefono:<br />
-				{{exten_form.telefono}}</p>
+			<div class="large-8 columns" data-equalizer-watch>
+				<div id="formul">
+					<p>User Name:<br />
+					{{user_form.username}}</p>
+					<p>Nombre:<br />
+					{{user_form.first_name}}</p>
+					<p>Apellido:<br />
+					{{user_form.last_name}}</p>
+					<p>Email:<br />
+					{{user_form.email}}</p>
+					<p>Telefono:<br />
+					{{exten_form.telefono}}</p>
+				</div>
 			</div>
-			
-			<div id="divbtn">
-				<input class= "boton" type="submit" value="Guardar Cambios"/>
-				<input class= "boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/menu/'">
-				<input class= "boton" type="reset" value="Reset"/>	
-			</div>
-		</form>
-</div>
+				<div class="large-5 right">
+					<input class= "tiny radius button" type="submit" value="Guardar Cambios"/>
+					<input class= "tiny radius button" type="reset" value="Reset"/>
+					<input class= "tiny radius alert button" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/menu/'">	
+				</div>
+			</form>
+	</div>
+
 {% endblock %}

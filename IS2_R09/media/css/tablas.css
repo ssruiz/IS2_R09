@@ -1,6 +1,6 @@
 table {     
 	font-family: Lucida Sans Unicode, Lucida Grande, Sans-Serif;
-    font-size: 12px;    
+    font-size: 13px;    
     margin: auto;     
     width: 990px; 
     text-align: center;    
@@ -11,19 +11,24 @@ table {
 th {     
 	font-size: 13px;     
 	font-weight: normal;     
-	padding: 8px;     
+	padding: auto;     
 	background: #19829a;
-    border-top: 4px solid #aabcfe;    
-    border-bottom: 1px solid #ffffff; 
+    border-top: 8px solid #aabcfe;    
+    border-bottom: 3px solid #ffffff; 
     color: #003339; 
+    padding-top: 2px;
 }
 
-td {    
-	padding: 4px;     
+.td2 {    
+	padding: 2px;     
 	background: #e8edff;     
 	border-bottom: 1px solid #ffffff;
     color: #19829a;    
-    border-top: 1px solid transparent; 
+    border-top: 5px solid transparent;
+    border-left:  auto;
+    border-right: auto;
+    padding-top: 2px;
+    padding-right: 2px;
  }
 
 tr:hover td { background: #d0dafd; color: #339339; }

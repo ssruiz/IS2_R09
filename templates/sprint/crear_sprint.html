@@ -4,14 +4,15 @@
 	{% load staticfiles %}
 	<br />
 	<br />
+	<h4 align="center"><strong>Crear Sprint</strong></h4>
 	<br />
-	<div id="formul" style="font-family: Verdana">
-	<h4 style="font-family: Verdana"><strong>Crear Sprint</strong></h4>
+	<div class="panel row">
+	
 	<form action = "." method = "POST">
 		{% csrf_token %}
 		
 			{{ form.non_field_errors }}
-			<div> 
+			<div class="small-6 small-centered columns"> 
 				{{form.nombre.errors}}
 				<p><strong>Nombre</strong><br/>
 				{{ form.nombre }}
@@ -25,16 +26,21 @@
 				<p><strong>Fecha de Culminación</strong><br/>
 				{{ form.fecha_fin }}
 				</p>
-			</div>
-			<div>
+			
 				{{ form.descripcion.errors }}
 				<p><strong>Descripción</strong> <br/>
 				{{ form.descripcion }}</p>
 			</div>
-			<div id="bsubmit">
-				<input class = "boton" type= "submit" value="Guardar"></input>
-				<input class = "boton" type="reset" value="Reset"/>
-				<input class="boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_sprint/'">
+			<div>
+				
+				<p style="display:none"><strong>Asignar US</strong> <br/>
+				{{ form.ust }}</p>
+			</div>
+			
+			<div class="small-6 right">
+				<input class = "small radius button" type= "submit" value="Guardar"></input>
+				<input class = "small radius button" type="reset" value="Reset"/>
+				<input class="small radius alert button" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_sprint/'">
 			</div>
 		</form>
 	</div>

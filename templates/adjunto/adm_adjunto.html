@@ -6,36 +6,48 @@
 	<br />
 	<br />
 	<br />
-	<h2>{{mensaje}}<h2> 
-		
-</div>
+	<h4 align="center">Administración de Adjuntos</h4>
+	<br />
+	<div class="row">
+	<div class="large-2 large-centered columns"  data-equalizer-watch>
+			 	<dl class="sub-nav" >
+  					
+					<dd >
+					<label>
+						<button title="Nuevo" type="button" class=" radius small success button" name="agregar" onClick="location.href='/crear_adjunto/{{userid}}'"><i class="fi-plus"></i></button>
+					</dd>
+					</dl>
+					
+	</div>
+	</div>
+
 <div>
-	<table align="center">
-		<thead>
+	<table class="tabless" align="center">
+		<thead class="th2">
 			<tr>
-				<th>ID</th>
-				<th>Nombre</th>
-				<th>Version</th>
-				<th>Editar</th>
-				<th>Eliminar</th>
-				<th>Consultar</th>
+				<th width="200">ID</th>
+				<th width="200">Nombre</th>
+				<th width="200">Version</th>
+				<th width="40">Editar</th>
+				<th width="40">Eliminar</th>
+				<th width="40">Consultar</th>
 			</tr>
 		</thead>
 		{% for a in adjuntos %}
-		<tbody>
+		<tbody class="td2">
 			<tr>
 				<td>{{a.id}}</td>
 				<td>{{a.nombre}}</td>
 				<td>{{a.version}}</td>				
-				<td><a href= "/modificar/adjunto/{{a.id}}/{{userid}}/"><button><img src="/media/images/iconos/icon_changelink.gif"></button></a></td>
-				<td><a href= "/eliminar/adjunto/{{a.id}}/{{userid}}/"><button><img src="/media/images/iconos/icon_deletelink.gif"></button></a></td>
-				<td><a href= "/consultar/adjunto/{{a.id}}/{{userid}}/"><button><img src="/media/images/iconos/consultar.png" width="11px" heigh="11px"></button></a></td>
+				<td><a href= "/modificar/adjunto/{{a.id}}/{{userid}}/"><button class="tiny radius success button"><i class="fi-pencil styletrash"></i></button></a></td>
+				<td><a href= "/eliminar/adjunto/{{a.id}}/{{userid}}/"><button class="tiny radius alert button"><i class="fi-trash styletrash"></i></button></a></td>
+				<td><a href= "/consultar/adjunto/{{a.id}}/{{userid}}/"><button class="tiny radius info button"><i class="fi-eye styletrash"></i></button></a></td>
 				
 			</tr>
 		</tbody>
 		
 		{% endfor %}
 	</table>
-	<p align="center"><input class="boton" type="button" name="volver_menu" value="Volver" onClick="location.href='/adm_US/'"></p>
+	<p align="center"><input class="tiny radius button" type="button" name="volver_menu" value="Volver" onClick="location.href='/adm_US/'"></p>
 </div>
 {% endblock %}

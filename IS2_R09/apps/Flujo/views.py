@@ -8,14 +8,16 @@
     distintas operaciones aplicables al mismo.
 """
 
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, get_object_or_404
 from IS2_R09.apps.Flujo.models import flujo,actividad
 from django.template.context import RequestContext
 from django.contrib.auth.decorators import login_required
 from IS2_R09.settings import URL_LOGIN
 from IS2_R09.apps.Flujo.forms import flujo_form,buscar_flujo_form,actividad_form,consultar_form
 from django.contrib.redirects.models import Redirect
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+import simplejson
 
 @login_required(login_url= URL_LOGIN)
 def adm_flujo_view(request):
@@ -138,10 +140,13 @@ def modificar_flujo_view(request,id_flujo):
             ctx={'flujos':flujos,'form':buscar_flujo_form()}
             return HttpResponseRedirect('/adm_flujo/',ctx)
     if request.method=='GET':
+        
         fluj = flujo.objects.get(id=id_flujo)
         form = flujo_form(instance= fluj)
         form.fields['actividades'].queryset= fluj.actividades.all()
-        ctx = {'form':form,'id':id_flujo}
+        actividades = fluj.actividades.all()
+        list= zip(form['actividades'],actividades)
+        ctx = {'form':form,'id':id_flujo,'list':list}
         return render_to_response('flujo/modificar_flujo.html',ctx,context_instance=RequestContext(request))
     
 #----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -164,7 +169,11 @@ def crear_actividad_from_mod_view(request,id_flujo):
             form.save()
             fluj = flujo.objects.get(id=id_flujo)
             form = flujo_form(instance= fluj)
-            ctx = {'form':form}
+            form.fields['actividades'].queryset= fluj.actividades.all()
+            actividades = fluj.actividades.all()
+            list= zip(form['actividades'],actividades)
+            print 'a'
+            ctx = {'form':form,'id':id_flujo,'list':list}
             return HttpResponseRedirect('/modificar/flujo/%s'%(id_flujo),ctx)
     ctx = {'form':form}
     return render_to_response('actividad/crear_actividad.html',ctx,context_instance=RequestContext(request))
@@ -214,4 +223,13 @@ def buscar_flujo_view(request):
                                 
     ctx = {'form': form}
     return render_to_response('proyecto/adm_flujo.html', ctx, context_instance=RequestContext(request))
-    
+@csrf_exempt
+def sort(request):
+    lista= request.POST.getlist('act[]')
+    for index, act_pk in enumerate(request.POST.getlist('act[]')):
+        act = get_object_or_404(actividad, pk=int(str(act_pk)))
+        print index
+        print act_pk
+        act.order = index
+        act.save()
+    return HttpResponse('')

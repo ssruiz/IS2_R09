@@ -7,30 +7,30 @@
 	{% endblock %}
 	<br />
 	<br />
-	<div id="formul">
+	<h4 align="center"><strong>Crear Usuario</strong></h4>
+	<div class="panel large-6 large-centered columns">
 	<form action = "." method = "POST">
 		{% csrf_token %}
-		<p>User Name:<br />
-		{{ form.username }}</p>
-		<div>
-		<p>Nombre:<br />
-		{{ form.nombre }}</p>
-		<div>
-		<p>Apellido:<br />
-		{{ form.apellido }}</p>
-		<div>
-		<p>Email:<br />
-		{{ form.email }}</p>
-		<div>
-		<p>Password:<br />
-		{{ form.password_one }}</p>
-		<div>
-		<p>Confirmar Password:<br />
-		{{ form.password_two }}</p>
-		<div id="divbtn2">
-				<button class = "boton" type= "submit">Guardar</button>
-				<input class = "boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_usuario/'">
-				<input class = "boton" type="reset" value="Reset"/>
+		<p><label>Username
+		{{ form.username }}</label></p>
+		<p><label>Nombre:
+		{{ form.nombre }}</label></p>
+		
+		<p><label>Apellido:
+		{{ form.apellido }}</label></p>
+		
+		<p><label>Email:<br />
+		{{ form.email }}</label></p>
+		
+		<p><label>Password:<br />
+		{{ form.password_one }}</label></p>
+		
+		<p><label>Confirmar Password:<br />
+		{{ form.password_two }}</label></p>
+		<div class="large-8 right columns">
+				<input class = "small radius button" type="submit" value="Guardar"/>
+				<input class = "small radius button" type="reset" value="Reset"/>
+				<input class = "small radius button alert" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_usuario/'">
 		</div>
 	</form>
 	</div>

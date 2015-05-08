@@ -1,31 +1,43 @@
 {% extends "base.html" %}
 {% block title %} Consultar Usuario{% endblock %}
 {% block content %}
-<div id="box1">
-		<div>
-			<h3 align="center">Datos del Usuario</h3>
-			{% if foto%}
-				<p align="center"><img src= "/media/{{foto}}" width="100px" heigh="100px"></p>
-			{% else %}
-				<p align="center"><img src= "/media/images/iconos/no_disponible.png" width="100px" heigh="100px"></p>
-			{% endif %}
+<br />
+<br />
+<h4 align="center"><strong>Datos del Usuario</strong></h4>
+
+<div class="panel row">
+		<div class="large-2 columns" >
+					<label> Foto
+					{% if user.usuario.foto %}
+					
+						<a class="th" href="/media/{{foto}}">
+							<img id="perfil" src = "/media/{{foto}}" width="100px" heigh="500px" >
+						</a>
+					
+					{% else %}
+						<a class="th" href="/media/{{foto}}">
+							<img id="perfil" src = "/media/images/iconos/no_disponible.png" width="100px" heigh="500px" >
+						</a>
+					{% endif %}
+					</label>					
 		</div>
-		<div align="center">
-				<p>ID:<br />
-				{{form.id}}</p>
-				<p>User Name:<br />
-				{{form.username}}</p>
-				<p>Nombre:<br />
-				{{form.first_name}}</p>
-				<p>Apellido:<br />
-				{{form.last_name}}</p>
-				<p>Email:<br />
-				{{form.email}}</p>
-				<p>Telefono:<br />
-				{{form.telefono}}</p>
+		<div class="large-8 large-centered columns">
+				<label>ID:
+				{{form.id}}</label>
+				<label>User Name:
+				{{form.username}}</label>
+				<label>Nombre:
+				{{form.first_name}}</label>
+				<label>Apellido:
+				{{form.last_name}}</label>
+				<label>Email:
+				{{form.email}}</label>
+				<label>Telefono:
+				{{form.telefono}}</label>
+		</div>
+	</div>
+		<div class="small-7 columns right">
+		<p align="center"><input class= "tiny radius alert button" type="button" name="volver" value="Volver" onClick="location.href='/adm_usuario/'"></p>
 		</div>
 		
-		<p align="center"><input type="button" name="volver" value="Volver" onClick="location.href='/adm_usuario/'"></p>
-	</div>	
-</div>
 {% endblock %}

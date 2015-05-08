@@ -2,16 +2,21 @@
 {% block title %} Proyecto | Asignar Equipo {% endblock %}
 {% block content %}
 	{% load staticfiles %}
+	<br />
+	<br />
+	<h4 align="center"><strong>Asignar equipo</strong></h4>
 	{% if aux %}
-	<br />
-	<br />
-	<div id= "formuequipo2" align="center" >
+	
+	
+	<div class= "panel row" align="center" >
 	<form action= "/cantidad_equipo/proyecto/{{p}}/" method="POST">
 		{% csrf_token %}
-		<p>Inserte el número de integrantes a insertar:</p>
+		<div class="small-6 small-centered columns">
+		<h6>Inserte el número de integrantes a insertar:</h6>
 		{{aux.as_p}}
-		<p><input class="boton" type="submit" value="Aceptar"></input>
-		<input class="boton" type="button" name="volver" value="Cancelar" onClick="location.href='/adm_proyecto/'"></p>
+		<p><input class="small radius button" type="submit" value="Aceptar"></input>
+		<input class="small radius button" type="button" name="volver" value="Cancelar" onClick="location.href='/adm_proyecto/'"></p>
+		</div>
 	</form>
 	</div>
 	{% endif %}
@@ -20,11 +25,12 @@
 	<form action="/asignar_equipo/proyecto/{{p}}/" method="POST">
 	{% csrf_token %}
 	{{ form.management_form }}
-	<table>
+	<div class="panel row">
+	<table align="center">
 	<thead>
 			<tr>
-				<th>Usuario</th>
-				<th>Rol</th>
+				<th width="500">Usuario</th>
+				<th width="500">Rol</th>
 			</tr>
 	</thead>
 	{% for f in form %}
@@ -37,9 +43,10 @@
 		</tbody>
 	{% endfor %}
 	</table>
+	</div>
 	<div>
-	<p align="center"><input class="boton" type="submit" value="Guardar"></input>
-	<input class="boton" type="button" name="volver" value="Cancelar" onClick="location.href='/adm_proyecto/'"></p>
+	<p align="center"><input class="small radius button" type="submit" value="Guardar"></input>
+	<input class="small radius button" type="button" name="volver" value="Cancelar" onClick="location.href='/adm_proyecto/'"></p>
 	</div>
 	</form>
 	{% endif %}

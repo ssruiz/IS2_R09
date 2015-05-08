@@ -3,44 +3,161 @@
 	<head>
 		<meta charset="utf-8">
 		<title>IS2 - Proyectos Agiles | {% block title %} Inicio {% endblock %}</title>
-		  	<link rel="stylesheet" href= "/media/css/base.css"></link>
-		  	<link rel="stylesheet" href= "/media/css/formu.css"></link>		  	  	
-		  	<link rel="stylesheet" href= "/media/css/tablas.css"></link>
-		  	<link rel="stylesheet" href= "/media/css/menu.css"></link>
-		  	<script src="/media/js/jquery.js"></script>
-	</head>	
-	<body>
-			<div id="navega"> 
-				<div id="menu"> 
-					<div id="fijo" float="left" >
-						<h1 align="left"> IS2- R09</h1>					
-						{% if user.is_authenticated %}
-						     <a href="{% url 'vista_adm_sesion' %}">Adm.Sesion</a>
-						     |
-						     {% if user.is_staff%}
-						     	<a href="{% url 'vista_adm_usuario' %}">Admin.Usuario</a>
-						     	|
-						     	<a href="{% url 'vista_adm_rol' %}">Admin.Roles</a>
-						     	|
-						     {% endif %}
+		  	<link rel="stylesheet" href= "/media/js/jquery-ui/jquery-ui.css"></link>
+		  	<link rel="stylesheet" href= "/media/found/css/foundation.css"></link>
+		  	<link rel="stylesheet" href= "/media/found/css/foundation-icons.css"></link>
+		  	<link rel="stylesheet" href= "/media/css/customs.css"></link>
+		  	
+		  	
+		  	<script src="/media/js/jquery.js" type="text/javascript"></script>
+		  	<script src="/media/js/jquery-ui/jquery-ui.js" type="text/javascript"></script>
+		  	
+		  	<!-- Script para panel de navegacion -->
+		  
+		  	<script  type="text/javascript">
+				$(document).ready(function() 
+				{
+					$('.enlaceh').hover(function() 
+					{ //mouse in
+						$(this).stop().animate({ paddingBottom: '5px' },400);
+						
+					}, function() { //mouse out
+						$(this).stop().animate({ paddingBottom: 0 }, 400);  				
+					});
+					
+					$('ul.left li').mouseover(function(event){
+	      					$(this).addClass("active");
+	      				});
+	      			$('ul.left li').mouseleave(function(event){
+	      					$(this).removeClass("active");
+	      				});
+	      			 
+	      			
+	      			
+				});
+				
+			</script>
+			
+			<script>
+					 $.datepicker.regional['es'] = {
+					 closeText: 'Cerrar',
+					 prevText: '<Ant',
+					 nextText: 'Sig>',
+					 currentText: 'Hoy',
+					 monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+					 monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+					 dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+					 dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+					 dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+					 weekHeader: 'Sm',
+					 dateFormat: 'dd/mm/yy',
+					 firstDay: 1,
+					 isRTL: false,
+					 showMonthAfterYear: false,
+					 yearSuffix: ''
+					 };
+					 $.datepicker.setDefaults($.datepicker.regional['es']);
+					
+			</script>
+			 <!-- Script para seleccionador de fechas de Proyectos-->
+			<script>
+				$(function() {
+					$( "#datepicker" ).datepicker({
+						changeMonth: true,
+						changeYear: true,
+						showOn: "button",
+						dateFormat: 'yy-mm-dd',
+						showButtonPanel: true,
+						altField: '#id_fecha_creacion',
+						buttonImageOnly: true,
+						buttonImage: "/media/found/css/svgs/fi-calendar.svg",
+					});
+					$( "#datepicker2" ).datepicker({
+						changeMonth: true,
+						changeYear: true,
+						showOn: "button",
+						dateFormat: 'yy-mm-dd',
+						showButtonPanel: true,
+						buttonImageOnly: true,
+						buttonImage: "/media/found/css/svgs/fi-calendar.svg",
+						showButtonPanel: true,
+						altField: '#id_fecha_inicio',
+					});
+					$( "#datepicker3" ).datepicker({
+						changeMonth: true,
+						changeYear: true,
+						showOn: "button",
+						dateFormat: 'yy-mm-dd',
+						showButtonPanel: true,
+						buttonImageOnly: true,
+						buttonImage: "/media/found/css/svgs/fi-calendar.svg",
+						showButtonPanel: true,
+						altField: '#id_fecha_fin'
+					});
+				});
+			</script>
+			 <script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+    $("#id_actividades").sortable({
+      update: function(event, ui) {
+        var serial = $("#id_actividades").sortable('serialize');
+    	$.ajax({
+      		url: "{% url 'sort' %}",
+      		type: 'POST',
+      		data: serial
+      
+    	});
+      },
+    }).disableSelection();
+  });
+</script>
+
+</head>	
+<body>
+<div class="fixed" id="menu">
+<nav class="top-bar" data-topbar role="navigation"> 
+	<ul class="title-area"> 
+		<li class="name"> 
+			<h1><a href="/">IS2_R09</a></h1> 
+		</li>  
+		<li class="toggle-topbar menu-icon">
+			<a href="#"><span>Menu</span>
+		</a>
+		</li> 
+	</ul> 
+	<section id="secc" class="top-bar-section"> <!-- Right Nav Section -->
+		<ul class="right"> 
+			{% if user.is_authenticated %}
+			<li class="active">
+				<button class="radius button alert" title="Cerrar Sesión" name="logout" onClick="location.href='/logout/'"><i class="fi-power"></i></button>
+			</li>
+			{% endif %}
+		</ul>  
+		<ul class="left"> 
+	 		{% if user.is_authenticated %}
+			<li><a class= "enlaceh" href="{% url 'vista_adm_sesion' %}">Sesión</a></li>
+			{% if user.is_staff%}
+			<li><a class= "enlaceh" href="{% url 'vista_adm_usuario' %}">Usuarios</a></li>
+			<li><a class= "enlaceh" href="{% url 'vista_adm_rol' %}">Roles</a></li>
 						     	
-						     	<a href="{% url 'vista_adm_proyecto' %}">Admin. Proyecto</a>
-						     	|
-						     	<a href="{% url 'vista_adm_flujo' %}">Admin. Flujo</a>
-						     	|
-						     	<a href="{% url 'vista_adm_us' %}">Admin. US</a>
-						     	|
-						     	<a href="{% url 'vista_adm_sprint' %}">Admin. Sprint</a>
+			{% endif %}
 						     	
+						     	<li><a id= "ceh"  class= "enlaceh"  href="{% url 'vista_adm_proyecto' %}">Proyectos</a></li>
 						     	
-						     <p align="right">Usuario {{user}} - <button type="button" name="logout" onClick="location.href='/logout/'"><img src="/media/images/iconos/logout.png" width="15px" heigh="15px"></button></p>
-						{% endif %} 
-					</div>  
-				</div>  
-			</div>		
+						     	<li><a class= "enlaceh" href="{% url 'vista_adm_flujo' %}">Flujos</a></li>
+						     	
+						     	<li><a class= "enlaceh" href="{% url 'vista_adm_us' %}">User Stories</a></li>
+						     	
+						     	<li><a class= "enlaceh" href="{% url 'vista_adm_sprint' %}">Sprints</a></li>
+						{% endif %}     	
+		</ul> 
+	</section> 
+</nav>
+</div>
+						 <br />
+						 
+					
 			<div id = "content">
-				<br/>
-				<br/>
 				{% block content %}{% endblock %}
 			</div>
 	</body>

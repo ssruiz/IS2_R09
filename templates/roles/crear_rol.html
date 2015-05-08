@@ -2,14 +2,31 @@
 {% block title %} Crear Rol {% endblock %}
 {% block content %}
 	{% load staticfiles %}
+	<br />
+	<br />
+	<h4 align="center"><strong>Crear Rol</strong></h4>
 	<form id="form" action = "." method = "POST">
+	<div class= "panel row">
 		{% csrf_token %}
-		{{ form.as_p }}
-		<div>
-				<button class = "btn btn-primary" type= "submit">Guardar</button>
-				<input type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_rol/'">
-				<input type="reset" value="Reset"/>
+		<div class="small 2 columns">
+		<label><strong>Nombre</strong>
+		{{ form.name }}</label>
+		</div>
+		<div class="large 12 columns">
+		<label><strong>Permisos</strong></label>
+		 
+		{{ form.permissions }}
+		
 		</div>
 		
-	</form>	
+	</div>	
+		<div class="small-6 columns right">
+				<input class = "small radius button" type="submit" value="Guardar"/>
+				
+				<input class = "small radius button" type="reset" value="Reset"/>
+				<input class = "small radius alert button" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_rol/'">
+		</div>
+		
+	</form>
+	
 {% endblock %}

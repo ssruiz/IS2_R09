@@ -4,13 +4,14 @@
 	{% load staticfiles %}
 	<br />
 	<br />
+	<h4 align="center"><strong>Consulta Adjunto</strong></h4>
 	<br />
-	<div id="formul">
+	<div class="panel row">
 	<form action = "." method = "POST" enctype="multipart/form-data">
 		{% csrf_token %}
 		
 			{{ form.non_field_errors }}
-			<div> 
+			<div class="small-7 small-centered columns"> 
 				{{form.nombre.errors}}
 				<p>Nombre<br/>
 				{{ form.nombre }}
@@ -21,17 +22,14 @@
 				<p>Versión<br/>
 				{{ form.version }}
 				</p>
-			</div>
-			<div>
 				<p>Comentario <br/>
 				{{ form.comentario_commit }}</p>
 				<p>Archivo Actual <br/>
 				</p>
 				<a href="/media/{{archivo}}">Actual</img></a>
 			</div>
-			<div>
-				<br />
-				<input class="boton" type="button" name="Cancelar" value="Volver" onClick="location.href='/adm_adjunto/{{userid}}/'">
+			<<div class="small-4 right">
+				<input class="small radius button" type="button" name="Cancelar" value="volver" onClick="location.href='/adm_adjunto/{{userid}}/'">
 			</div>
 		</form>
 	</div>

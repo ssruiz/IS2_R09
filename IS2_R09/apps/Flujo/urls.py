@@ -21,4 +21,5 @@ urlpatterns = patterns('IS2_R09.apps.Flujo.views',
     url(r'^eliminar/flujo/(?P<id_flujo>.*)/$','eliminar_flujo_view', name= 'vista_eliminar_flujo'),
     url(r'^consultar/flujo/(?P<id_flujo>.*)/$','consultar_flujo_view', name= 'vista_consultar_flujo'),
     url(r'^buscar_flujo/$','buscar_flujo_view', name= 'vista_buscar_flujo'),
+    url(r'^sort/$', 'sort', name='sort'),
 )

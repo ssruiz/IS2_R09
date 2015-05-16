@@ -4,7 +4,7 @@
     Modulo que especifíca el modelo a utilizar para los B{Sprints} de los Proyectos.  
     @author: Samuel Ruiz,Melissa Bogado,Rafael Ricardo
 """
-from IS2_R09.apps.US.models import us
+
 __docformat__ = "Epytext" 
 from django.db import models
 from django.contrib.auth.models import User
@@ -31,8 +31,10 @@ class sprint(models.Model):
     descripcion = models.TextField(max_length=100)
     fecha_inicio= models.DateField(null=True,blank=True)
     fecha_fin= models.DateField(null=True,blank=True)
+    tiempo_estimado = models.PositiveIntegerField(null=True,blank=True,default=0)
+    tiempo_total = models.PositiveIntegerField(null=True,blank=True,default=0)
     proyect = models.ForeignKey(proyecto,null=True,blank=True)
-    ust = models.ManyToManyField(us,null=True,blank=True)
+    #ust = models.ManyToManyField(us,null=True,blank=True)
     #fechacreacion?
     #usuario_asignado=models.ManyToManyField(User,null=True,blank=True)
     #prioridad=models.CharField(max_length=1, choices=PRIORIDADES)

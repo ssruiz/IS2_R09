@@ -4,6 +4,7 @@
     Modulo que especifíca el modelo a utilizar para los B{User Stories} de los clientes.  
     @author: Samuel Ruiz,Melissa Bogado,Rafael Ricardo
 """
+from IS2_R09.apps.Sprint.models import sprint
 __docformat__ = "Epytext" 
 from django.db import models
 from django.contrib.auth.models import User
@@ -49,6 +50,7 @@ class us(models.Model):
     prioridad=models.CharField(max_length=1, choices=PRIORIDADES)
     #flujo_asignado=models.ForeignKey(flujo,null=True,blank=True,unique=False)
     proyecto_asociado=models.ForeignKey(proyecto,null=True,blank=True,unique=False)
+    sprint_asociado= models.ForeignKey(sprint,null=True,blank=True,unique=False)
     adjuntos = ManyToManyField(adjunto,null=True,blank=True)
     comentarios = ManyToManyField(comentario,null=True,blank=True)
     def __unicode__(self):

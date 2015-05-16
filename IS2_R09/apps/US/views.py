@@ -6,6 +6,11 @@
 """
 from IS2_R09.apps.Notificaciones.views import notificar_asignacion_us,\
     notificar_eli_proyecto, notificar_eli_us
+from django.http.response import HttpResponse
+from keyring.backend import json
+from django.views.decorators.csrf import csrf_exempt
+from argparse import Action
+from IS2_R09.apps.Sprint.models import sprint
 __docformat__ = "Epytext"  
 
 from django.shortcuts import render_to_response
@@ -119,6 +124,7 @@ def modificar_us_view(request,id_us):
             except:
                 k = kanban_form(request.POST)
                 if k.is_valid():
+                    print 'aaaa'
                     f = k.cleaned_data['fluj']
                     fj = flujo.objects.get(id=f.id)
                     act = fj.actividades.all()[:1].get()
@@ -159,6 +165,7 @@ def modificar_us_view(request,id_us):
             p= proyecto.objects.get(id=user_story.proyecto_asociado.id)
             form =us_form(instance= user_story)
             form.fields['usuario_asignado'].queryset= p.miembro.all()
+            form.fields['sprint_asociado'].queryset= sprint.objects.filter(proyect=p)
             #k.fields['us'].queryset = us.objects.get(id=id_us)
             k.fields['fluj'].queryset = p.flujos.all()
             #form.fields['flujo_asignado'].queryset= p.flujos.all()
@@ -271,3 +278,55 @@ def buscar_us_view(request):
                     
     ctx = {'form': form}
     return render_to_response('US/adm_us.html', ctx, context_instance=RequestContext(request))
+
+def info_us(request):
+    if request.is_ajax():
+        k = request.GET['k']
+        ust = us.objects.get(id=k)
+        l = {'nombre':ust.nombre,'test':ust.tiempo_estimado,'tt':ust.tiempo_trabajado,'des':ust.descripcion}
+        return HttpResponse(json.dumps(l))
+
+@csrf_exempt
+def asignar_ust(request):
+    if request.method == 'POST':
+        mensaje = ''
+        a = request.POST.get('k')
+        b = request.POST.get('f')
+        c = request.POST.get('s')
+        sp = sprint.objects.get(id=c) 
+        
+        f = flujo.objects.get(id=b)
+        act = f.actividades.first()
+        g =us.objects.get(id=a)
+        aux= kanban.objects.filter(us=g).count()
+        g.sprint_asociado = sp
+        sp.tiempo_estimado+= g.tiempo_estimado
+        sp.save()
+        g.save()
+        if aux == 0 :
+            g.ust = sp
+            sp.tiempo_estimado+= g.tiempo_estimado
+            sp.save()
+            g.save()
+            print g
+            print f
+            
+            print act.id
+            k= kanban.objects.get_or_create(us=g,fluj=f,actividad=act,prioridad=g.prioridad)
+            mensaje = 'Flujo y sprint asignado correctamente'
+        else:
+            k = kanban.objects.get(us=g)
+            if f != k.fluj:
+                k.fluj=f
+                k.actividad=act
+                k.prioridad=g.prioridad
+                k.save()
+                #kanban.objects.create(us=g,fluj=f,actividad=act)
+                g.tiempo_trabajado= 0
+                g.save()
+                mensaje = 'Cambio de Flujo realizado correctamente'
+            else:
+                mensaje = 'User Story ya asignado al flujo seleccionado'
+                pass
+    l = {'mensaje':mensaje}
+    return HttpResponse(json.dumps(l))

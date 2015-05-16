@@ -4,7 +4,7 @@
 	{% load staticfiles %}
 	<br />
 	<br />
-	<h4 align="center"><strong>Modificar Sprint</strong></h4>
+	<h4 align="center"><strong>Consulta Sprint</strong></h4>
 	<br />
 	<div class="panel row">
 	
@@ -17,6 +17,12 @@
 				<label><strong>Proyecto asociado</strong>
 					<input type="text" value="{{ p }}" readonly></input>
 				</label>
+				<p><strong>Tiempo estimado(horas)</strong><br/>
+				<input type="text"  value="{{ form.tiempo_estimado.value }}" disabled></input>
+				</p>
+				<p><strong>Tiempo Total trabajado(horas)</strong><br/>
+				<input type="text"  value="{{ form.tiempo_total.value }}" disabled></input>
+				</p>
 				<p><strong>Fecha de inicio</strong><br/>
 				{{ form.fecha_inicio }}
 				</p>

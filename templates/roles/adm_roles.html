@@ -3,10 +3,12 @@
 {% block content %}
 	<br/>
 	<br/>
-	<br/>		
+	<br/>
+<div class="panel row">		
 	<h4 align="center">Administración de Roles</h4>
 	<br />
 	{% load staticfiles %}
+
 	<div class="row">
 	<div class="large-9 large-centered columns"  data-equalizer-watch>
 			<form action="{% url 'vista_buscar_rol' %}" method='POST'>
@@ -59,4 +61,5 @@
 		{% endfor %}
 	</table>
 	<p align="center"><input class="small radius button" type="button" name="volver_menu" value="Volver a Menú" onClick="location.href='/menu/'"></p>
+</div>
 {% endblock %}

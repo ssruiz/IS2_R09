@@ -10,14 +10,19 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from IS2_R09.settings import URL_LOGIN
 import datetime
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, HttpResponse
 from IS2_R09.apps.US.models import us
 from django.contrib.sites import requests
 from django import forms
-from IS2_R09.apps.Flujo.models import kanban
-from IS2_R09.apps.Flujo.forms import kanban_form
+from IS2_R09.apps.Flujo.models import kanban, flujo, actividad
+from IS2_R09.apps.Flujo.forms import kanban_form, kanban_form_est
 from IS2_R09.apps.Notificaciones.views import notificar_asignacion_proyecto,\
     notificar_mod_proyecto, notificar_eli_proyecto
+from keyring.backend import json
+from django.template.loader import get_template
+from IS2_R09.apps.Sprint.models import sprint
+from django.core.context_processors import media
+from ImageColor import str2int
 # Create your views here.
 @login_required(login_url= URL_LOGIN)
 def adm_proyecto_view(request):
@@ -159,10 +164,12 @@ def consultar_proyecto_view(request,id_proyecto):
         form = consultar_form(instance= proyect)
         form.fields['miembro'].queryset=proyect.miembro.all()
         form.fields['flujos'].queryset=proyect.flujos.all()
+        flujos = proyect.flujos.all()
+        sprints = sprint.objects.filter(proyect=proyect)
         client = proyect.cliente
         list= zip(equipo,roles)
         ust = us.objects.filter(proyecto_asociado=id_proyecto).order_by('prioridad')
-        ctx = {'form':form,'list':list,'ust':ust,'cliente':client}
+        ctx = {'form':form,'list':list,'ust':ust,'cliente':client,'flujos':flujos,'sprints':sprints}
         return render_to_response('proyecto/consultar_proyecto.html',ctx,context_instance=RequestContext(request))
 
 #---------------------------------------------------------------------------------------------------------------
@@ -200,20 +207,121 @@ def buscar_proyecto_view(request):
 
 def kanban_proyecto_view(request,id_proyecto):
     proyect = proyecto.objects.get(id=id_proyecto)
-    fj = proyect.flujos.first()
-    ust= fj.user_stories.all()
-    k = kanban.objects.first()
-    g = kanban.objects.filter(us__in=ust).order_by('actividad')
-    for l in g:
-        print l.us 
-        print l.actividad
-    kan = kanban_form(instance=k)
+    #fj = proyect.flujos.first()
+    #ust= fj.user_stories.all()
+    #k = kanban.objects.first()
+    #g = kanban.objects.filter(us__in=ust).order_by('actividad')
+    #kan = kanban_form(instance=k)
     if request.method == 'GET':
-        kanban_formset = modelformset_factory(kanban,form=kanban_form,extra=0)
-        print kanban.objects.filter(us__in=ust).count()
-        formset= kanban_formset(queryset=kanban.objects.filter(us__in=ust).order_by('actividad'))    
-        form = proyecto_kanban_form(instance=proyect)
-        form.fields['flujos'].queryset = proyect.flujos.all()
-        
-        ctx = {'form':kanban_formset}
+        #kanban_formset = modelformset_factory(kanban,form=kanban_form,extra=0)
+        #print kanban.objects.filter(us__in=ust).count()
+        #formset= kanban_formset(queryset=kanban.objects.filter(us__in=ust).order_by('actividad'))    
+        #form = proyecto_kanban_form(instance=proyect)
+        #form.fields['flujos'].queryset = proyect.flujos.all()
+        fji = proyect.flujos.all()
+        ctx = {'form':fji,'p':proyect}
         return render_to_response('proyecto/kanban_proyecto.html', ctx, context_instance=RequestContext(request))
+
+def ustload(request):
+    if request.is_ajax():
+        idf= request.GET['fluj_id']
+        p = request.GET['p']
+        fj= flujo.objects.get(id=idf)
+        pr = proyecto.objects.get(id=p)
+        f= pr.flujos.get(id=idf)
+        ult = fj.actividades.all().order_by('-order')[0]
+        if pr.sprint_actual == '':
+            print 'hola'
+            ust = f.user_stories.all().order_by('prioridad')
+            releases = kanban.objects.filter(us__in=ust,fluj=fj,actividad=ult,estado='de').order_by('prioridad')
+            k= kanban.objects.filter(us__in=ust,fluj=fj).exclude(us__in=ust,fluj=fj,actividad=ult,estado='de').order_by('prioridad')
+            baja = f.user_stories.filter(prioridad=3).exclude(id__in=releases).count()
+            media = f.user_stories.filter(prioridad=2).exclude(id__in=releases).count()
+            alta = f.user_stories.filter(prioridad=1).exclude(id__in=releases).count()
+            
+            return render_to_response('proyecto/kanban_proyecto.html',{
+                    'fs': k,'baja':baja,'media':media,'alta':alta,'releases':releases},context_instance=RequestContext(request))
+        else:
+            sp= sprint.objects.get(id=pr.sprint_actual)
+            ust = f.user_stories.filter(sprint_asociado=sp).order_by('prioridad')
+            
+            releases = kanban.objects.filter(us__in=ust,fluj=fj,actividad=ult,estado='de').order_by('prioridad')
+            k= kanban.objects.filter(us__in=ust,fluj=fj).exclude(us__in=ust,fluj=fj,actividad=ult,estado='de').order_by('prioridad')
+            baja = f.user_stories.filter(sprint_asociado=sp,prioridad=3).exclude(id__in=releases).count()
+            media = f.user_stories.filter(sprint_asociado=sp,prioridad=2).exclude(id__in=releases).count()
+            alta = f.user_stories.filter(sprint_asociado=sp,prioridad=1).exclude(id__in=releases).count()
+            print 'media'+ str(media)
+            return render_to_response('proyecto/kanban_proyecto.html',{
+                    'fs': k,'baja':baja,'media':media,'alta':alta,'releases':releases},context_instance=RequestContext(request))
+            
+def cambiar_estado(request):
+    if request.is_ajax():
+        # variables recibidas
+        i = request.GET['k'] # kanban
+        ust = request.GET['us'] # User Story
+        act = request.GET['act'] #actividad
+        est = request.GET['es']
+        ht = request.GET['ht']
+        k = kanban.objects.get(id=i)
+        t = k.fluj.actividades.all().count()
+        ut = us.objects.get(nombre=ust)
+        total = 0
+        prioridad = ut.prioridad
+        proyecto_us= ut.proyecto_asociado
+        proyect = proyecto.objects.get(id=proyecto_us.id)
+        sp= ut.sprint_asociado
+        acti = k.fluj.actividades.get(nombre=act)
+        
+        ord= acti.order +1
+        ult = k.fluj.actividades.all().order_by('-order')[0]
+        ult = ult.nombre
+        if proyect.sprint_actual == '':
+            proyect.sprint_actual = sp.id
+            proyect.save()
+            spa = sprint.objects.get(id=sp.id)
+            if est == 'to do':
+                kanban.objects.filter(id=i).update(estado='dg')
+                est = 'doing'
+            elif est == 'doing':
+                total =int(ht)
+                ut.tiempo_trabajado+= total
+                spa.tiempo_total+=total
+                ut.save()
+                spa.save()
+                kanban.objects.filter(id=i).update(estado='de')
+                est = 'done'
+            else:
+                if (ord<t):
+                    acti = k.fluj.actividades.get(order=ord)
+                    kanban.objects.filter(id=i).update(estado='td',actividad=acti)
+                    est = 'to do'
+                    act = acti.nombre
+            l = {'estado':est,'actividad':act,'ultimo':ult}
+            return HttpResponse(json.dumps(l))
+        else:
+            if est == 'to do':
+                kanban.objects.filter(id=i).update(estado='dg')
+                est = 'doing'
+            elif est == 'doing':
+                total =int(ht)
+                spa = sprint.objects.get(id=sp.id)
+                ut.tiempo_trabajado+= total
+                spa.tiempo_total+=total
+                ut.save()
+                spa.save()
+                kanban.objects.filter(id=i).update(estado='de')
+                est = 'done'
+            else:
+                if (ord<t):
+                    acti = k.fluj.actividades.get(order=ord)
+                    kanban.objects.filter(id=i).update(estado='td',actividad=acti)
+                    est = 'to do'
+                    act = acti.nombre
+                else:
+                    pass
+                    
+                    
+            #print acti
+            #print k.fluj.actividades.get(nombre=act)
+            l = {'estado':est,'actividad':act,'ultimo':ult,'prioridad':prioridad}
+            return HttpResponse(json.dumps(l))

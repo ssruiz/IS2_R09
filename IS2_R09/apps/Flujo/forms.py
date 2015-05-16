@@ -88,3 +88,14 @@ class kanban_form(ModelForm):
     class Meta:
         model = kanban
         
+class kanban_form_est(ModelForm):
+    """
+        Formulario kanban
+        =================
+        
+        Formulario usado en la creacion y modificación de Kanban.
+    """
+    horas = forms.IntegerField(widget=forms.TextInput())
+    class Meta:
+        model = kanban
+        

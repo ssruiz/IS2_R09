@@ -18,4 +18,6 @@ urlpatterns = patterns('IS2_R09.apps.US.views',
     url(r'^consultar/US/(?P<id_us>.*)/$','consultar_us_view', name= 'vista_consultar_us'),
     #url(r'^buscar_proyecto/$','buscar_proyecto_view', name= 'vista_buscar_proyecto'),
     url(r'^buscar_US/$','buscar_us_view', name= 'vista_buscar_us'),
+    url(r'^infoust/$','info_us', name= 'infoust'),
+    url(r'^asignarust/$','asignar_ust', name= 'asignar_ust'),
 )

@@ -52,7 +52,6 @@ def modificar_sprint_view(request, id_sprint):
     if request.method == 'GET':
         p = proyecto.objects.get(id=s.proyect.id)
         sp_form = sprint_form(instance=s)
-        sp_form.fields['ust'].queryset= us.objects.filter(proyecto_asociado=p.id)
         ctx = {'form': sp_form}
         return render_to_response('sprint/modificar_sprint.html', ctx, context_instance=RequestContext(request))
 
@@ -76,7 +75,6 @@ def consultar_sprint_view(request, id_sprint):
     if request.method == 'GET':
         s = sprint.objects.get(pk=id_sprint)
         c_form = consultar_sprint_form(instance=s)
-        c_form.fields['ust'].queryset= s.ust.all()
         ctx = {'form':c_form,'p':s.proyect}
         return render_to_response('sprint/consultar_sprint.html', ctx, context_instance=RequestContext(request))
     ctx = {'form':c_form}

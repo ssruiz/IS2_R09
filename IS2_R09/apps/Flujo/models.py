@@ -19,7 +19,7 @@ class actividad(models.Model):
         @type nombre: Varchar
     """
     nombre = models.CharField(max_length=30,unique=False)
-    order = models.PositiveIntegerField()
+    order = models.PositiveIntegerField(default=0)
     
     class Meta:
         ordering = ['order']
@@ -69,7 +69,7 @@ class kanban(models.Model):
     actividad = models.ForeignKey(actividad,related_name='actividad',null=True,blank=True)
     us = models.ForeignKey('US.us',related_name='user_story',null=True,blank=True)
     estado = models.CharField(max_length=2,choices=ESTADOS,default='td',null=True,blank=True)
-
+    prioridad = models.CharField(max_length=1,null=True,blank=True)
     
 '''
 ESTADOS = (

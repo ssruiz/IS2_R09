@@ -14,7 +14,6 @@ class proyecto(models.Model):
     fecha_fin = models.DateField(null=True,blank=True)
     estado = models.CharField(max_length=10,blank=True,default='Iniciado')
     flujos = models.ManyToManyField(flujo,null=True,blank=True)
-    duracion_sprint = models.IntegerField(null=True,blank=True)
     sprint_actual= models.CharField(max_length=30,null=True,blank=True)
     def __str__(self):
         return self.nombre

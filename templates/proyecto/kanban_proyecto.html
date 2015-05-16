@@ -1,19 +1,100 @@
 {% extends "base.html" %}
 {% block title%}Kanban Proyecto{% endblock %}
 {% block content %}
+{% if form %}
+<div class="panel large-11 large-centered columns">
+	<br />
+	<br />
+	
+		<h4 align="center"><strong>Administrar kanban</strong></h4>
+		<br />		
+		<div class="small-6 small-centered columns">		
+			<label for="flujos">Seleccione el flujo del proyecto</label>
+			<select id="selef"name="flujos">
+			{% for f in form %}
+			 	<option value="{{f.id}}">{{f}}</option> 				  	
+		  	{% endfor %}
+		  	</select>
+		  	<input id="proy" type="text" style="display:none" value="{{p.id}}"></input>
+		</div> 
+		  	<div id= "btn" class="small-4 right columns">
+				<input class="small radius button" id="selfluj" type="button" value="Aceptar"></input>
+				<input class="small radius button" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_proyecto/'">
+			</div>
+			{% endif %}
+</div>
+	
 
-	<br />
-	<br />
-	<br />
-	<div>
-		<form method = 'POST' action = "" >
-			{% csrf_token %}
-			{% for f in form%}
-				{{f}}<br />
-			{% endfor %}
-			<input class="boton" type="submit" value="Aceptar"></input>
-			<input class="boton" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_proyecto/'">
-		</form>
-	</div>
-	<div>	
+			<div id="cont" class="large-12 columns">
+			   <form id="formu" method='POST' action=''>
+			   		{% csrf_token %}
+			   		{% if fs %}
+			   		{% for el in fs %}
+			   		<div id="div{{el.id}}" class="panel small-2 left columns">
+				   		<label>US
+				   			<input id="{{el.id}}us" type="text" value="{{el.us}}" readonly></input></label>
+				   		<label id="{{el.id}}lact">Actividad
+				   			<input id="{{el.id}}act" type="text" value="{{el.actividad}}" readonly></input></label>
+				   		<label>Estado
+				   			<input id="{{el.id}}es" type="text" value="{{el.get_estado_display}}" readonly></input></label>
+				   		{% if el.get_estado_display == 'doing' %}
+				   			<label id="{{el.id}}lht">Horas Trabajadas
+				   			<input id="{{el.id}}ht" type="text" value=""></input></label>
+				   		{% else %}
+				   			<label id="{{el.id}}lht" style='display:none'>Horas Trabajadas
+				   			<input id="{{el.id}}ht" type="text" value="" style='display:none'></input></label>
+				   		{% endif %}
+				   		
+				   		{% if el.prioridad == "1" %}
+				   			<label id="{{el.id}}lpr">Prioridad
+				   			<input id="{{el.id}}pr" type="text" value="Alta" disabled></input></label>
+				   			<input id="{{el.id}}" class="tiny radius button" name="cambalta" id="selfluj" type="button" value="Cambiar estado"></input>
+				   		{% elif el.prioridad == "2"%}
+				   			<label id="{{el.id}}lpr">Prioridad
+				   			<input id="{{el.id}}pr" type="text" value="Media" disabled></input></label>
+				   			
+				   			<input id="{{el.id}}" class="tiny radius button" name="cambmedia" id="selfluj" type="button" value="Cambiar estado"></input>
+				   		{% elif el.prioridad == "3"%}
+				   			<label id="{{el.id}}lpr">Prioridad
+				   			<input id="{{el.id}}pr" type="text" value="Baja" disabled></input></label>
+				   			
+				   			<input id="{{el.id}}" class="tiny radius button" name="cambbaja" id="selfluj" type="button" value="Cambiar estado"></input>
+				   		{% endif %}
+				   			
+			   		</div>
+			   		{% endfor %}
+			   		
+					{% endif %}
+				</div>
+				
+			   </form>
+			 <div>
+			 {% if fs %}
+			 	<div id="releases" class="panel large-12 columns">
+			 		<h4 align="center"><strong>Listos para Release</strong></h4>
+			 		{% for el in releases %}
+			   			<div id="div{{el.id}}" class="panel small-2 left columns">
+			   				<label>US
+				   			<input id="{{el.id}}us" type="text" value="{{el.us}}" readonly></input></label>
+				   			<label>Estado
+				   			<input id="{{el.id}}est" type="text" value="{{el.get_estado_display}}" readonly></input></label>
+				   		</div>
+			 	
+			 	
+			 {% endfor %}
+			 	<input class="small right radius button" type="button" value="Sacar Release"></input>
+			 	</div>
+			 	
+			 	<input id="alta" type="text" value="{{alta}}" style="display:none"></input>
+			 	<input id="media" type="text" value="{{media}}" style="display:none"></input>
+			 	<input id="baja" type="text" value="{{baja}}" style="display:none"></input>
+			 {% endif %}
+			   </div>
+			{% if fs %}
+			   		<div class="small-4 right columns">
+						<input class="small radius button" type="button" name="Cancelar" value="Volver" onClick="location.href='/adm_proyecto/'">
+					</div>
+			{% endif %}
+			
+
 {% endblock %}

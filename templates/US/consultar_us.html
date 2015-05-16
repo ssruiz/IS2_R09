@@ -5,12 +5,14 @@
 	<br />
 	<br />
 	<br />
-	<div id="formul">
+	<h4 align="center">Consulta de US</h4>
+	<div class="panel row">
+		
 	<form action = "." method = "POST">
 		{% csrf_token %}
 		
 			{{ form.non_field_errors }}
-			<div> 
+			<div class="large-6 large-centered columns"> 
 				{{form.nombre.errors}}
 				<p>Nombre<br/>
 				{{ form.nombre }}
@@ -37,14 +39,13 @@
 					<input type="Text" value="Flujo No asignado" readonly></input>
 				{% endif %}
 				</p>
-			</div>
-			<div>
+			
 				{{ form.descripcion.errors }}
 				<p>Descripción <br/>
 				{{ form.descripcion }}</p>
 			</div>
 			<div align="center" id="bsubmit">
-				<input class="boton" type="button" name="Cancelar" value="Volver" onClick="location.href='/adm_US/'">
+				<input class="small radius button" type="button" name="Cancelar" value="Volver" onClick="location.href='/adm_US/'">
 			</div>
 		</form>
 	</div>

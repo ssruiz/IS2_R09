@@ -112,6 +112,237 @@ $(document).ready(function() {
   });
 </script>
 
+	<script type="text/javascript" charset="utf-8">
+	$(document).ready(function(){  
+  
+    $('#selfluj').click(function() {  
+    	var sel = $('#selef').val();
+    	var p = $('#proy').val()
+        $.ajax({
+      url: "{% url 'ustload' %}",
+      data: {fluj_id:sel,p:p},
+      type: 'GET',
+      dataType: 'html',
+      success: function(datos) {
+      	
+      	
+        $('#formu').append(datos).html();
+        $('#btn').hide('slide','slow');
+        var alt = $('#alta').val();
+		var med = $('#media').val()
+		var baj = $('#baja').val();
+        botonSegunPrio(alt,med,baj);
+      }
+    });
+    });   
+    });  
+		 
+</script>
+<script>
+	prioridades = function(altas,medias,bajas,id){
+   	if(altas == 0)
+   	{
+   		if(media != 0)
+   		{
+   			$("input[name^='cambmedia']").attr('disabled',false);
+   			alert('Ha realizado el ultimo User Story con prioridad alta. Activando los de prioridad media.')
+   		}
+   		else
+   		{
+   			alert('Ha realizado el ultimo User Story con prioridad alta y/o media. Activando los de prioridad baja.')
+   			$("input[name^='cambbaja']").attr('disabled',false);
+   		}
+   	}
+   	 return 0;
+   }
+   
+   botonSegunPrio = function(altas,medias,bajas,id){
+   		if(altas != 0)
+   		{
+   			$("input[name^='cambmedia']").attr('disabled',true);
+   			$("input[name^='cambbaja']").attr('disabled',true);
+   		}
+   		else
+   		{
+   			if(media != 0)
+   			{
+   				$("input[name^='cambmedia']").attr('disabled',false);
+   				$("input[name^='cambbaja']").attr('disabled',true);
+   			}
+   			else
+   				$("input[name^='cambbaja']").attr('disabled',false);
+   			
+   		}
+   		return 0;
+   	
+   }
+</script>
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function(){  
+  
+    $("input[name^='camb']").click(function() {  
+    	var i = $(this).attr('id');
+    	var ust = $('#'+i+'us').val();
+    	
+    	var acti = $('#'+i+'act').val();
+    	var est = $('#'+i+'es').val();
+    	var htr = $('#'+i+'ht').val();
+    	
+    	$.ajax({
+      		url: "{% url 'cambest' %}",
+      		type: 'GET',
+      		data: {k:i,us:ust,act:acti,es:est,ht:htr},
+      		datatype: 'json',
+      		
+      		contentType: "application/json; charset=utf-8",
+      		success: function(result) {
+      		var a = jQuery.parseJSON(result);
+      		 
+            var acti = $('#'+i+'act').val(a.actividad);
+    		var est = $('#'+i+'es').val(a.estado);
+    		if(a.estado == 'doing'){
+    			$('#'+i+'ht').toggle();
+    			$('#'+i+'lht').toggle();
+    			alert('Estado cambiado');
+    		}
+			else if(a.estado == 'done' && a.actividad != a.ultimo){
+				$('#'+i+'ht').toggle();
+    			$('#'+i+'lht').toggle();
+				$('#'+i).attr("value","Sgte Actividad");
+				}
+			else if(a.estado == 'to do'){
+				$('#'+i).attr("value","Cambiar Estado");
+				}
+			else if(a.estado== 'done' && a.actividad == a.ultimo)
+			{
+				$('#'+i).hide('slow');
+				$('#div'+i).appendTo('#releases');
+				$('#'+i+'lht').toggle();
+				$('#'+i+'ht').toggle();
+				$('#'+i+'lpr').toggle();
+				$('#'+i+'pr').toggle();
+				$('#'+i+'lact').toggle();
+				$('#'+i+'act').toggle();
+				var alt = $('#alta').val();
+				var med = $('#media').val()
+				var baj = $('#baja').val();
+				if(a.prioridad == 1)
+				{
+					$('#alta').val(alt-1);
+					alt = $('#alta').val();
+				}
+				else if(a.prioridad == 2)
+				{
+					$('#media').val(med-1);
+					med = med - 1
+				}
+				else
+				{
+					$('#baja').val(baj-1);
+					baj = baj - 1
+				}
+				prioridades(alt,med,baj,i);
+			}
+            
+        },
+        error: function() {
+            alert('Error occured');
+        }
+      	});
+    });
+       
+   });		 
+</script>
+
+
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function(){  
+  
+    	$("a[name^='asig']").click(function() {
+    		var id = $(this).attr('id')
+    		var i = id.substr(1);
+    		$( "#dialogo" ).dialog({
+				dialogClass: "no-close",
+				title: 'Asignar Flujo-Sprint',
+				width: 500,
+				buttons: [
+				{
+					text: "Guardar",
+					click: function() 
+					{
+						var flujo = $('#selefp').val();
+    					var sprint = $('#selesp').val();
+    		
+						$.ajax({
+    						url: "{% url 'asignar_ust' %}",
+				      		type: 'POST',
+				      		data: {k:i,f:flujo,s:sprint},
+				      		datatype: 'json',
+				      		
+				      		success: function(result) {
+				      			var a = jQuery.parseJSON(result);
+					      		alert(a.mensaje);
+					      		$( '#dialogo' ).dialog( "destroy" );
+					      		
+					        },
+					        error: function() {
+					            alert('Error occured');
+					        }		
+					    });	
+					}
+				},
+									{
+										text: "Cancelar",
+										click: function() {
+											$( this ).dialog( "close" );}
+									},
+												]
+								});
+	    		    		    	});  
+	});
+
+</script>
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function(){  
+  
+    	$("a[name^='info']").click(function() {
+    		var i = $(this).attr('id');
+    		$.ajax({
+    			url: "{% url 'infoust' %}",
+      		type: 'GET',
+      		data: {k:i},
+      		datatype: 'json',
+      		
+      		contentType: "application/json; charset=utf-8",
+      		success: function(result) {
+      		var a = jQuery.parseJSON(result);
+            	var a = jQuery.parseJSON(result);
+	            	$('#nombreus').val(a.nombre);
+	            	$('#testimado').val(a.test);
+	            	$('#ttrabajado').val(a.tt);
+	            	$('#descrip').val(a.des);
+	            	$("#infous").dialog(
+    		{
+				dialogClass: "panel",
+				title: 'Info User Story',
+				width: 500,
+				buttons: [
+				{
+					text: "OK",
+					click: function() {
+						$( this ).dialog( "close" );}
+				},
+				
+							]
+			});
+        },
+        error: function() {
+            alert('Error occured');
+        }		
+    		});
+    		    		    	});  
+	});
+</script>
 </head>	
 <body>
 <div class="fixed" id="menu">

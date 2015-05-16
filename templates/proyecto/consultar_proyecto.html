@@ -60,10 +60,11 @@
 			<div class="panel">
 				<h5 align="center"><strong>User Stories</strong></h5>
 			</div>
+			
 			{% if ust %}		
 				{%for u in ust %}
 					<ul align="left">
-						<li id="p2">{{u}} <a href= "/consultar/US/{{u.id}}/"><button><img src="/media/images/iconos/consultar.png" width="11px" heigh="11px"></button></a></li>
+						<li id="p2">{{u}} <a id="{{u.id}}" name="info{{u}}"><i title="Ver Informacion" class="fi-info"></i></a> - <a id="a{{u.id}}" name="asig{{u}}"><i title="Asignar Flujo-Sprint" class="fi-link"></i></a></li>
 						
 					</ul>
 				{% endfor %}
@@ -74,4 +75,28 @@
 	
 </div>
 <p align="center"><input class="small radius button" type="button" name="volver" value="Volver" onClick="location.href='/adm_proyecto/'"></p>
+<div id="dialogo" style="display:none">
+	<select id="selefp" name="flujosp">
+		{% for f in flujos %}
+			<option value="{{f.id}}">{{f}}</option>
+		{% endfor %}
+	</select>
+	<select id="selesp" name="sprintsp">
+		{% for s in sprints %}
+			<option value="{{s.id}}">{{s}}</option>
+		{% endfor %}
+	</select>
+</div>
+
+<div class= "" id="infous" style="display:none">
+	<label for="nombreus">Nombre</label>
+	
+	<input type="text" id="nombreus" disabled></input>
+	<label for="testimado">Tiempo Estimado</label>
+	<input type="text" id="testimado" disabled></input>
+	<label for="ttrabajado">Horas Realizadas</label>
+	<input type="text" id= "ttrabajado" disabled></input>
+	<label for="descrip">Descripción</label>
+	<textarea id="descrip" rows="4" disabled ></textarea> 
+</div>
 {% endblock %}

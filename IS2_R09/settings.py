@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 #from django.conf.global_settings import MEDIA_ROOT, MEDIA_URL,\
- #   DATE_INPUT_FORMATS
+#   DATE_INPUT_FORMATS
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -69,7 +69,7 @@ AUTH_PROFILE_MODULE = 'Usuario.usuario'
 #DJANGO_GROUP_MODEL = 'Roles.roles'
 
 TEMPLATE_DIRS = {
-              "/home/samuel/workspace/IS2_R09/templates",
+              "/home/meliam/git/IS2_R09/templates",
               }
 
 #Base de datos postgresql
@@ -78,8 +78,8 @@ DATABASES = {
 'default': {
 'ENGINE': 'django.db.backends.postgresql_psycopg2',
 'NAME': 'IS2_R09',
-'USER': 'samuel',
-'PASSWORD': 'passwd',
+'USER': 'meliam',
+'PASSWORD': '26juniomeli',
 'HOST': 'localhost',
 'PORT': '5432',
 
@@ -106,11 +106,11 @@ client_encoding= 'UTF8'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    "/home/rafael/workspace/IS2_R09/IS2_R09/media",
+    "/home/meliam/git/IS2_R09/IS2_R09/media",
 )
 
 URL_LOGIN = '/login'
-MEDIA_ROOT = '/home/samuel/workspace/IS2_R09/IS2_R09/media'
+MEDIA_ROOT = '/home/meliam/git/IS2_R09/IS2_R09/media'
 MEDIA_URL = '/media/'
 
 # Configuracion de mail
@@ -129,4 +129,4 @@ DATE_INPUT_FORMATS = (
     '%d %B %Y', '%d %B, %Y',            # '25 October 2006', '25 October, 2006'
 )
 
-PATH = '/home/samuel/workspace/IS2_R09'
+PATH = '/home/meliam/git/IS2_R09'

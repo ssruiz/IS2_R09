@@ -142,7 +142,7 @@ $(document).ready(function() {
 	prioridades = function(altas,medias,bajas,id){
    	if(altas == 0)
    	{
-   		if(media != 0)
+   		if(medias != 0)
    		{
    			$("input[name^='cambmedia']").attr('disabled',false);
    			alert('Ha realizado el ultimo User Story con prioridad alta. Activando los de prioridad media.')
@@ -234,7 +234,7 @@ $(document).ready(function() {
 				else if(a.prioridad == 2)
 				{
 					$('#media').val(med-1);
-					med = med - 1
+					med = $('#media').val();
 				}
 				else
 				{

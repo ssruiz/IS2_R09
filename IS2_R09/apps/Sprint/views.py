@@ -19,11 +19,11 @@ from IS2_R09.apps.US.models import us
 def adm_sprint_view(request):
     """Vista que controla la interfaz de administracion de sprints"""
     sprints = sprint()
-    if request.user.is_staff:
-        """Si el usuario es administrador se le listan todos los sprints"""
-        sprints = sprint.objects.all()
-        ctx = {'sprints':sprints,'form':buscar_sprint_form()}
-        return render_to_response('sprint/adm_sprint.html', ctx, context_instance=RequestContext(request))
+   
+    """Si el usuario es administrador se le listan todos los sprints"""
+    sprints = sprint.objects.all()
+    ctx = {'sprints':sprints,'form':buscar_sprint_form()}
+    return render_to_response('sprint/adm_sprint.html', ctx, context_instance=RequestContext(request))
 #----------------------------------------------------------------------------------------------------------------
 
 def crear_sprint_view(request):

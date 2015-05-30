@@ -101,8 +101,13 @@ def modificar_us_view(request,id_us):
                 if k.is_valid():
                     form.save()
                     kan.us=user_story
+                    kan.prioridad = user_story.prioridad
                     f=k.cleaned_data['fluj']
                     fj = flujo.objects.get(id=f.id)
+                    sp = form.cleaned_data['sprint_asociado']
+                    spu = sprint.objects.get(id=sp.id)
+                    spu.tiempo_estimado += int(form.cleaned_data['tiempo_estimado'])
+                    spu.save()
                     act = fj.actividades.all()[:1].get()
                     kan.actividad = act
                     kan.fluj=f
@@ -124,11 +129,14 @@ def modificar_us_view(request,id_us):
             except:
                 k = kanban_form(request.POST)
                 if k.is_valid():
-                    print 'aaaa'
                     f = k.cleaned_data['fluj']
+                    sp = form.cleaned_data['sprint_asociado']
+                    spu = sprint.objects.get(id=sp.id)
+                    spu.tiempo_estimado += int(form.cleaned_data['tiempo_estimado'])
+                    spu.save()
                     fj = flujo.objects.get(id=f.id)
                     act = fj.actividades.all()[:1].get()
-                    kan = kanban.objects.create(us=user_story,fluj=k.cleaned_data['fluj'],actividad=act)
+                    kan = kanban.objects.create(us=user_story,fluj=k.cleaned_data['fluj'],actividad=act,prioridad = user_story.prioridad)
                     notificar_asignacion_us(ua,user_story.nombre)
                     form.save()
                     #k.save()
@@ -283,7 +291,20 @@ def info_us(request):
     if request.is_ajax():
         k = request.GET['k']
         ust = us.objects.get(id=k)
-        l = {'nombre':ust.nombre,'test':ust.tiempo_estimado,'tt':ust.tiempo_trabajado,'des':ust.descripcion}
+        Sprint = ''
+        Flujo = ''
+        if ust.sprint_asociado == None:
+            Sprint = 'No asignado'
+        else:
+            Sprint = ust.sprint_asociado.nombre
+        
+        try:
+            kanban_sprint = kanban.objects.get(us=ust)
+            Flujo = kanban_sprint.fluj.nombre
+        except:
+            print 'a'
+            Flujo = 'No asignado'
+        l = {'nombre':ust.nombre,'test':ust.tiempo_estimado,'tt':ust.tiempo_trabajado,'des':ust.descripcion,'priori':ust.get_prioridad_display(),'sprint':Sprint,'flujo':Flujo}
         return HttpResponse(json.dumps(l))
 
 @csrf_exempt
@@ -293,28 +314,35 @@ def asignar_ust(request):
         a = request.POST.get('k')
         b = request.POST.get('f')
         c = request.POST.get('s')
+        
         sp = sprint.objects.get(id=c) 
         
-        f = flujo.objects.get(id=b)
-        act = f.actividades.first()
-        g =us.objects.get(id=a)
+        mensaje='User Story ya asignado al Sprint seleccionado'
+        f = flujo.objects.get(id=b) #flujo a asignar
+        act = f.actividades.first() # primera actividad de flujo
+        g =us.objects.get(id=a) # User Story a reasignar
         aux= kanban.objects.filter(us=g).count()
-        g.sprint_asociado = sp
-        sp.tiempo_estimado+= g.tiempo_estimado
-        sp.save()
-        g.save()
-        if aux == 0 :
-            g.ust = sp
-            sp.tiempo_estimado+= g.tiempo_estimado
-            sp.save()
+        
+        #Cambio de sprint si difiere el actual al seleccionado
+        if g.sprint_asociado != sp:
+            sprint_viejo = sprint.objects.get(id=g.sprint_asociado.id)
+            sprint_viejo.tiempo_estimado-= g.tiempo_estimado
+            sprint_viejo.tiempo_total -= g.tiempo_trabajado
+            sprint_viejo.save()
+            sp.tiempo_estimado += g.tiempo_estimado
+            sp.tiempo_total += g.tiempo_trabajado
+            g.sprint_asociado=sp
             g.save()
-            print g
-            print f
+            sp.save()
+            mensaje='Sprint Cambiado'
+        
             
-            print act.id
+        if aux == 0 :
+            '''User Story sin flujo asignado'''       
             k= kanban.objects.get_or_create(us=g,fluj=f,actividad=act,prioridad=g.prioridad)
-            mensaje = 'Flujo y sprint asignado correctamente'
+            mensaje += ' - Flujo asignado correctamente'
         else:
+            '''User Story ya tiene flujo asignado. Se verifica si el seleccionado es distinto al asignado'''
             k = kanban.objects.get(us=g)
             if f != k.fluj:
                 k.fluj=f
@@ -324,9 +352,9 @@ def asignar_ust(request):
                 #kanban.objects.create(us=g,fluj=f,actividad=act)
                 g.tiempo_trabajado= 0
                 g.save()
-                mensaje = 'Cambio de Flujo realizado correctamente'
+                mensaje += ' - Cambio de Flujo realizado correctamente'
             else:
-                mensaje = 'User Story ya asignado al flujo seleccionado'
+                mensaje += ' - User Story ya asignado al flujo seleccionado'
                 pass
     l = {'mensaje':mensaje}
     return HttpResponse(json.dumps(l))

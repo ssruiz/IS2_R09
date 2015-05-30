@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 def run():
-    print 'soy un script'
+    print '--------------------------------------'
+    print 'Creando Usuarios'
     u = User.objects.create_user(username='Pablor',first_name='Pablo',last_name='Ramirez',email='em@is2.com',password='passwd')
     u2 = User.objects.create_user(username='Luzm',first_name='Luz',last_name='Marecos',email='em2@is2.com',password='passwd2')
     u3 = User.objects.create_user(username='Pedron',first_name='Pedro',last_name='Niels',email='em3@is2.com',password='passwd')
@@ -14,3 +15,5 @@ def run():
     u4.save()
     u5.save()
     u6.save()
+    print 'Usuarios creados'
+    print '--------------------------------------'

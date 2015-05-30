@@ -53,6 +53,7 @@
 				<th width="40">Consultar</th>
 				<th>Asignar Equipo</th>
 				<th>Kanban</th>
+				<th>BurndownChart</th>
 			</tr>
 		</thead>
 		{% for p in proyectos %}
@@ -70,6 +71,7 @@
 				
 				<td><a href= "/asignar_equipo/proyecto/{{p.id}}/"><button class="tiny radius button">E</button></a></td>
 				<td><a href= "/kanban/proyecto/{{p.id}}/"><button class="tiny radius button">K</button></a></td>
+				<td><a href= "/burndownchart/proyecto/{{p.id}}/"><button class="tiny radius button">BDC</button></a></td>
 			</tr>
 		</tbody>
 		

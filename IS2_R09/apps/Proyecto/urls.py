@@ -13,4 +13,6 @@ urlpatterns = patterns('IS2_R09.apps.Proyecto.views',
     url(r'kanban/proyecto/(?P<id_proyecto>.*)/$','kanban_proyecto_view', name= 'vista_kanban_proyecto'),
     url(r'^ust_load/$','ustload', name= 'ustload'),
     url(r'^cambiar_estado/$','cambiar_estado', name= 'cambest'),
+    url(r'burndownchart/proyecto/(?P<id_proyecto>.*)/$','burndown_chart_view', name= 'burn_chart'),
+    url(r'^volver_actividad/$','volver_actividad_view', name= 'volver'),
 )

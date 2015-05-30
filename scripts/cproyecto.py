@@ -1,9 +1,12 @@
+# -*- encoding: utf-8 -*-
 from IS2_R09.apps.Proyecto.models import proyecto, Equipo
 from IS2_R09.apps.Flujo.models import flujo
 from django.contrib.auth.models import User,Group
 import datetime
 
 def run():
+    print '--------------------------------------'
+    print 'Creando Proyectos...'
     f = flujo.objects.get(nombre='Flujo Cascada')
     f2 = flujo.objects.get(nombre='Flujo Entrega')
     r = Group.objects.get(name='Admin')
@@ -20,6 +23,7 @@ def run():
     p = proyecto.objects.create(nombre='Proyecto Supermarket',descripcion='Proyecto que contempla el control de stock de un supermercado',
                                 fecha_creacion=datetime.date.today(),cliente=u3)
     p.flujos.add(f)
+    p.flujos.add(f2)
     p.save()
     equipo = Equipo.objects.create(proyect=p,miembro=u2,rol=r2)
     equipo2 = Equipo.objects.create(proyect=p,miembro=u,rol=r)
@@ -32,7 +36,7 @@ def run():
                                 fecha_creacion=datetime.date.today(),cliente=u)
     p2.flujos.add(f2)
     p2.save()
-    
+    print 'Asignando equipo...'
     equipo = Equipo.objects.create(proyect=p2,miembro=u5,rol=r)
     equipo2 = Equipo.objects.create(proyect=p2,miembro=u6,rol=r3)
     equipo3 = Equipo.objects.create(proyect=p2,miembro=u2,rol=r2)
@@ -71,4 +75,5 @@ def run():
     equipo3.save()
     equipo4.save()
     equipo5.save()
-    
+    print 'Proyectos creados'
+    print '--------------------------------------'

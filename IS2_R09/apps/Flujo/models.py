@@ -70,6 +70,8 @@ class kanban(models.Model):
     us = models.ForeignKey('US.us',related_name='user_story',null=True,blank=True)
     estado = models.CharField(max_length=2,choices=ESTADOS,default='td',null=True,blank=True)
     prioridad = models.CharField(max_length=1,null=True,blank=True)
+    class Meta:
+        ordering = ['prioridad']
     
 '''
 ESTADOS = (

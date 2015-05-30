@@ -9,93 +9,30 @@
 		  	<link rel="stylesheet" href= "/media/css/customs.css"></link>
 		  	
 		  	
+		  	
 		  	<script src="/media/js/jquery.js" type="text/javascript"></script>
 		  	<script src="/media/js/jquery-ui/jquery-ui.js" type="text/javascript"></script>
-		  	
-		  	<!-- Script para panel de navegacion -->
-		  
-		  	<script  type="text/javascript">
-				$(document).ready(function() 
-				{
-					$('.enlaceh').hover(function() 
-					{ //mouse in
-						$(this).stop().animate({ paddingBottom: '5px' },400);
-						
-					}, function() { //mouse out
-						$(this).stop().animate({ paddingBottom: 0 }, 400);  				
-					});
-					
-					$('ul.left li').mouseover(function(event){
-	      					$(this).addClass("active");
-	      				});
-	      			$('ul.left li').mouseleave(function(event){
-	      					$(this).removeClass("active");
-	      				});
-	      			 
-	      			
-	      			
-				});
-				
-			</script>
+		  	<script src="/media/js/jquery.numeric.js" type="text/javascript"></script>
+		  	<script src="/media/js/jquery.flot.js" type="text/javascript"></script>
+		  	<script src="/media/js/jquery.flot.axislabels.js" type="text/javascript"></script>
+			<!-- Scrip para el filtrado de US segun flujo seleccionado -->
+		  	<script src="/media/js/custom/cambioflujo.js" type="text/javascript"></script>
+		  	<!-- Scrip para la carga de User Stories -->
+			<script type="text/javascript" src="/media/js/custom/cargaUS.js" charset="utf-8"></script>
+			<!-- Script para panel de navegacion -->
+			<script type="text/javascript" src = "/media/js/custom/menunaveg.js"></script>
+		  	 <!-- Script para seleccionador de fechas de Proyectos-->
+		  	<script src="/media/js/custom/FormatoDatePicker.js"></script>
+			<script src ="/media/js/custom/fechapick.js"></script>
+			<!-- script para lel proceso kanban de los User Stories -->
+			<script type="text/javascript" src="/media/js/custom/infoUS.js"></script>
+			<!-- script para o burndowncharts -->
+			<script type="text/javascript" src="/media/js/custom/cargabd.js"></script>
+			<script type="text/javascript" src="/media/js/custom/volverActividad.js"></script>
 			
-			<script>
-					 $.datepicker.regional['es'] = {
-					 closeText: 'Cerrar',
-					 prevText: '<Ant',
-					 nextText: 'Sig>',
-					 currentText: 'Hoy',
-					 monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-					 monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-					 dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-					 dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-					 dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-					 weekHeader: 'Sm',
-					 dateFormat: 'dd/mm/yy',
-					 firstDay: 1,
-					 isRTL: false,
-					 showMonthAfterYear: false,
-					 yearSuffix: ''
-					 };
-					 $.datepicker.setDefaults($.datepicker.regional['es']);
-					
-			</script>
-			 <!-- Script para seleccionador de fechas de Proyectos-->
-			<script>
-				$(function() {
-					$( "#datepicker" ).datepicker({
-						changeMonth: true,
-						changeYear: true,
-						showOn: "button",
-						dateFormat: 'yy-mm-dd',
-						showButtonPanel: true,
-						altField: '#id_fecha_creacion',
-						buttonImageOnly: true,
-						buttonImage: "/media/found/css/svgs/fi-calendar.svg",
-					});
-					$( "#datepicker2" ).datepicker({
-						changeMonth: true,
-						changeYear: true,
-						showOn: "button",
-						dateFormat: 'yy-mm-dd',
-						showButtonPanel: true,
-						buttonImageOnly: true,
-						buttonImage: "/media/found/css/svgs/fi-calendar.svg",
-						showButtonPanel: true,
-						altField: '#id_fecha_inicio',
-					});
-					$( "#datepicker3" ).datepicker({
-						changeMonth: true,
-						changeYear: true,
-						showOn: "button",
-						dateFormat: 'yy-mm-dd',
-						showButtonPanel: true,
-						buttonImageOnly: true,
-						buttonImage: "/media/found/css/svgs/fi-calendar.svg",
-						showButtonPanel: true,
-						altField: '#id_fecha_fin'
-					});
-				});
-			</script>
+			<!-- Funciones varias -->
+			<script src="/media/js/custom/funciones.js"></script>
+			
 			 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
     $("#id_actividades").sortable({
@@ -112,149 +49,7 @@ $(document).ready(function() {
   });
 </script>
 
-	<script type="text/javascript" charset="utf-8">
-	$(document).ready(function(){  
-  
-    $('#selfluj').click(function() {  
-    	var sel = $('#selef').val();
-    	var p = $('#proy').val()
-        $.ajax({
-      url: "{% url 'ustload' %}",
-      data: {fluj_id:sel,p:p},
-      type: 'GET',
-      dataType: 'html',
-      success: function(datos) {
-      	
-      	
-        $('#formu').append(datos).html();
-        $('#btn').hide('slide','slow');
-        var alt = $('#alta').val();
-		var med = $('#media').val()
-		var baj = $('#baja').val();
-        botonSegunPrio(alt,med,baj);
-      }
-    });
-    });   
-    });  
-		 
-</script>
-<script>
-	prioridades = function(altas,medias,bajas,id){
-   	if(altas == 0)
-   	{
-   		if(medias != 0)
-   		{
-   			$("input[name^='cambmedia']").attr('disabled',false);
-   			alert('Ha realizado el ultimo User Story con prioridad alta. Activando los de prioridad media.')
-   		}
-   		else
-   		{
-   			alert('Ha realizado el ultimo User Story con prioridad alta y/o media. Activando los de prioridad baja.')
-   			$("input[name^='cambbaja']").attr('disabled',false);
-   		}
-   	}
-   	 return 0;
-   }
-   
-   botonSegunPrio = function(altas,medias,bajas,id){
-   		if(altas != 0)
-   		{
-   			$("input[name^='cambmedia']").attr('disabled',true);
-   			$("input[name^='cambbaja']").attr('disabled',true);
-   		}
-   		else
-   		{
-   			if(media != 0)
-   			{
-   				$("input[name^='cambmedia']").attr('disabled',false);
-   				$("input[name^='cambbaja']").attr('disabled',true);
-   			}
-   			else
-   				$("input[name^='cambbaja']").attr('disabled',false);
-   			
-   		}
-   		return 0;
-   	
-   }
-</script>
-<script type="text/javascript" charset="utf-8">
-	$(document).ready(function(){  
-  
-    $("input[name^='camb']").click(function() {  
-    	var i = $(this).attr('id');
-    	var ust = $('#'+i+'us').val();
-    	
-    	var acti = $('#'+i+'act').val();
-    	var est = $('#'+i+'es').val();
-    	var htr = $('#'+i+'ht').val();
-    	
-    	$.ajax({
-      		url: "{% url 'cambest' %}",
-      		type: 'GET',
-      		data: {k:i,us:ust,act:acti,es:est,ht:htr},
-      		datatype: 'json',
-      		
-      		contentType: "application/json; charset=utf-8",
-      		success: function(result) {
-      		var a = jQuery.parseJSON(result);
-      		 
-            var acti = $('#'+i+'act').val(a.actividad);
-    		var est = $('#'+i+'es').val(a.estado);
-    		if(a.estado == 'doing'){
-    			$('#'+i+'ht').toggle();
-    			$('#'+i+'lht').toggle();
-    			alert('Estado cambiado');
-    		}
-			else if(a.estado == 'done' && a.actividad != a.ultimo){
-				$('#'+i+'ht').toggle();
-    			$('#'+i+'lht').toggle();
-				$('#'+i).attr("value","Sgte Actividad");
-				}
-			else if(a.estado == 'to do'){
-				$('#'+i).attr("value","Cambiar Estado");
-				}
-			else if(a.estado== 'done' && a.actividad == a.ultimo)
-			{
-				$('#'+i).hide('slow');
-				$('#div'+i).appendTo('#releases');
-				$('#'+i+'lht').toggle();
-				$('#'+i+'ht').toggle();
-				$('#'+i+'lpr').toggle();
-				$('#'+i+'pr').toggle();
-				$('#'+i+'lact').toggle();
-				$('#'+i+'act').toggle();
-				var alt = $('#alta').val();
-				var med = $('#media').val()
-				var baj = $('#baja').val();
-				if(a.prioridad == 1)
-				{
-					$('#alta').val(alt-1);
-					alt = $('#alta').val();
-				}
-				else if(a.prioridad == 2)
-				{
-					$('#media').val(med-1);
-					med = $('#media').val();
-				}
-				else
-				{
-					$('#baja').val(baj-1);
-					baj = baj - 1
-				}
-				prioridades(alt,med,baj,i);
-			}
-            
-        },
-        error: function() {
-            alert('Error occured');
-        }
-      	});
-    });
-       
-   });		 
-</script>
-
-
+	
 <script type="text/javascript" charset="utf-8">
 	$(document).ready(function(){  
   
@@ -321,6 +116,8 @@ $(document).ready(function() {
 	            	$('#testimado').val(a.test);
 	            	$('#ttrabajado').val(a.tt);
 	            	$('#descrip').val(a.des);
+	            	$('#sprintasociado').val(a.sprint);
+	            	$('#flujoasignado').val(a.flujo);
 	            	$("#infous").dialog(
     		{
 				dialogClass: "panel",

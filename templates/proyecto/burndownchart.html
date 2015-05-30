@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title%}BurndownCharts{% endblock %}
+{% block content %}
+{% if form %}
+<div class="panel large-11 large-centered columns">
+	<br />
+	<br />
+
+		<h4 align="center"><strong>BurnDown Charts</strong></h4>
+		<br />	
+		<form>	
+		<div class="small-6 small-centered columns">		
+			<label for="flujos">Seleccione el sprint del proyecto</label>
+			<select id="selesprinte" name="flujos">
+			{% for f in form %}
+			 	<option value="{{f.id}}">{{f}}</option> 				  	
+		  	{% endfor %}
+		  	</select>
+		  	<input id="proyectosp" type="text" style="display:none" value="{{p.id}}"></input>
+		  	
+		</div> 
+		  	<div id= "btn" class="small-4 right columns">
+				<input class="small radius button" id="selsprint" type="button" value="Aceptar"></input>
+				<input class="small radius button" type="button" name="Cancelar" value="Cancelar" onClick="location.href='/adm_proyecto/'">
+			</div>
+	</div>
+			{% endif %}
+		<div class="demo-container">
+			<div id="placeholder" class="demo-placeholder"></div>
+		</div>
+{% endblock %}

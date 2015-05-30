@@ -5,9 +5,16 @@ from django.template.context import RequestContext
 from IS2_R09.apps.Comentario.forms import comentario_form,\
     comentario_consulta_form
 from IS2_R09.apps.Comentario.models import comentario
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, HttpResponse
 import datetime
 from IS2_R09.apps.Adjunto.forms import consultar_adjunto_form
+from django.contrib.sites import requests
+from django.views.decorators.csrf import csrf_exempt
+from keyring.backend import json
+from IS2_R09.apps.Flujo.models import kanban, flujo
+from IS2_R09.apps.Sprint.models import sprint
+from IS2_R09.apps.Proyecto.models import proyecto
+from IS2_R09.apps.Charts.models import charts
 # Create your views here.
 def adm_comentario_view(request,id_us):
     """Vista que controla la interfaz de administracion de comentarios"""
@@ -76,5 +83,72 @@ def consultar_comentario_view(request, id_comentario,id_us):
         ctx = {'form': form,'userid':id_us}
         return render_to_response('comentario/consultar_comentario.html', ctx, context_instance=RequestContext(request))
     
-
-
+@csrf_exempt
+def crear_comentario_us(request):
+    if request.is_ajax():
+        
+        
+        ut= request.POST.get('k')
+        k= kanban.objects.get(us=ut)
+        nombr = request.POST.get('nombre')
+        ht = request.POST.get('ht')
+        
+        
+        ust = us.objects.get(id=ut)
+        print k.fluj
+        sp= sprint.objects.get(id=ust.sprint_asociado.id)
+        estado= str(k.get_estado_display())
+        pr = proyecto.objects.get(id=sp.proyect.id)
+        coment = str(request.POST.get('c')) + ('\nFlujo: %s - Actividad: %s - Estado: %s \nRealizado por: %s' %(k.fluj,k.actividad,estado,request.user))
+        c= comentario.objects.create(nombre=str(nombr),comentario=coment,fecha_creacion=datetime.date.today(),fecha_ultima_mod=datetime.date.today())
+        # creando el burndownchart
+        name = 'P:%s S:%s' %(pr.nombre,sp.nombre)
+        
+        ust.comentarios.add(c)
+        ust.tiempo_trabajado+= int(ht)
+        sp.tiempo_total+= int(ht)
+        
+        try:
+            if pr.fecha_inicio:
+                dias= (datetime.date.today() - pr.fecha_inicio).days + 1
+            else:
+                dias= 1
+            print dias
+            bd=charts.objects.get(sprint_actual=sp,proyect=sp.proyect,ejex=dias)
+            bd.ejey -= int(ht)
+            bd.save()
+        except  Exception as e:
+            if pr.fecha_inicio:    
+                dias= (datetime.date.today() - pr.fecha_inicio).days + 1
+            else:
+                dias= 1
+                pr.fecha_inicio= datetime.date.today()
+                pr.save()
+            try:
+                horas_remanentes = sp.tiempo_estimado - int(ht)
+                charts.objects.create(nombre=name,ejey=horas_remanentes,ejex=dias,sprint_actual=sp,proyect=sp.proyect)
+            except  Exception as e:
+                print 'aaa'
+                print '%s (%s)' % (e.message, type(e))
+            
+            
+        
+            
+        ht = sp.tiempo_total
+        
+        sp.save()
+        ust.save()
+        if sp.tiempo_total>=sp.tiempo_estimado:
+            f = flujo.objects.get(id=k.fluj.id)
+            uts = f.user_stories.all()
+            for u in uts:
+                ustaux = us.objects.get(id=u.id)
+                ustaux.sprint_asociado = None
+                ustaux.save()
+            sp.finalizado='si'
+            sp.save()
+            p = proyecto.objects.get(id=ust.proyecto_asociado.id)
+            p.sprint_actual= ''
+            p.save()
+        l = {'mensaje':'Comentario Creado','ht':ht}
+        return HttpResponse(json.dumps(l))

@@ -45,6 +45,7 @@ class Migration(migrations.Migration):
                 ('us', models.ForeignKey(related_name='user_story', blank=True, to='US.us', null=True)),
             ],
             options={
+                'ordering': ['prioridad'],
             },
             bases=(models.Model,),
         ),

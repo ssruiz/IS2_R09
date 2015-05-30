@@ -16,5 +16,6 @@ urlpatterns = patterns('',
     url(r'^',include('IS2_R09.apps.Sprint.urls')),
     url(r'^',include('IS2_R09.apps.Comentario.urls')),
     url(r'^',include('IS2_R09.apps.Adjunto.urls')),
+    url(r'^',include('IS2_R09.apps.Charts.urls')),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', { 'document_root': settings.MEDIA_ROOT}),
 )

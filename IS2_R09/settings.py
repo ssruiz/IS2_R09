@@ -48,6 +48,9 @@ INSTALLED_APPS = (
     'IS2_R09.apps.Sprint',
     'IS2_R09.apps.Comentario',
     'IS2_R09.apps.Adjunto',
+    'IS2_R09.apps.Charts',
+    'IS2_R09.apps.Release',
+    
 )
 
 MIDDLEWARE_CLASSES = (
@@ -80,7 +83,7 @@ TEMPLATE_DIRS = {
 DATABASES = {
 'default': {
 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-'NAME': 'IS2_R09',
+'NAME': 'is2_r09',
 
 'USER': 'samuel',
 'PASSWORD': 'passwd',

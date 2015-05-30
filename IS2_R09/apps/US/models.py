@@ -5,6 +5,7 @@
     @author: Samuel Ruiz,Melissa Bogado,Rafael Ricardo
 """
 from IS2_R09.apps.Sprint.models import sprint
+from IS2_R09.apps.Release.models import release
 __docformat__ = "Epytext" 
 from django.db import models
 from django.contrib.auth.models import User
@@ -45,7 +46,7 @@ class us(models.Model):
     nombre = models.CharField(max_length=30)
     descripcion = models.TextField(max_length=200)
     tiempo_estimado= models.IntegerField(null=True,blank=True)
-    tiempo_trabajado= models.IntegerField(null=True,blank=True)
+    tiempo_trabajado= models.IntegerField(null=True,blank=True,default=0)
     usuario_asignado=models.ManyToManyField(User,null=True,blank=True)
     prioridad=models.CharField(max_length=1, choices=PRIORIDADES)
     #flujo_asignado=models.ForeignKey(flujo,null=True,blank=True,unique=False)
@@ -53,6 +54,7 @@ class us(models.Model):
     sprint_asociado= models.ForeignKey(sprint,null=True,blank=True,unique=False)
     adjuntos = ManyToManyField(adjunto,null=True,blank=True)
     comentarios = ManyToManyField(comentario,null=True,blank=True)
+    release_asociado = models.ForeignKey(release,null=True,blank=True,default=None)
     def __unicode__(self):
         """
             Método que permite mostrar los objectos de tipo B{User Story}

@@ -34,6 +34,7 @@ class sprint(models.Model):
     tiempo_estimado = models.PositiveIntegerField(null=True,blank=True,default=0)
     tiempo_total = models.PositiveIntegerField(null=True,blank=True,default=0)
     proyect = models.ForeignKey(proyecto,null=True,blank=True)
+    finalizado = models.CharField(max_length=2,default='no')
     #ust = models.ManyToManyField(us,null=True,blank=True)
     #fechacreacion?
     #usuario_asignado=models.ManyToManyField(User,null=True,blank=True)

@@ -1,0 +1,5 @@
+psql -h localhost postgres -W -f scriptdb2.sql meliam
+
+python manage.py syncdb
+
+./manage.py runscript cusuario

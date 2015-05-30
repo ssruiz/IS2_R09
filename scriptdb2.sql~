@@ -1,0 +1,7 @@
+DROP DATABASE IS2_R09_1;
+
+CREATE DATABASE IS2_R09_1 WITH OWNER meliam;
+      
+\q
+
+

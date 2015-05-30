@@ -72,7 +72,7 @@ AUTH_PROFILE_MODULE = 'Usuario.usuario'
 
 TEMPLATE_DIRS = {
 
-              "/home/samuel/workspace/IS2_R09/templates",
+              "/home/meliam/git/IS2_R09/templates",
               }
 
 #Base de datos postgresql
@@ -80,10 +80,9 @@ TEMPLATE_DIRS = {
 DATABASES = {
 'default': {
 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-'NAME': 'IS2_R09',
-
-'USER': 'samuel',
-'PASSWORD': 'passwd',
+'NAME': 'is2_r09',
+'USER': 'meliam',
+'PASSWORD': '26juniomeli',
 'HOST': 'localhost',
 'PORT': '5432',
 
@@ -115,7 +114,7 @@ STATICFILES_DIRS = (
 
 URL_LOGIN = '/login'
 
-MEDIA_ROOT = '/home/samuel/workspace/IS2_R09/IS2_R09/media'
+MEDIA_ROOT = '/home/meliam/git/IS2_R09/IS2_R09/media'
 MEDIA_URL = '/media/'
 
 # Configuracion de mail
@@ -133,4 +132,3 @@ DATE_INPUT_FORMATS = (
     '%B %d %Y', '%B %d, %Y',            # 'October 25 2006', 'October 25, 2006'
     '%d %B %Y', '%d %B, %Y',            # '25 October 2006', '25 October, 2006'
 )
-

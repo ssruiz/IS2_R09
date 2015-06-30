@@ -6,7 +6,7 @@ Created on 30/4/2015
 from django.shortcuts import render_to_response
 from IS2_R09.apps.Adjunto.forms import adjunto_form
 from IS2_R09.apps.Adjunto.forms import consultar_adjunto_form
-from IS2_R09.apps.Adjunto.models import adjunto
+from IS2_R09.apps.Adjunto.models import adjunto, archivoUs
 from django.template.context import RequestContext
 from IS2_R09.apps.US.models import us
 from django.http.response import HttpResponseRedirect
@@ -65,6 +65,7 @@ def eliminar_adjunto_view(request,id_adjunto,id_us):
     a = adjunto.objects.get(id=id_adjunto)
     userst = us.objects.get(id=id_us)
     if request.method == 'POST':
+        a.archivo.delete()
         a.delete()
         adjuntos = userst.adjuntos.all()
         ctx = {'adjuntos':adjuntos,'userid':id_us}
@@ -78,7 +79,7 @@ def consultar_adjunto_view(request, id_adjunto,id_us):
     if request.method == 'GET':
         a= adjunto.objects.get(id=id_adjunto)
         form = consultar_adjunto_form(instance=a)
-        ctx = {'form': form,'userid':id_us,'archivo':a.archivo}
+        ctx = {'form': form,'userid':id_us,'archivo':a.archivo.url}
         return render_to_response('adjunto/consultar_adjunto.html', ctx, context_instance=RequestContext(request))
     
 

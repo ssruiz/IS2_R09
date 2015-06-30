@@ -19,6 +19,15 @@ from IS2_R09.apps.Sprint.models import sprint
 from django.core.context_processors import media, csrf
 from chartit import DataPool,Chart
 from django.views.decorators.csrf import csrf_exempt
+import reportlab
+from reportlab.pdfgen import canvas, textobject
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter, landscape
+from reportlab.pdfgen.pycanvas import Canvas
+from reportlab.rl_config import canvas_basefontname
+from reportlab.lib.units import inch
+from IS2_R09.apps.Sprint.forms import sprint_form
+from django.db.models.aggregates import Sum
 
 # Create your views here.
 @login_required(login_url= URL_LOGIN)
@@ -280,9 +289,24 @@ def cambiar_estado(request):
         baja = f.user_stories.filter(prioridad=3).exclude(id__in=releases).count()
         media = f.user_stories.filter(prioridad=2).exclude(id__in=releases).count()
         alta = f.user_stories.filter(prioridad=1).exclude(id__in=releases).count()
-        
-        
+        cambiar='si'
+        mensaje=''
         # condiciones antes de cambiar de estado
+        #------------------------------------------------------------------------------
+        # El usuario debe estar asignado al user story, ser scrum master o administrador
+        if not us.objects.filter(usuario_asignado=request.user).exists():
+            if Equipo.objects.filter(proyect=proyect,miembro=request.user).exists():
+                e = Equipo.objects.get(proyect=proyect,miembro=request.user)
+                if not e.rol.name == 'Scrum' or not request.user.is_staff:
+                    l = {'cambiar': 'no','mensaje':'No esta asignado a este User Story.'}
+                    return HttpResponse(json.dumps(l))
+            elif not request.user.is_staff:
+                l = {'cambiar': 'no','mensaje':'No esta asignado a este User Story.'}
+                return HttpResponse(json.dumps(l))
+            
+        #------------------------------------------------------------------------------    
+        # no deben existir user stories con prioridades mayores
+        
         if ut.prioridad == '3':
             if alta>baja or media>baja:
                 l = {'cambiar': 'no','mensaje':'User Story con prioridad baja.'}
@@ -293,10 +317,13 @@ def cambiar_estado(request):
             if alta>=media:
                 l = {'cambiar': 'no','mensaje':'User Story con prioridad media.'}
                 return HttpResponse(json.dumps(l))
-        
+        #------------------------------------------------------------------------------
+        # el user  story debe tener al menos un comentario
         if comentarios == 0:
             l = {'cambiar': 'no','mensaje':'User Story debe tener al menos un comentario para el cambio de estado.'}
             return HttpResponse(json.dumps(l))
+        
+        #------------------------------------------------------------------------------
         if proyect.sprint_actual == '':
             
             proyect.sprint_actual = sp.id
@@ -333,8 +360,11 @@ def cambiar_estado(request):
                 if (ord<t):
                     act = k.fluj.actividades.get(order=ord)
                     kanban.objects.filter(id=i).update(estado='td',actividad=act)
-                    est = 'td'    
-            l = {'ut':ut.nombre,'estado':est,'actividad':act.nombre,'ultimo':ult.nombre,'prioridad':prioridad,'cambiar':'si'}
+                    est = 'td'
+                else:
+                    cambiar='no'
+                    mensaje='No se puede cambiar. US en ultima actividad.' 
+            l = {'ut':ut.nombre,'estado':est,'actividad':act.nombre,'ultimo':ult.nombre,'prioridad':prioridad,'cambiar':cambiar,'mensaje':mensaje}
             return HttpResponse(json.dumps(l))
             #print acti
             #print k.fluj.actividades.get(nombre=act)
@@ -358,7 +388,7 @@ def volver_actividad_view(request):
         
         cambiar = 'no'
         mensaje = 'No se puede volver a una actividad superior'
-        acti_id = request.POST.get('acti_id') 
+        acti_id = request.POST.get('acti_id')
         
         us_id =  request.POST.get('us')
         actividad_a_pasar = actividad.objects.get(id=int(acti_id))
@@ -390,3 +420,64 @@ def volver_actividad_view(request):
         print mensaje
         l = {'cambiar':cambiar,'mensaje':mensaje,'ut':user_story_rel.nombre,'actividad':actividad_a_pasar.nombre}
         return HttpResponse(json.dumps(l))
+
+def reporte_view(request,id_proyecto):
+    proyect= proyecto.objects.get(id=id_proyecto)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="reporte_%s.pdf"' %(proyect.nombre)
+    ust = us.objects.filter(proyecto_asociado=proyect)
+    equipo = Equipo.objects.filter(proyect=proyect)
+    sprints = sprint.objects.filter(proyect=proyect)
+    
+    # Create the PDF object, using the response object as its "file."
+    
+    p = canvas.Canvas(response)
+    p.drawCentredString(255, 800, 'Reporte de Proyecto', None)
+    
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    to= canvas.Canvas.beginText(p, 0, 0)
+    to.setTextOrigin(100, 780)
+    charspace = 0
+    to.setCharSpace(charspace)
+    to.setLeading(15)
+    to.textOut('')
+    to.textLine("Nombre Proyecto: %s" %(proyect.nombre))
+    charspace = charspace +0.5
+    to.setCharSpace(charspace)
+    
+    to.textLine("Equipo:" )
+    to.textOut('')
+    
+    for t in equipo:
+        to.textLine("    * %s - %s" %(t.miembro,t.rol))
+    to.textLine('')
+    to.textLine('Cantidad de Sprints: %s' %(sprints.count()))
+    to.textLine('Tiempo estimado total de sprints(horas): %s' %(sprints.aggregate(Sum('tiempo_estimado')).values()[0]))
+    to.textLine('Tiempo trabajado en total de sprints(horas): %s' %(sprints.aggregate(Sum('tiempo_total')).values()[0]))
+    to.textLine('')
+    to.textLine('Trabajo por miembro de equipo.')
+    to.textLine('')
+    to.setLeading(20)
+    for t in equipo:
+        
+        usts = us.objects.filter(proyecto_asociado=proyect,usuario_asignado=t.miembro)
+        
+        to.textLine('Usuario: %s' %(t.miembro))
+        t_total= usts.aggregate(Sum('tiempo_trabajado')).values()[0]
+        t_estimado = usts.aggregate(Sum('tiempo_estimado')).values()[0]
+        t_pendiente = t_total - t_estimado 
+        to.textOut('')
+        to.textLine('    Trabajo pendiente(horas): %s Trabajo realizado(horas): %s' %(t_pendiente,t_total))
+        to.textOut('')
+    ust_proyecto = us.objects.filter(proyecto_asociado=proyect).order_by('prioridad')
+    to.textLine('')
+    to.textLine('Lista de User Stories del proyecto.')
+    to.textOut('')
+    for u in ust_proyecto:
+        to.textLine('    US: %s Prioridad: %s' %(u,u.get_prioridad_display()))
+    p.drawText(to)
+    # Close the PDF object cleanly, and we're done.
+    p.showPage()
+    p.save()
+    return response

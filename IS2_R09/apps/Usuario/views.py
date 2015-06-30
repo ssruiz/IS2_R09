@@ -134,11 +134,11 @@ def modificar_usuario_view(request,id_usuario):
                                          'last_name':u.last_name,
                                          'email':u.email,
                                          })
-        exten_form=extension_usuario_form(initial={
-                                         'telefono':u.usuario.telefono,
-                                         'foto':u.usuario.foto,
-                                         })
-        ctx = { 'user_form': user_form,  'exten_form': exten_form ,'foto':u.usuario.foto}
+        foto = None
+        if u.usuario.foto != '':
+            foto=u.usuario.foto.url
+        exten_form=extension_usuario_form(instance=u.usuario)
+        ctx = { 'user_form': user_form,  'exten_form': exten_form ,'foto':foto}
         return render_to_response('usuario/modificar_usuario.html', ctx, context_instance=RequestContext(request))
     return render_to_response('usuario/modificar_usuario.html', { 'user_form': user_form,  'exten_form': exten_form }, context_instance=RequestContext(request))
 
@@ -197,7 +197,10 @@ def consultar_usuario_view(request,id_usuario):
                                          'email':u.email,
                                          'telefono':u.usuario.telefono,
                                          })
-        ctx = {'form':form,'foto':u.usuario.foto}
+        foto = None
+        if u.usuario.foto != '':
+            foto=u.usuario.foto.url
+            print 'a'
+        ctx = {'form':form,'foto': foto}
         return render_to_response('usuario/consultar_usuario.html', ctx, context_instance=RequestContext(request))
-    ctx = {'form':form}
-    return render_to_response('usuario/consultar_usuario.html', ctx, context_instance=RequestContext(request))
+    

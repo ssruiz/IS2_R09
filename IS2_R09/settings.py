@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'IS2_R09.apps.Adjunto',
     'IS2_R09.apps.Charts',
     'IS2_R09.apps.Release',
+    'db_file_storage',
     
 )
 
@@ -69,6 +70,9 @@ ROOT_URLCONF = 'IS2_R09.urls'
 WSGI_APPLICATION = 'IS2_R09.wsgi.application'
 
 
+DEFAULT_FILE_STORAGE = 'db_file_storage.storage.DatabaseFileStorage'
+
+
 #identificar, extender o definir perfil para usuarios 
 AUTH_PROFILE_MODULE = 'Usuario.usuario'
 #DJANGO_GROUP_MODEL = 'Roles.roles'
@@ -79,6 +83,7 @@ TEMPLATE_DIRS = {
               }
 
 #Base de datos postgresql
+
 
 DATABASES = {
 'default': {

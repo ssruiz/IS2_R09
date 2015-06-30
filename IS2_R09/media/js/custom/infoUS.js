@@ -132,6 +132,12 @@ $(document).ready(function(){
     				},
     				
     				{
+    					text: "A Release",
+    					click: function() {
+    						$( this ).dialog( "close" );}
+    				},
+    				
+    				{
     					text: "Cancelar",
     					click: function() {
     						$( this ).dialog( "close" );}

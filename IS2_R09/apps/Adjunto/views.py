@@ -28,7 +28,6 @@ def crear_adjunto_view(request,id_us):
         ust= us.objects.get(id=id_us)
         form = adjunto_form(request.POST,request.FILES)
         if form.is_valid():
-            print 'aaaa'
             c = form.save()
             ust.adjuntos.add(c)
             ust.save()

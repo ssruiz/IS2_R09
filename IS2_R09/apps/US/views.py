@@ -7,10 +7,11 @@
 from IS2_R09.apps.Notificaciones.views import notificar_asignacion_us,\
     notificar_eli_proyecto, notificar_eli_us
 from django.http.response import HttpResponse
-from keyring.backend import json
+#from keyring.backend import json
 from django.views.decorators.csrf import csrf_exempt
 from argparse import Action
 from IS2_R09.apps.Sprint.models import sprint
+import json
 __docformat__ = "Epytext"  
 
 from django.shortcuts import render_to_response

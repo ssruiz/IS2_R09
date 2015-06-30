@@ -89,7 +89,6 @@ DATABASES = {
 'default': {
 'ENGINE': 'django.db.backends.postgresql_psycopg2',
 'NAME': 'is2_r09',
-
 'USER': 'samuel',
 'PASSWORD': 'passwd',
 'HOST': 'localhost',
@@ -118,7 +117,7 @@ client_encoding= 'UTF8'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    "/home/meliam/git/IS2_R09/IS2_R09/media",
+    "/home/samuel/workspace/IS2_R09/IS2_R09/media",
 )
 
 URL_LOGIN = '/login'
@@ -141,4 +140,3 @@ DATE_INPUT_FORMATS = (
     '%B %d %Y', '%B %d, %Y',            # 'October 25 2006', 'October 25, 2006'
     '%d %B %Y', '%d %B, %Y',            # '25 October 2006', '25 October, 2006'
 )
-

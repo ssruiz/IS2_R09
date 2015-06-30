@@ -13,8 +13,8 @@ import os, sys
 
     #path a donde esta el manage.py de nuestro proyecto Django
 
-sys.path.append('/home/samuel/workspace/IS2_R09')
-sys.path.append('/home/samuel/workspace/IS2_R09/IS2_R09/apps')
+sys.path.append('/home/meliam/git/IS2_R09')
+sys.path.append('/home/meliam/git/IS2_R09/IS2_R09/apps')
     #referencia (en python) desde el path anterior al fichero settings.py
     #Importante hacerlo así, si hay varias instancias coriendo (en lugar de setdefault)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'IS2_R09.settings'

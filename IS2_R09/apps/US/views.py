@@ -106,6 +106,7 @@ def modificar_us_view(request,id_us):
                     fj = flujo.objects.get(id=f.id)
                     sp = form.cleaned_data['sprint_asociado']
                     spu = sprint.objects.get(id=sp.id)
+                    spu.tiempo_estimado -= spu.tiempo_estimado
                     spu.tiempo_estimado += int(form.cleaned_data['tiempo_estimado'])
                     spu.save()
                     act = fj.actividades.all()[:1].get()
@@ -132,6 +133,7 @@ def modificar_us_view(request,id_us):
                     f = k.cleaned_data['fluj']
                     sp = form.cleaned_data['sprint_asociado']
                     spu = sprint.objects.get(id=sp.id)
+                    spu.tiempo_estimado -= spu.tiempo_estimado                    
                     spu.tiempo_estimado += int(form.cleaned_data['tiempo_estimado'])
                     spu.save()
                     fj = flujo.objects.get(id=f.id)

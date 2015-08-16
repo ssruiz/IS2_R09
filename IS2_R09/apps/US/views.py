@@ -100,20 +100,23 @@ def modificar_us_view(request,id_us):
                 kan = kanban.objects.get(us=user_story)
                 k = kanban_form(request.POST,instance=kan)
                 if k.is_valid():
-                    form.save()
+                    print 'aaaaaaa'
                     kan.us=user_story
                     kan.prioridad = user_story.prioridad
                     f=k.cleaned_data['fluj']
                     fj = flujo.objects.get(id=f.id)
                     sp = form.cleaned_data['sprint_asociado']
                     spu = sprint.objects.get(id=sp.id)
-                    spu.tiempo_estimado -= spu.tiempo_estimado
+                    
+                    spu.tiempo_estimado -= user_story.tiempo_estimado
                     spu.tiempo_estimado += int(form.cleaned_data['tiempo_estimado'])
                     spu.save()
+                    form.save()
                     act = fj.actividades.all()[:1].get()
                     kan.actividad = act
-                    kan.fluj=f
+                    kan.fluj=fj
                     kan.estado= 'td'
+                    
                     notificar_asignacion_us(ua,user_story.nombre)
                     kan.save()
                 #kan.fluj= k.cleaned_data['fluj']
@@ -134,7 +137,7 @@ def modificar_us_view(request,id_us):
                     f = k.cleaned_data['fluj']
                     sp = form.cleaned_data['sprint_asociado']
                     spu = sprint.objects.get(id=sp.id)
-                    spu.tiempo_estimado -= spu.tiempo_estimado                    
+                    spu.tiempo_estimado -= user_story.tiempo_estimado                    
                     spu.tiempo_estimado += int(form.cleaned_data['tiempo_estimado'])
                     spu.save()
                     fj = flujo.objects.get(id=f.id)
@@ -230,7 +233,7 @@ def consultar_us_view(request,id_us):
         try:
             user_story = us.objects.get(id=id_us)
             kan = kanban.objects.get(us=user_story)
-            print 'aaa'
+            
             p= proyecto.objects.get(id=user_story.proyecto_asociado.id)
             
             form =consultar_form(instance= user_story)
@@ -241,9 +244,9 @@ def consultar_us_view(request,id_us):
             #form.fields['flujo_asignado'].queryset= p.flujos.all()
             k =kanban_form(instance=kan)
             fluj= kan.fluj
-            print fluj
+            
             #k.fields['fluj'].queryset = kan.fluj.all()
-            print 'bbb'
+            
             ctx = {'form':form,'k':fluj,'p':p}
             
             return render_to_response('US/consultar_us.html',ctx,context_instance=RequestContext(request))
@@ -307,7 +310,9 @@ def info_us(request):
         except:
             print 'a'
             Flujo = 'No asignado'
+        
         l = {'nombre':ust.nombre,'test':ust.tiempo_estimado,'tt':ust.tiempo_trabajado,'des':ust.descripcion,'priori':ust.get_prioridad_display(),'sprint':Sprint,'flujo':Flujo}
+        
         return HttpResponse(json.dumps(l))
 
 @csrf_exempt
@@ -325,9 +330,17 @@ def asignar_ust(request):
         act = f.actividades.first() # primera actividad de flujo
         g =us.objects.get(id=a) # User Story a reasignar
         aux= kanban.objects.filter(us=g).count()
-        
+        print 'aacaca'
         #Cambio de sprint si difiere el actual al seleccionado
-        if g.sprint_asociado != sp:
+        if g.sprint_asociado == None:
+            g.tiempo_trabajado = 0
+            sp.tiempo_estimado += g.tiempo_estimado
+            sp.tiempo_total += g.tiempo_trabajado
+            g.sprint_asociado=sp
+            g.save()
+            sp.save()
+            mensaje='Sprint Cambiado'
+        elif g.sprint_asociado != sp:
             sprint_viejo = sprint.objects.get(id=g.sprint_asociado.id)
             sprint_viejo.tiempo_estimado-= g.tiempo_estimado
             sprint_viejo.tiempo_total -= g.tiempo_trabajado

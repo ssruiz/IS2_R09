@@ -38,10 +38,10 @@ $(document).ready(function(){
     									alert(a.mensaje);
     									return;
     									}
-    								var newtr = "<tr><td id="+us_id+">"+a.ut+ " <a id=c"+us_id+" name='cambiar'><i class= fi-arrow-right></i></a></td><td></td><td></td></tr>"
+    								var newtr = "<tr><td id="+us_id+">"+a.ut+ " <a id=c"+us_id+" name='cambiar'><i class= fi-arrow-right></i></a></td><td></td><td></td></tr>";
     								$("td#"+us_id).parent().detach();
 				      				$("table#"+a.actividad+" tr:last").after(newtr);
-    				      			
+				      				 $("#volverestado").dialog( "close" );
 				      				
     								
 				        		

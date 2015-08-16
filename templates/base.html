@@ -19,6 +19,9 @@
 		  	<script src="/media/js/custom/cambioflujo.js" type="text/javascript"></script>
 		  	<!-- Scrip para la carga de User Stories -->
 			<script type="text/javascript" src="/media/js/custom/cargaUS.js" charset="utf-8"></script>
+			
+			<script type="text/javascript" src="/media/js/custom/sacarRelease.js" charset="utf-8"></script>
+			<script type="text/javascript" src="/media/js/custom/lanzarRelease.js" charset="utf-8"></script>
 			<!-- Script para panel de navegacion -->
 			<script type="text/javascript" src = "/media/js/custom/menunaveg.js"></script>
 		  	 <!-- Script para seleccionador de fechas de Proyectos-->
@@ -171,9 +174,9 @@ $(document).ready(function() {
 			{% endif %}
 						     	
 						     	<li><a id= "ceh"  class= "enlaceh"  href="{% url 'vista_adm_proyecto' %}">Proyectos</a></li>
-						     	
+						     	{% if user.is_staff%}
 						     	<li><a class= "enlaceh" href="{% url 'vista_adm_flujo' %}">Flujos</a></li>
-						     	
+								{% endif %}			     	
 						     	<li><a class= "enlaceh" href="{% url 'vista_adm_us' %}">User Stories</a></li>
 						     	
 						     	<li><a class= "enlaceh" href="{% url 'vista_adm_sprint' %}">Sprints</a></li>

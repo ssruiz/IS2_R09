@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %} No posee Permisos{% endblock %}
+{% block content %}
+<br />
+<br />
+<h4 align="center"><strong>Eliminar Proyecto</strong></h4>
+<div class= "panel large-5 large-centered columns">
+<p>No posee permisos necesarios para {{motivo}} el proyecto: <strong>{{proyecto}}</strong></p>
+<p>Consulte con el administrador</p>
+</div>
+<div class="large-5 large-centered columns ">
+		<div class="small-6 small-centered columns">
+			<input class="small radius button" type="button" name="Cancelar" value="Aceptar" onClick="location.href='/adm_proyecto/'">
+		</div>
+	
+</div>
+
+{% endblock %}

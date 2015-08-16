@@ -78,7 +78,7 @@ def mod_datos_view(request):
                 actual.foto = request.FILES['foto']
                 actual.save()
                 i=user_form.save()
-                #notificar_mod_usuario(request.user)
+                notificar_mod_usuario(request.user)
                 return HttpResponseRedirect('/')
         else:
             user_form = usuario_form(request.POST,instance=request.user)
@@ -89,7 +89,7 @@ def mod_datos_view(request):
                # actual.foto = request.FILES['foto']
                 actual.save()
                 i=user_form.save()
-                #notificar_mod_usuario(request.user)
+                notificar_mod_usuario(request.user)
                 return HttpResponseRedirect('/')
     else:
         user_form = usuario_form (instance=request.user)

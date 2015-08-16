@@ -13,8 +13,9 @@ from django.views.decorators.csrf import csrf_exempt
 from keyring.backend import json
 from IS2_R09.apps.Flujo.models import kanban, flujo
 from IS2_R09.apps.Sprint.models import sprint
-from IS2_R09.apps.Proyecto.models import proyecto
+from IS2_R09.apps.Proyecto.models import proyecto, Equipo
 from IS2_R09.apps.Charts.models import charts
+import datetime
 # Create your views here.
 def adm_comentario_view(request,id_us):
     """Vista que controla la interfaz de administracion de comentarios"""
@@ -95,10 +96,23 @@ def crear_comentario_us(request):
         
         
         ust = us.objects.get(id=ut)
-        print k.fluj
+        
         sp= sprint.objects.get(id=ust.sprint_asociado.id)
         estado= str(k.get_estado_display())
         pr = proyecto.objects.get(id=sp.proyect.id)
+        
+        if not us.objects.filter(id=ut,usuario_asignado=request.user).exists():
+            if Equipo.objects.filter(proyect=pr,miembro=request.user).exists():
+                e = Equipo.objects.get(proyect=pr,miembro=request.user)
+                print e.rol.name
+                print e.miembro
+                if not e.rol.name == 'Scrum':
+                    l = {'cambiar': 'no','mensaje':'No esta asignado al User Story y no posee permisos de Scrum master para agregar comentarios.'}
+                    return HttpResponse(json.dumps(l))
+            elif not request.user.is_staff:
+                l = {'cambiar': 'no','mensaje':'No esta asignado al User Story y no posee permisos suficientes.'}
+                return HttpResponse(json.dumps(l))
+        
         coment = str(request.POST.get('c')) + ('\nFlujo: %s - Actividad: %s - Estado: %s \nRealizado por: %s' %(k.fluj,k.actividad,estado,request.user))
         c= comentario.objects.create(nombre=str(nombr),comentario=coment,fecha_creacion=datetime.date.today(),fecha_ultima_mod=datetime.date.today())
         # creando el burndownchart
@@ -138,6 +152,7 @@ def crear_comentario_us(request):
         
         sp.save()
         ust.save()
+        #Sprint culmina al llegar a las horas estimadas
         if sp.tiempo_total>=sp.tiempo_estimado:
             f = flujo.objects.get(id=k.fluj.id)
             uts = f.user_stories.all()
@@ -146,6 +161,7 @@ def crear_comentario_us(request):
                 ustaux.sprint_asociado = None
                 ustaux.save()
             sp.finalizado='si'
+            sp.fecha_fin= datetime.date.today()
             sp.save()
             p = proyecto.objects.get(id=ust.proyecto_asociado.id)
             p.sprint_actual= ''

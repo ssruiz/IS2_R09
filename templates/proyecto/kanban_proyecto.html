@@ -59,10 +59,16 @@
 							<td id="{{el.us.id}}"> <a title="Volver a estado o actividad" id="v{{el.us.id}}" name="volver"><i class="fi-arrow-left"></i></a>  {{el.us}} <a title="Ver Información/Cambiar Estado"  id="c{{el.us.id}}" name="cambiar"><i class="fi-arrow-right"></i></a></td>
 							<td></td>
 						{% else %}
+							{% if ultimo == a.nombre %}
+								<td></td>
+								<td></td>
+								<td id="{{el.us.id}}"><a title="Volver a estado o actividad" id="v{{el.us.id}}" name="volver"><i class="fi-arrow-left"></i></a> {{el.us}} <a title="Ver Información/Aprobar Release" id = "r{{el.us.id}}" name="sacarrelease"><i class="fi-arrow-up"></i></a></td>
+							{% else %}
+								<td></td>
+								<td></td>
+								<td id="{{el.us.id}}"><a title="Volver a estado o actividad" id="v{{el.us.id}}" name="volver"><i class="fi-arrow-left"></i></a> {{el.us}} <a title="Ver Información/Cambiar Estado" id = "c{{el.us.id}}" name="cambiar"><i class="fi-arrow-right"></i></a></td>
+							{% endif %}	
 							
-							<td></td>
-							<td></td>
-							<td id="{{el.us.id}}"><a title="Volver a estado o actividad" id="v{{el.us.id}}" name="volver"><i class="fi-arrow-left"></i></a> {{el.us}} <a title="Ver Información/Cambiar Estado" id = "c{{el.us.id}}" name="cambiar"><i class="fi-arrow-right"></i></a></td>
 						{% endif %}
 						</tr>
 						{% endif %}
@@ -73,6 +79,10 @@
 				{% endfor %}
 				
 				
+			</div>
+			<div class="panel">
+				<input class="small radius right button" id="sacarR" type="button" value="Sacar Release"></input>
+
 			</div>
 			{% endif %}
 </form> 
@@ -113,4 +123,11 @@
 				
 			</div>
 			</form>
+			<div id="Release" style="display:none">
+				<ul id= "listaRelease">
+				{% for r in releases %}
+					<li>{{r.nombre}} - <a title="Ver Información" id="r{{r.id}}" name='Releaseinfo'><i class="fi-page"></i></a></li>
+				{% endfor %}
+				</ul>
+			</div>
 {% endblock %}

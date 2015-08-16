@@ -15,4 +15,6 @@ urlpatterns = patterns('IS2_R09.apps.Adjunto.views',
     url(r'^modificar/adjunto/(?P<id_adjunto>.*)/(?P<id_us>.*)/$','modificar_adjunto_view', name= 'vista_modificar_adjunto'),
     url(r'^eliminar/adjunto/(?P<id_adjunto>.*)/(?P<id_us>.*)/$','eliminar_adjunto_view', name= 'vista_eliminar_adjunto'),
     url(r'^consultar/adjunto/(?P<id_adjunto>.*)/(?P<id_us>.*)/$','consultar_adjunto_view', name= 'vista_consultar_adjunto'),
+    url(r'^modificar/adjunto/(?P<id_adjunto>.*)/(?P<id_us>.*)/$','modificar_adjunto_view', name= 'vista_modificar_adjunto'),
+    url(r'^permisos_us/$','permisos_agregar_view', name= 'vista_permisos_adjunto'),
 )

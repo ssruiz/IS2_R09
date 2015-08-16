@@ -9,9 +9,9 @@
 			<div class="panel"><h5 align="center"><strong>Equipo</strong></h5></div>
 			<div>
 			{% if list %}			
-				{%for miembro,r in list%}
+				{%for r in list %}
 					<ul align="left">
-						<li id="p2">{{miembro}} - Rol: {{r.rol}}</li>
+						<li id="p2">{{r.miembro}} - Rol: {{r.rol.name}}</li>
 					</ul>
 				{% endfor %}
 			{% else %}

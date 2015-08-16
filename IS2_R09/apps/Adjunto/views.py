@@ -9,8 +9,10 @@ from IS2_R09.apps.Adjunto.forms import consultar_adjunto_form
 from IS2_R09.apps.Adjunto.models import adjunto, archivoUs
 from django.template.context import RequestContext
 from IS2_R09.apps.US.models import us
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, HttpResponse
 import datetime
+from IS2_R09.apps.Proyecto.models import Equipo, proyecto
+from keyring.backend import json
 # Create your views here.
 
 def adm_adjunto_view(request,id_us):
@@ -31,6 +33,16 @@ def crear_adjunto_view(request,id_us):
             c = form.save()
             ust.adjuntos.add(c)
             ust.save()
+            nextt = request.POST.get('next')
+            sgte = request.META.get('HTTP_REFERER')
+            place = sgte.find('next')
+            print place
+            print sgte
+            if place != -1 :
+                place += 5
+                sgte = '/' + sgte[place:]
+            
+                return HttpResponseRedirect(sgte)
             return HttpResponseRedirect('/adm_adjunto/%s'%(id_us))
     ctx = {'form':form,'userid':id_us}
     return render_to_response('adjunto/crear_adjunto.html', ctx, context_instance=RequestContext(request))
@@ -82,4 +94,20 @@ def consultar_adjunto_view(request, id_adjunto,id_us):
         return render_to_response('adjunto/consultar_adjunto.html', ctx, context_instance=RequestContext(request))
     
 
-
+def permisos_agregar_view(request):
+    if request.is_ajax():
+        i = request.GET['k'] # kanban
+        proyecto_rel = proyecto.objects.get(id=i)
+        if not us.objects.filter(usuario_asignado=request.user).exists():
+            if Equipo.objects.filter(proyect=proyecto_rel,miembro=request.user).exists():
+                e = Equipo.objects.get(proyect=proyecto_rel,miembro=request.user)
+                if not e.rol.name == 'Scrum' or not request.user.is_staff:
+                    l = {'permiso': 'no','mensaje':'No esta asignado al User Story o no posee permisos de Scrum master para agregar archivos .'}
+                    return HttpResponse(json.dumps(l))
+            elif not request.user.is_staff:
+                l = {'permiso': 'no','mensaje':'No posee permisos para modificar User Story.'}
+                return HttpResponse(json.dumps(l))
+        l = {'permiso': 'si','mensaje':'Posee permisos para modificar User Story.'}
+        return HttpResponse(json.dumps(l))
+        #------------------------------------------------------------------------------    
+        

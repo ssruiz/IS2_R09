@@ -28,6 +28,21 @@ from reportlab.rl_config import canvas_basefontname
 from reportlab.lib.units import inch
 from IS2_R09.apps.Sprint.forms import sprint_form
 from django.db.models.aggregates import Sum
+from reportlab.platypus.doctemplate import SimpleDocTemplate
+from _io import BytesIO
+from reportlab.platypus.paragraph import Paragraph
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.graphics.charts.linecharts import HorizontalLineChart
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics.charts.axes import XCategoryAxis
+from reportlab.platypus.flowables import Spacer
+from reportlab.platypus.tables import Table
+from reportlab.lib import colors
+from IS2_R09.apps.Charts.models import charts
+from reportlab.graphics.charts.lineplots import LinePlot
+from reportlab.graphics.widgets.markers import makeMarker
+from django import forms
+
 
 # Create your views here.
 @login_required(login_url= URL_LOGIN)
@@ -51,6 +66,11 @@ def crear_proyecto_view(request):
     form= proyecto_form()
     if request.method == 'POST':
         form = proyecto_form(request.POST)
+        
+        if not request.user.is_staff:
+            ctx = {'motivo': 'crear'}
+            return render_to_response('proyecto/no_permiso_proyecto.html',ctx,context_instance=RequestContext(request))
+        
         if form.is_valid():
             form.save()
             if request.user.is_staff:
@@ -120,6 +140,19 @@ def modificar_proyecto_view(request,id_proyecto):
     if request.method == 'POST':
         proyect = proyecto.objects.get(id=id_proyecto)
         form = modificar_form(request.POST,instance=proyect)
+        
+        if Equipo.objects.filter(proyect=proyect,miembro=request.user).exists():
+            e = Equipo.objects.get(proyect=proyect,miembro=request.user)
+            if not e.rol.name == 'Scrum':
+                ctx = {'proyecto': proyect,'motivo': 'modificar'}
+                return render_to_response('proyecto/no_permiso_proyecto.html',ctx,context_instance=RequestContext(request))
+                
+        elif not request.user.is_staff:
+            ctx = {'proyecto': proyect,'motivo': 'modificar'}
+            return render_to_response('proyecto/no_permiso_proyecto.html',ctx,context_instance=RequestContext(request))
+                
+            
+            
         if form.is_valid():
             form.save()
             notificar_mod_proyecto(proyect.miembro.all(),proyect)
@@ -143,6 +176,16 @@ def eliminar_proyecto_view(request,id_proyecto):
     '''vista que controla la eliminacion de usuarios del sistema'''
     proyect = proyecto.objects.get(pk=id_proyecto)
     if request.method == 'POST':
+        if Equipo.objects.filter(proyect=proyect,miembro=request.user).exists():
+            e = Equipo.objects.get(proyect=proyect,miembro=request.user)
+            if not e.rol.name == 'Scrum':
+                ctx = {'proyecto': proyect,'motivo': 'eliminar'}
+                return render_to_response('proyecto/no_permiso_proyecto.html',ctx,context_instance=RequestContext(request))
+                
+        elif not request.user.is_staff:
+            ctx = {'proyecto': proyect,'motivo': 'eliminar'}
+            return render_to_response('proyecto/no_permiso_proyecto.html',ctx,context_instance=RequestContext(request))
+        
         p = proyect.nombre
         e= proyect.miembro.all()
         notificar_eli_proyecto(e,p)
@@ -176,7 +219,7 @@ def consultar_proyecto_view(request,id_proyecto):
         list= zip(equipo,roles)
         ust = us.objects.filter(proyecto_asociado=id_proyecto,release_asociado=None).order_by('prioridad')
         
-        ctx = {'form':form,'list':list,'ust':ust,'cliente':client,'flujos':flujos,'sprints':sprints}
+        ctx = {'form':form,'list':roles,'ust':ust,'cliente':client,'flujos':flujos,'sprints':sprints}
         return render_to_response('proyecto/consultar_proyecto.html',ctx,context_instance=RequestContext(request))
 
 #---------------------------------------------------------------------------------------------------------------
@@ -241,7 +284,7 @@ def ustload(request):
         f= pr.flujos.get(id=idf)
         ult = fj.actividades.all().order_by('-order')[0]
         if pr.sprint_actual == '':
-            ust = us.objects.filter(proyecto_asociado=pr,sprint_asociado__finalizado='no').order_by('prioridad')
+            ust = us.objects.filter(proyecto_asociado=pr,sprint_asociado__finalizado='no',release_asociado=None).order_by('prioridad')
             
             releases = kanban.objects.filter(us__in=ust,fluj=fj,actividad=ult,estado='de').order_by('prioridad')
             k= kanban.objects.filter(us__in=ust,fluj=fj).order_by('prioridad')
@@ -250,18 +293,19 @@ def ustload(request):
             media = f.user_stories.filter(prioridad=2).exclude(id__in=releases).count()
             alta = f.user_stories.filter(prioridad=1).exclude(id__in=releases).count()
             return render_to_response('proyecto/kanban_proyecto.html',{
-                    'fs': k,'baja':baja,'media':media,'alta':alta,'releases':releases,'actividades':acti,'sp':'Ninguno en desarrollo','flujo':f},context_instance=RequestContext(request))
+                    'fs': k,'baja':baja,'media':media,'alta':alta,'releases':releases,'actividades':acti,'sp':'Ninguno en desarrollo','flujo':f,'ultimo':ult.nombre},context_instance=RequestContext(request))
         else:
             sp= sprint.objects.get(id=pr.sprint_actual)
-            ust = f.user_stories.filter(sprint_asociado=sp,sprint_asociado__finalizado='no').order_by('prioridad')
+            ust = f.user_stories.filter(sprint_asociado=sp,release_asociado=None).order_by('prioridad')
             
-            releases = kanban.objects.filter(us__in=ust,fluj=fj,actividad=ult,estado='de').order_by('prioridad')
+            #releases = kanban.objects.filter(us__in=ust,fluj=fj,actividad=ult,estado='de').order_by('prioridad')
+            releases = f.user_stories.filter(sprint_asociado=sp,release_asociado__lanzado='no').exclude(release_asociado=None).order_by('prioridad')
             k= kanban.objects.filter(us__in=ust,fluj=fj).order_by('prioridad')
-            baja = f.user_stories.filter(sprint_asociado=sp,prioridad=3).exclude(id__in=releases).count()
-            media = f.user_stories.filter(sprint_asociado=sp,prioridad=2).exclude(id__in=releases).count()
-            alta = f.user_stories.filter(sprint_asociado=sp,prioridad=1).exclude(id__in=releases).count()
+            #baja = f.user_stories.filter(sprint_asociado=sp,prioridad=3).exclude(id__in=releases).count()
+            #media = f.user_stories.filter(sprint_asociado=sp,prioridad=2).exclude(id__in=releases).count()
+            #alta = f.user_stories.filter(sprint_asociado=sp,prioridad=1).exclude(id__in=releases).count()
             return render_to_response('proyecto/kanban_proyecto.html',{
-                    'fs': k,'baja':baja,'media':media,'alta':alta,'releases':releases,'actividades':acti,'sp':sp,'flujo':f},context_instance=RequestContext(request))
+                    'fs': k,'releases':releases,'actividades':acti,'sp':sp,'flujo':f,'ultimo':ult.nombre},context_instance=RequestContext(request))
             
 @login_required(login_url= URL_LOGIN)
 def cambiar_estado(request):
@@ -285,13 +329,21 @@ def cambiar_estado(request):
         ord= act.order +1
         ult = k.fluj.actividades.all().order_by('-order')[0]
         comentarios = ut.comentarios.all().count()
-        releases = kanban.objects.filter(us__in=ust,fluj=k.fluj,actividad=ult,estado='de').order_by('prioridad')
+        releases = f.user_stories.filter(sprint_asociado=sp,release_asociado__lanzado='si').exclude(release_asociado=None).order_by('prioridad')
+        #releases = kanban.objects.filter(us__in=ust,fluj=k.fluj,actividad=ult,estado='de').order_by('prioridad')
         baja = f.user_stories.filter(prioridad=3).exclude(id__in=releases).count()
         media = f.user_stories.filter(prioridad=2).exclude(id__in=releases).count()
         alta = f.user_stories.filter(prioridad=1).exclude(id__in=releases).count()
         cambiar='si'
         mensaje=''
         # condiciones antes de cambiar de estado
+        #------------------------------------------------------------------------------
+        #El proyecto debe estar con estado iniciado
+        estado_proyecto = proyect.estado
+        estado_proyecto = estado_proyecto.lower()
+        if estado_proyecto!= 'iniciado':
+            l = {'cambiar': 'no','mensaje':'Proyecto aun no iniciado.'}
+            return HttpResponse(json.dumps(l))
         #------------------------------------------------------------------------------
         # El usuario debe estar asignado al user story, ser scrum master o administrador
         if not us.objects.filter(usuario_asignado=request.user).exists():
@@ -394,13 +446,45 @@ def volver_actividad_view(request):
         actividad_a_pasar = actividad.objects.get(id=int(acti_id))
         user_story_rel = us.objects.get(id=int(us_id))
         proyecto_rel = proyecto.objects.get(id=user_story_rel.proyecto_asociado.id)
-        print request.user
+        print us.objects.filter(id=us_id,usuario_asignado=request.user)
+        if not us.objects.filter(id=us_id,usuario_asignado=request.user).exists():
+            if Equipo.objects.filter(proyect=proyecto_rel,miembro=request.user).exists():
+                e = Equipo.objects.get(proyect=proyecto_rel,miembro=request.user)
+                print e.rol.name
+                print e.miembro
+                if not e.rol.name == 'Scrum':
+                    l = {'cambiar': 'no','mensaje':'No posee permisos de Scrum master para modificar User Story.'}
+                    return HttpResponse(json.dumps(l))
+            elif not request.user.is_staff:
+                l = {'cambiar': 'no','mensaje':'No posee permisos para modificar User Story.'}
+                return HttpResponse(json.dumps(l))
+        else:
+            e = Equipo.objects.get(proyect=proyecto_rel,miembro=request.user)
+            if not e.rol.name == 'Scrum':
+                l = {'cambiar': 'no','mensaje':'No posee permisos de Scrum master para regresar a un actividad al User Story.'}
+                return HttpResponse(json.dumps(l))
+            elif not request.user.is_staff:
+                l = {'cambiar': 'no','mensaje':'No posee permisos para regresar a un actividad al User Story.'}
+                return HttpResponse(json.dumps(l))
+            
+        
         try:
-            e =Equipo.objects.get(proyect=proyecto_rel,miembro=request.user)
-            print e.rol
-            print e.miembro
-            if e.rol.name == 'Scrum' or request.user.is_staff:
-                print 'aa'
+            if Equipo.objects.filter(proyect=proyecto_rel,miembro=request.user).exists():
+                e =Equipo.objects.get(proyect=proyecto_rel,miembro=request.user)
+                if e.rol.name == 'Scrum':
+                    print 'aa'
+                    kanban_rel = kanban.objects.get(us=user_story_rel)
+                    print kanban_rel
+                    actividad_anterior = actividad.objects.get(id=kanban_rel.actividad.id)
+                    print actividad_a_pasar.order
+                    print actividad_anterior.order
+                    print 'aass'
+                    if(actividad_a_pasar.order<=actividad_anterior.order):
+                        kanban_rel.actividad = actividad_a_pasar
+                        kanban_rel.estado = 'td'
+                        kanban_rel.save()
+                        cambiar = 'si'
+            elif request.user.is_staff:
                 kanban_rel = kanban.objects.get(us=user_story_rel)
                 actividad_anterior = actividad.objects.get(id=kanban_rel.actividad.id)
                 print actividad_a_pasar.order
@@ -410,27 +494,173 @@ def volver_actividad_view(request):
                     kanban_rel.estado = 'td'
                     kanban_rel.save()
                     cambiar = 'si'
-                
             else:
-                print 'aa'
                 mensaje= 'no tiene permisos necesarios. Consulte con el Scrum Master'
             
         except:
             pass
-        print mensaje
         l = {'cambiar':cambiar,'mensaje':mensaje,'ut':user_story_rel.nombre,'actividad':actividad_a_pasar.nombre}
         return HttpResponse(json.dumps(l))
 
 def reporte_view(request,id_proyecto):
     proyect= proyecto.objects.get(id=id_proyecto)
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="reporte_%s.pdf"' %(proyect.nombre)
+    fecha = datetime.date.today()
+    response['Content-Disposition'] = 'attachment; filename="reporte_%s_%s.pdf"' %(proyect.nombre,fecha)
     ust = us.objects.filter(proyecto_asociado=proyect)
     equipo = Equipo.objects.filter(proyect=proyect)
     sprints = sprint.objects.filter(proyect=proyect)
     
     # Create the PDF object, using the response object as its "file."
+    buff = BytesIO()
+    doc = SimpleDocTemplate(buff,
+                            pagesize=letter,
+                            rightMargin=40,
+                            leftMargin=40,
+                            topMargin=60,
+                            bottomMargin=18,
+                            )
+    pdf = []
+    '''
+    drawing = Drawing(600, 300)
+    lc = HorizontalLineChart()
+    lc.x = 50
+    lc.y = 50
+    lc.height = 200
+    lc.width = 400
+    lc.data = [(2,3),(3,3)]
+    lc.joinedLines = 1
+    catNames ='Jan Feb Mar Apr May Jun Jul Aug'.split(' ')
+    lc.categoryAxis.categoryNames = catNames
+
+    lc.categoryAxis.labels.boxAnchor = 'n'
+    lc.valueAxis.valueMin = 0
+    lc.valueAxis.valueMax = 10
+    lc.valueAxis.valueStep = 5
+    lc.lines[0].strokeWidth = 2
+    lc.lines[1].strokeWidth = 1.5
+    drawing.add(lc)
+    styles = getSampleStyleSheet()
+    header = Paragraph("<i>Reporte de Proyecto</i>", styles['Title'])
+    clientes.append(header)
+    clientes.append(drawing)
+    '''
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name = "listas", leftIndent=5))
+    header = Paragraph("<i>Reporte de Proyecto</i>", styles['Title'])
+    pdf.append(header) 
+    pdf.append(Spacer(0,20))
+    pdf.append(Paragraph("<b>Nombre Proyecto</b>: %s" %(proyect.nombre), styles['Normal']))
+    pdf.append(Spacer(0,10))
+    pdf.append(Paragraph("<b>Equipo:</b>", styles['Normal']))
+    pdf.append(Spacer(0,10))
     
+    for t in equipo:
+        pdf.append(Paragraph("    * %s - %s" %(t.miembro,t.rol), styles['listas']))
+        pdf.append(Spacer(0,5))
+    pdf.append(Spacer(0,5))    
+    pdf.append(Paragraph('<b>Cantidad de Sprints: </b>%s' %(sprints.count()),styles['Normal']))
+    pdf.append(Spacer(0,10))
+    pdf.append(Paragraph('<b>Tiempo estimado Total de sprints(horas): </b>%s' %(sprints.aggregate(Sum('tiempo_estimado')).values()[0]),styles['Normal']))
+    pdf.append(Spacer(0,10))
+    pdf.append(Paragraph('<b>Tiempo trabajado en Total de sprints(horas): </b>%s' %(sprints.aggregate(Sum('tiempo_total')).values()[0]),styles['Normal']))
+    pdf.append(Spacer(0,10))
+    
+    
+    datos = [('Usuario','Trabajo Realizado','Trabajo Pendiente')]
+    print proyect.sprint_actual
+    for t in equipo:
+        print t.miembro
+        if us.objects.filter(proyecto_asociado=proyect,usuario_asignado=t.miembro).exists():
+            usts = us.objects.filter(proyecto_asociado=proyect,usuario_asignado=t.miembro)
+            t_total= usts.aggregate(Sum('tiempo_trabajado')).values()[0]
+            t_estimado = usts.aggregate(Sum('tiempo_estimado')).values()[0]
+            t_pendiente = t_total - t_estimado 
+            datos.append([t.miembro,t_total,t_pendiente])
+        
+    tabla = Table(data=datos,style = [
+                       ('GRID',(0,0),(-1,-1),0.5,colors.grey),
+                       ('BOX',(0,0),(-1,-1),2,colors.black),
+                       ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                       ])
+    pdf.append(Paragraph('<b>Tabla de trabajos por usuarios: </b>' ,styles['Normal']))
+    pdf.append(Spacer(0,15))
+    pdf.append(tabla)
+    pdf.append(Spacer(0,15))
+    ust_proyecto = us.objects.filter(proyecto_asociado=proyect).order_by('prioridad')
+    pdf.append(Paragraph('<b>Lista de User Stories del proyecto. </b>' ,styles['Normal']))
+    pdf.append(Spacer(0,10))
+    for u in ust_proyecto:
+        pdf.append(Paragraph('<b>    *US</b>: %s <b>Prioridad:</b> %s ' %(u,u.get_prioridad_display()),styles['listas']))
+        pdf.append(Spacer(0,5))
+    pdf.append(Spacer(0,5))
+    
+    #------------------ Graficos -----------------
+    pdf.append(Paragraph('<b>Grafico</b>.' ,styles['Normal']))
+    
+    drawing = Drawing(600, 300)
+    lc = LinePlot()
+    lc.x = 50
+    lc.y = 50
+    lc.height = 200
+    lc.width = 400
+    lc.joinedLines = 1
+    lc.lines[0].symbol = makeMarker('FilledCircle')
+    lc.lines[1].symbol = makeMarker('Circle')
+    lc.lines[0].strokeWidth = 2
+    lc.lines[1].strokeWidth = 1.5
+    lc.xValueAxis.valueMin = 0
+    lc.xValueAxis.valueMax = 5
+    lc.yValueAxis.valueMin=0
+    lc.strokeColor = colors.black
+    lc.lineLabelFormat = '%2.1f'
+    lc.xValueAxis.labelTextFormat ='%2.1f'
+    datos_grafico = []
+    value_max=0
+    for s in sprints:
+        data = []
+        tt= s.tiempo_estimado
+        dd = int(tt/24)
+        
+        if charts.objects.filter(proyect=proyect,sprint_actual=s).exists():
+            puntos = charts.objects.filter(proyect=proyect,sprint_actual=s)
+    
+            ejex = []
+            ejey = []
+            t = [[1,tt],[dd,0]]
+            for c in puntos:
+                if(c.ejey>value_max):
+                    value_max=c.ejey
+                    lc.yValueAxis.valueMax=value_max+50
+                
+                data.append((c.ejex,c.ejey))
+                
+            
+                print data[0]
+            datos_grafico.append(data)
+
+    lc.data= datos_grafico
+    drawing.add(lc)
+    pdf.append(drawing)
+    
+    #---- Backlog Sprint --------
+    
+    if proyect.sprint_actual != '':
+        sprint_act= sprint.objects.get(id=proyect.sprint_actual)
+        ust_proyecto = us.objects.filter(proyecto_asociado=proyect,sprint_asociado=sprint_act,release_asociado=None).order_by('prioridad')
+        pdf.append(Paragraph('<b>Lista de User Stories del proyecto (Sprint Actual). </b>' ,styles['Normal']))
+        pdf.append(Spacer(0,10))
+        for u in ust_proyecto:
+            pdf.append(Paragraph('<b>    *US</b>: %s <b>Prioridad:</b> %s ' %(u,u.get_prioridad_display()),styles['listas']))
+            pdf.append(Spacer(0,5))
+        pdf.append(Spacer(0,5))
+    else:
+        pdf.append(Paragraph('<b>Lista de User Stories del proyecto (Sprint Actual). </b>' ,styles['Normal']))
+        pdf.append(Paragraph('<b>Ningun Sprint en desarrollo actualmente . </b>' ,styles['listas']))
+        
+        pdf.append(Spacer(0,10))
+        
+    '''
     p = canvas.Canvas(response)
     p.drawCentredString(255, 800, 'Reporte de Proyecto', None)
     
@@ -462,7 +692,7 @@ def reporte_view(request,id_proyecto):
     for t in equipo:
         
         usts = us.objects.filter(proyecto_asociado=proyect,usuario_asignado=t.miembro)
-        
+        print usts
         to.textLine('Usuario: %s' %(t.miembro))
         t_total= usts.aggregate(Sum('tiempo_trabajado')).values()[0]
         t_estimado = usts.aggregate(Sum('tiempo_estimado')).values()[0]
@@ -480,4 +710,8 @@ def reporte_view(request,id_proyecto):
     # Close the PDF object cleanly, and we're done.
     p.showPage()
     p.save()
+    '''
+    doc.build(pdf)
+    response.write(buff.getvalue())
+    buff.close()
     return response

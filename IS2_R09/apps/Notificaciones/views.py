@@ -32,8 +32,11 @@ def notificar(usuarios,subj,mensaje):
             mail= usuarios.email
             send_mail(subj, mensaje, 'is2.pagiles@gmail.com',[mail], fail_silently=False)
         except:
-            mail=usuarios
-            send_mail(subj, mensaje, 'is2.pagiles@gmail.com',[mail], fail_silently=False)
+            try:
+                mail=usuarios
+                send_mail(subj, mensaje, 'is2.pagiles@gmail.com',[mail], fail_silently=False)
+            except:
+                pass
         
 def notificar_creacion_usuario(usuario):
     """

@@ -5,7 +5,7 @@ $(document).ready(function(){
     		var id = $(this).attr('id')
     		var activ = $(this).closest('table').attr('id');
     		var i = id.substr(1);
-    
+    		var proyecto = $('#proy').attr('value');
     		$.ajax({
     			url: "/infoust/",
           		type: 'GET',
@@ -32,7 +32,7 @@ $(document).ready(function(){
     	            				effect: "blind",
     	            				duration: 1000
     	            			},
-    	            			width: 700,
+    	            			width: 750,
     	            			height: 490,
     	            			position: {at: 'top'},
     	            			buttons: [
@@ -81,6 +81,39 @@ $(document).ready(function(){
     				},
     				
     				{
+    					text: "Agregar Archivo",
+    					click: function() {
+    						
+    						$.ajax({
+    							url: "/permisos_us/",
+    				      		type: 'GET',
+    				      		data: {k:proyecto},
+    				      		datatype: 'json',
+    				      		
+    				      		contentType: "application/json; charset=utf-8",
+    				      		success: function(result) {
+    				      			var r = jQuery.parseJSON(result);
+    				      			if(r.permiso == 'si')
+    				      			{
+    				      				var url = "/crear_adjunto/"+i+"/?next=kanban/proyecto/"+proyecto;
+        	    						window.location = url;
+        	    						$( this ).dialog( "close" );
+
+    				      			}
+    				      			else{
+    				      				alert(r.mensaje);
+    				      			}
+    				      			
+    				      		},
+    				      		error: function(){
+    				      			alert('Error ocurrio. Vuelva a intentarlo');
+    				      		}
+    				      		
+    						});
+    					}
+    				},
+    				
+    				{
     					text: "Cambiar Estado",
     					click: function() {
     						
@@ -100,13 +133,21 @@ $(document).ready(function(){
     				      				return;
     				      			}
     				      			if(a.estado == 'dg'){
-    				      				var newtr = "<tr><td></td><td id="+i+"><a id=v"+i+" name='volver'><i class= fi-arrow-left></i></a> "+ a.ut+ " <a id=c"+i+" name='cambiar'><i class= fi-arrow-right></i></a></td><td></td></tr>"
+    				      				var newtr = "<tr><td></td><td id="+i+"><a id=v"+i+" name='volver'><i class= fi-arrow-left></i></a> "+ a.ut+ " <a id=c"+i+" name='cambiar'><i class= fi-arrow-right></i></a></td><td></td></tr>";
         				      			$("td#"+i).parent().replaceWith(newtr);
     				      				
     				      			}
     				      			else if(a.estado == 'de'){
-    				      				var newtr = "<tr><td></td><td></td><td id="+i+"><a id=v"+i+" name='volver'><i class= fi-arrow-left></i></a> "+ a.ut+ " <a id=c"+i+" name='cambiar'><i class= fi-arrow-right></i></a></td></tr>"
-        				      			$("td#"+i).parent().replaceWith(newtr);
+    				      				if(a.actividad == a.ultimo)
+    				      				{
+    				      					var newtr = "<tr><td></td><td></td><td id="+i+"><a id=v"+i+" name='volver'><i class= fi-arrow-left></i></a> "+ a.ut+ " <a id=r"+i+" name='sacarrelease' title='Ver info/Aprobar para Release'><i class= fi-arrow-up></i></a></td></tr>";
+            				      			$("td#"+i).parent().replaceWith(newtr);
+    				      				}
+    				      				else
+    				      				{
+    				      					var newtr = "<tr><td></td><td></td><td id="+i+"><a id=v"+i+" name='volver'><i class= fi-arrow-left></i></a> "+ a.ut+ " <a id=c"+i+" name='cambiar'><i class= fi-arrow-right></i></a></td></tr>";
+        				      				$("td#"+i).parent().replaceWith(newtr);
+    				      				}
     			
     				      			}
     				      			else{
@@ -131,11 +172,6 @@ $(document).ready(function(){
     					}
     				},
     				
-    				{
-    					text: "A Release",
-    					click: function() {
-    						$( this ).dialog( "close" );}
-    				},
     				
     				{
     					text: "Cancelar",
@@ -148,7 +184,7 @@ $(document).ready(function(){
     	       $("#inforus").dialog('open');
             },
             error: function() {
-                alert('Error occured');
+                alert('Error occurrido');
             }		
         		});
         		    		    	});  

@@ -7,3 +7,5 @@ class release(models.Model):
     nombre = models.CharField(max_length=30)
     sprint_asociado= models.ForeignKey(sprint)
     proyecto_asociado = models.ForeignKey(proyecto,default=None)
+    lanzado = models.CharField(max_length=2,default='no')
+    fecha_lanzamiento = models.DateField(null=True,blank=True,default=None)
